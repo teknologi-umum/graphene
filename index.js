@@ -4,8 +4,8 @@ import { screenshot } from './utils/shot.js';
 const corsDefault = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'HEAD, POST, PUT, PATCH',
-  'Access-Control-Allow-Headers': ['content-type']
-}
+  'Access-Control-Allow-Headers': ['content-type'],
+};
 
 http
   .createServer((req, res) => {
@@ -14,7 +14,8 @@ http
       data += chunk;
     });
     req.on('end', () => {
-      if (req?.method?.toUpperCase() === 'OPTIONS') return res.writeHead(204, { 'Content-Length': 0, ...corsDefault }).end()
+      if (req?.method?.toUpperCase() === 'OPTIONS')
+        return res.writeHead(204, { 'Content-Length': 0, ...corsDefault }).end();
       const { code, lang, username } = JSON.parse(data);
       let err = '';
 
