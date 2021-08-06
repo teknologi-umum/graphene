@@ -17,6 +17,8 @@ Required body:
 - `lang` - The language used for highlighting. See [shikijs/language](https://github.com/shikijs/shiki/blob/main/docs/languages.md)
 - `username` - Used for window title.
 
+
 TODO:
-[ ] Deploy
-[ ] Auto language detection
+
+- [ ] Deploy
+- [ ] Auto language detection
