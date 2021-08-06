@@ -1,0 +1,27 @@
+{
+  "name": "graphene",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Generate beautiful code snippet using Shiki",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "format": "prettier --write --ignore-path .gitignore --ignore-path .prettierignore ."
+  },
+  "type": "module",
+  "dependencies": {
+    "chrome-aws-lambda": "^10.1.0",
+    "puppeteer-core": "^10.2.0",
+    "shiki": "^0.9.6"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "prettier": "^2.3.2",
+    "puppeteer": "^10.2.0"
+  },
+  "engines": {
+    "node": ">=16.4.0",
+    "npm": ">=7.1.0"
+  }
+}
