@@ -7,7 +7,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "format": "prettier --write --ignore-path .gitignore --ignore-path .prettierignore ."
+    "format": "prettier --write --ignore-path .gitignore --ignore-path .prettierignore .",
+    "lint": "eslint --fix --ignore-path .gitignore ."
   },
   "type": "module",
   "dependencies": {
@@ -17,6 +18,8 @@
   },
   "devDependencies": {
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.3.2",
     "puppeteer": "^10.2.0"
   },
