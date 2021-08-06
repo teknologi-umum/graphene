@@ -10,8 +10,10 @@ import { getHighlightedCode } from './getHighlightedCode.js';
  */
 export const screenshot = async (code = '', lang = 'txt', username = '') => {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: process.env?.HEADLESS ?? true,
     args: ['--hide-scrollbars', '--disable-web-security'],
+    userDataDir: process.env?.PROFILE_DIR ?? null,
+    executablePath: process.env?.EXEC_PATH ?? null,
   });
   const page = await browser.newPage();
   await page.setContent(makeHtml(await getHighlightedCode(code, lang), username), {
