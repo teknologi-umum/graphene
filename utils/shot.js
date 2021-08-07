@@ -11,9 +11,16 @@ import { getHighlightedCode } from './getHighlightedCode.js';
 export const screenshot = async (code = '', lang = 'txt', username = '') => {
   const browser = await puppeteer.launch({
     headless: process.env?.HEADLESS ?? true,
-    args: ['--hide-scrollbars', '--disable-web-security'],
-    userDataDir: process.env?.PROFILE_DIR ?? null,
-    executablePath: process.env?.EXEC_PATH ?? null,
+    args: [
+      '--hide-scrollbars',
+      '--disable-web-security',
+      // commented this out because it didn't work on my machine as well
+      // see: https://github.com/puppeteer/puppeteer/issues/1837
+      // '--no-sandbox',
+      // '--disable-setuid-sandbox',
+      // '--disable-gpu',
+    ],
+    executablePath: process.env?.EXEC_PATH || null,
   });
   const page = await browser.newPage();
   await page.setContent(makeHtml(await getHighlightedCode(code, lang), username), {
