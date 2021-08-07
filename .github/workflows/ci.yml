@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: ['master']
+
+jobs:
+  ci:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16.x
+
+      - name: Installling dependencies
+        run: npm install
+
+      - name: ESLint check
+        run: npx eslint --ignore-path .gitignore .
+
+      - name: Prettier check
+        run: npx prettier --check --ignore-path .gitignore .
+
+      # - name: Test
+      #   run: npm run test
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: javascript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
+      # - uses: superfly/flyctl-actions@master
+      #   env:
+      #     FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      #   with:
+      #     args: 'deploy'
+
+      # - name: Create Sentry release
+      #   uses: getsentry/action-release@v1
+      #   env:
+      #     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_TOKEN }}
+      #     SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      #     SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      #   with:
+      #     environment: production
+      #     set_commits: skip
+      #     version: ${{ github.sha }}
