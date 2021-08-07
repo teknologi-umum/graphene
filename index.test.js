@@ -42,7 +42,7 @@ test('should be error without a username', async () => {
     .end();
 });
 
-test.skip('should generate a png image', async () => {
+test('should generate a png image', async () => {
   const response = await fetch('/', {
     method: 'POST',
     body: JSON.stringify({ code: 'console.log("sup world")', lang: 'javascript', username: 'breathing_human_iii' }),

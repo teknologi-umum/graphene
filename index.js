@@ -4,7 +4,7 @@ import { screenshot } from './utils/shot.js';
 const corsDefault = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'HEAD, POST, PUT, PATCH',
-  'Access-Control-Allow-Headers': ['content-type'],
+  'Access-Control-Allow-Headers': ['content-type', 'accept'],
 };
 
 const server = http.createServer((req, res) => {
@@ -32,20 +32,29 @@ const server = http.createServer((req, res) => {
     }
 
     (async () => {
-      const base64 = await screenshot(code, lang, username);
-      const image = Buffer.from(base64, 'base64');
-      res
-        .writeHead(200, {
-          'Content-Length': image.length,
-          'Content-Type': 'image/png',
-          ...corsDefault,
-        })
-        .end(image);
+      try {
+        const base64 = await screenshot(code, lang, username);
+        const image = Buffer.from(base64, 'base64');
+        return res
+          .writeHead(200, {
+            'Content-Length': image.length,
+            'Content-Type': 'image/png',
+            ...corsDefault,
+          })
+          .end(image);
+      } catch (err) {
+        return res
+          .writeHead(500, {
+            'Content-Type': 'application/json',
+            ...corsDefault,
+          })
+          .end(JSON.stringify({ msg: err }));
+      }
     })();
   });
 });
 
-if (process.env?.NODE_ENV !== "test") {
+if (process.env?.NODE_ENV !== 'test') {
   server.listen(process.env.PORT || 3000);
 }
 

@@ -6,7 +6,7 @@
   "author": "elianiva <dicha.arkana03@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config index.js",
+    "start": "node -r dotenv/config --unhandled-rejections=strict index.js",
     "format": "prettier --write --ignore-path .gitignore .",
     "lint": "eslint --fix --ignore-path .gitignore .",
     "test": "NODE_ENV=test c8 uvu . *.test.js"
