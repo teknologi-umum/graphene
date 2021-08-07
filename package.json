@@ -9,7 +9,7 @@
     "start": "node -r dotenv/config index.js",
     "format": "prettier --write --ignore-path .gitignore .",
     "lint": "eslint --fix --ignore-path .gitignore .",
-    "test": "c8 uvu . *.test.js"
+    "test": "NODE_ENV=test c8 uvu . *.test.js"
   },
   "type": "module",
   "dependencies": {
