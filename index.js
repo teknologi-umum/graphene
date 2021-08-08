@@ -1,5 +1,6 @@
 import http from 'http';
 import { screenshot } from './utils/shot.js';
+import logger from './utils/logger.js';
 
 const corsDefault = {
   'Access-Control-Allow-Origin': '*',
@@ -54,12 +55,17 @@ const server = http.createServer((req, res) => {
           })
           .end(image);
       } catch (err) {
+        logger.captureException(err, (scope) => {
+          scope.setContext('detail', { lang, username, code });
+          scope.setTags({ lang, username });
+        });
+
         return res
           .writeHead(500, {
             'Content-Type': 'application/json',
             ...corsDefault,
           })
-          .end(JSON.stringify({ msg: err }));
+          .end(JSON.stringify({ msg: 'Something went wrong on our side.' }));
       }
     })();
   });
