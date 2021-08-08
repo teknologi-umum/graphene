@@ -36,6 +36,8 @@ jobs:
 
       - name: Test
         run: npm run test
+        env:
+          EXEC_PATH: google-chrome-stable
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
