@@ -16,19 +16,19 @@ const server = http.createServer((req, res) => {
     if (req?.method?.toUpperCase() === 'OPTIONS')
       return res.writeHead(204, { 'Content-Length': 0, ...corsDefault }).end();
     const { code, lang, username } = JSON.parse(data);
-    let err = '';
+    let err = [];
 
-    if (!code) err += '`code` body parameter is required!';
-    if (!lang) err += '`lang` body parameter is required!';
-    if (!username) err += '`username` body parameter is required!';
+    if (!code) err.push('`code`');
+    if (!lang) err.push('`lang`');
+    if (!username) err.push('`username`');
 
-    if (err) {
+    if (err.length > 0) {
       return res
         .writeHead(400, {
           'Content-Type': 'application/json',
           ...corsDefault,
         })
-        .end(JSON.stringify({ msg: err }));
+        .end(JSON.stringify({ msg: err.join(' + ') + ' body parameter is required!' }));
     }
 
     (async () => {
