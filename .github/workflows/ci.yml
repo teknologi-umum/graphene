@@ -34,8 +34,7 @@ jobs:
       - name: Prettier check
         run: npx prettier --check --ignore-path .gitignore .
 
-      # TODO: this one stuck, need to figure out why
-      #       for now you can only test it locally, it will stuck on CI
+      # TODO: stuck
       # - name: Test
       #   run: npm run test
       #   env:

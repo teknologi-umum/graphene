@@ -9,7 +9,7 @@ import { getHighlightedCode } from './getHighlightedCode.js';
  * @param {string} username - For window title
  */
 export const screenshot = async (code = '', lang = 'txt', username = '') => {
-  const page = await browser.newPage();
+  const page = await (await browser.get()).newPage();
   await page.setContent(makeHtml(await getHighlightedCode(code, lang), username));
   await page.setViewport({ width: 1920, height: 1080 });
 
