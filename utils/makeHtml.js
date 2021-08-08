@@ -1,3 +1,5 @@
+import { genFont } from './genFont.js';
+
 /**
  * Generate a decorated result
  * @param {string} highlightedCode - Result from Shiki
@@ -9,10 +11,9 @@ export const makeHtml = (highlightedCode, username) => `
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
+      ${genFont()}
+
       * {
         padding: 0;
         margin: 0;

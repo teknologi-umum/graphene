@@ -1,3 +1,4 @@
+// import { browser } from './utils/browser.js';
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import { makeFetch } from 'supertest-fetch';
@@ -73,5 +74,13 @@ test('should generate a png image', async () => {
   assert.not.equal(response.headers.get('content-length'), '0');
   assert.equal(response.headers.get('content-type'), 'image/png');
 });
+
+// TODO: ngestuck
+// test.after(async () => {
+//   const b = await browser.get();
+//   const pages = await b.pages();
+//   await Promise.all(pages.map((page) => page.close()));
+//   await b.close();
+// });
 
 test.run();
