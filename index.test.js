@@ -42,6 +42,28 @@ test('should be error without a username', async () => {
     .end();
 });
 
+test('should be error without a username *and* code', async () => {
+  await fetch('/', {
+    method: 'POST',
+    body: JSON.stringify({ lang: 'javascript' }),
+  })
+    .expectStatus(400)
+    .expectHeader('content-type', 'application/json')
+    .expectBody({ msg: '`code` + `username` body parameter is required!' })
+    .end();
+});
+
+test('should be error without anything', async () => {
+  await fetch('/', {
+    method: 'POST',
+    body: JSON.stringify({}),
+  })
+    .expectStatus(400)
+    .expectHeader('content-type', 'application/json')
+    .expectBody({ msg: '`code` + `lang` + `username` body parameter is required!' })
+    .end();
+});
+
 test('should generate a png image', async () => {
   const response = await fetch('/', {
     method: 'POST',
