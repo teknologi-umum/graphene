@@ -55,7 +55,10 @@ const server = http.createServer((req, res) => {
           })
           .end(image);
       } catch (err) {
-        logger.captureException(err);
+        logger.captureException(err, (scope) => {
+          scope.setContext('detail', { lang, username, code });
+          scope.setTags({ lang, username });
+        });
 
         return res
           .writeHead(500, {
