@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import { makeHtml } from './makeHtml.js';
 import { getHighlightedCode } from './getHighlightedCode.js';
 
@@ -16,7 +16,7 @@ export const screenshot = async (code = '', lang = 'txt', username = '') => {
       '--disable-web-security',
       // commented this out because it didn't work on my machine as well
       // see: https://github.com/puppeteer/puppeteer/issues/1837
-      // '--no-sandbox',
+      '--no-sandbox',
       // '--disable-setuid-sandbox',
       // '--disable-gpu',
     ],

@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   api:
     build: .
@@ -7,4 +6,4 @@ services:
       - .:/usr/app/
       - /usr/app/node_modules
     ports:
-      - '3000:3000'
+      - 3000:3000

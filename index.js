@@ -13,8 +13,19 @@ const server = http.createServer((req, res) => {
     data += chunk;
   });
   req.on('end', () => {
-    if (req?.method?.toUpperCase() === 'OPTIONS')
+    if (req?.method?.toUpperCase() === 'OPTIONS') {
       return res.writeHead(204, { 'Content-Length': 0, ...corsDefault }).end();
+    }
+
+    if (!data) {
+      return res
+        .writeHead(400, {
+          'Content-Type': 'application/json',
+          ...corsDefault,
+        })
+        .end(JSON.stringify({ msg: 'empty body is not allowed!!' }));
+    }
+
     const { code, lang, username } = JSON.parse(data);
     let err = [];
 
