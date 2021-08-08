@@ -13,9 +13,8 @@
   },
   "type": "module",
   "dependencies": {
-    "chrome-aws-lambda": "^10.1.0",
     "dotenv": "^10.0.0",
-    "puppeteer-core": "^10.2.0",
+    "puppeteer": "^10.2.0",
     "shiki": "^0.9.6"
   },
   "devDependencies": {
@@ -24,7 +23,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.3.2",
-    "puppeteer": "^10.2.0",
     "supertest-fetch": "^1.4.3",
     "uvu": "^0.5.1"
   },
