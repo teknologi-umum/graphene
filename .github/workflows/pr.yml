@@ -17,12 +17,9 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 16.x
-
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@latest
-
-      - name: Setup Chrome binary
-        run: chrome --version
+  
+      - uses: browser-actions/setup-chrome@latest
+      - run: chrome --version
         with:
           chrome-version: stable
 
