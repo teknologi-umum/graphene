@@ -35,7 +35,8 @@
         border-radius: 0.5rem;
         overflow: hidden;
         box-shadow: 0 0.75rem 2rem 0.25rem rgba(0, 0, 0, 0.5);
-        width: 100%;
+        min-width: 0;
+        max-width: 100%;
       }
 
       .titlebar {
@@ -136,28 +137,7 @@
           theme: 'dark-plus',
         })
         .then((highlighter) => {
-          const code = highlighter.codeToHtml(
-            `func goFind(stack []Foo, needle int) Foo {
-    first, firstC := stack[len(stack)/2:], make(chan Foo)
-    second, secondC := stack[:len(stack)/2], make(chan Foo)
-
-    go func() {
-        firstC <- find(first, needle)
-    }()
-    go func() {
-        secondC <- find(second, needle)
-    }()
-
-    select {
-    case result := <-firstC:
-        return result
-    case result := <-secondC:
-        return result
-    }
-}
-`,
-            'go',
-          );
+          const code = highlighter.codeToHtml(`console.log("javascript");`, 'javascript');
           document.getElementById('output').innerHTML = code;
         });
     </script>

@@ -1,7 +1,7 @@
 import { screenshot } from '../utils/screenshot.js';
 import logger from '../utils/logger.js';
 
-export default function(req, res) {
+export default function (req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'HEAD, POST, PUT, PATCH');
   res.setHeader('Access-Control-Allow-Headers', ['content-type', 'accept']);
@@ -26,7 +26,7 @@ export default function(req, res) {
       res.setHeader('Content-Type', 'image/png');
       return res.send(image);
     } catch (err) {
-      console.log(err);
+      if (process.env.NODE_ENV !== 'production') console.log(err);
       logger.captureException(err, (scope) => {
         scope.setContext('detail', { lang, username, code });
         scope.setTags({ lang, username });
