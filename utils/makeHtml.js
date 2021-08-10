@@ -25,25 +25,21 @@ export const makeHtml = (highlightedCode, username) => `
       }
 
       .container {
-        background-color: #efefef;
+        background-color: #eaeaea;
+        display: inline-block;
         padding: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        min-width: 0;
         max-width: 960px;
       }
 
       .window {
         position: relative;
+        display: inline-block;
         background-color: #292929;
         border: 1px solid #696969;
         border-radius: 0.5rem;
         overflow: hidden;
         box-shadow: 0 0.75rem 2rem 0.25rem rgba(0, 0, 0, 0.5);
-        min-width: 0;
-        max-width: 100%;
+        min-width: 360px;
       }
 
       .titlebar {
@@ -104,7 +100,7 @@ export const makeHtml = (highlightedCode, username) => `
       code {
         counter-reset: step;
         counter-increment: step 0;
-        font-family: "JetBrains Mono", monospace;
+        font-family: 'JetBrains Mono', monospace;
       }
 
       code .line {
