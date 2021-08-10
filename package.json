@@ -14,6 +14,7 @@
   "type": "module",
   "dependencies": {
     "@sentry/node": "^6.11.0",
+    "chrome-aws-lambda": "^10.1.0",
     "dotenv": "^10.0.0",
     "puppeteer-core": "^10.2.0",
     "shiki": "^0.9.6"
@@ -28,7 +29,7 @@
     "uvu": "^0.5.1"
   },
   "engines": {
-    "node": ">=16.4.0",
+    "node": "14.17.4",
     "npm": ">=7.1.0"
   }
 }

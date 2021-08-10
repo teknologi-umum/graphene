@@ -42,7 +42,8 @@ export const makeHtml = (highlightedCode, username) => `
         border-radius: 0.5rem;
         overflow: hidden;
         box-shadow: 0 0.75rem 2rem 0.25rem rgba(0, 0, 0, 0.5);
-        width: 100%;
+        min-width: 0;
+        max-width: 100%;
       }
 
       .titlebar {
