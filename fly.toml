@@ -1,0 +1,38 @@
+# fly.toml file generated for teknologi-umum-graphene on 2021-08-07T00:49:51+07:00
+
+app = "teknologi-umum-graphene"
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+
+[env]
+  PORT = "3000"
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 3000
+  protocol = "tcp"
+  script_checks = []
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 6
+    timeout = "2s"
