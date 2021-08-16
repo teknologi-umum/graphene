@@ -1,4 +1,5 @@
 import http from 'http';
+import { readFile } from 'fs/promises';
 import { screenshot } from './utils/screenshot.js';
 import logger from './utils/logger.js';
 
@@ -8,7 +9,11 @@ const corsDefault = {
   'Access-Control-Allow-Headers': ['content-type', 'accept'],
 };
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
+  const indexHTML = await readFile('./views/index.html')
+  const mainCSS = await readFile('./views/main.css')
+  const mainJS = await readFile('./views/main.js')
+
   let data = '';
   req.on('data', (chunk) => {
     data += chunk;
@@ -19,7 +24,19 @@ const server = http.createServer((req, res) => {
         return res.writeHead(204, { 'Content-Length': 0, ...corsDefault }).end();
       }
       case 'GET': {
-        return res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' }).end('<h1>coming soon!</h1>', 'utf-8');
+        // Serve paths
+        switch ((new URL(req.url, `http://${req.headers.host}`)).pathname) {
+          case '/main.js': {
+            return res.writeHead(200, { 'Content-Type': 'text/javascript;charset=utf-8' }).end(mainJS, 'utf-8');
+          }
+          case '/main.css': {
+            return res.writeHead(200, { 'Content-Type': 'text/css;charset=utf-8' }).end(mainCSS, 'utf-8');
+          }
+          default: {
+            return res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' }).end(indexHTML, 'utf-8');
+          }
+
+        }
       }
       default: {
         if (!data) {

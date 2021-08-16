@@ -7,6 +7,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r dotenv/config --unhandled-rejections=strict index.js",
+    "dev": "nodemon -r dotenv/config index.js",
     "format": "prettier --write --ignore-path .gitignore .",
     "lint": "eslint --fix --ignore-path .gitignore .",
     "test": "NODE_ENV=test c8 uvu . *.test.js"
@@ -24,6 +25,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
     "supertest-fetch": "^1.4.3",
     "uvu": "^0.5.1"
