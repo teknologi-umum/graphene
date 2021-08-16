@@ -10,9 +10,9 @@ const corsDefault = {
 };
 
 const server = http.createServer(async (req, res) => {
-  const indexHTML = await readFile('./views/index.html')
-  const mainCSS = await readFile('./views/main.css')
-  const mainJS = await readFile('./views/main.js')
+  const indexHTML = await readFile('./views/index.html');
+  const mainCSS = await readFile('./views/main.css');
+  const mainJS = await readFile('./views/main.js');
 
   let data = '';
   req.on('data', (chunk) => {
@@ -25,7 +25,7 @@ const server = http.createServer(async (req, res) => {
       }
       case 'GET': {
         // Serve paths
-        switch ((new URL(req.url, `http://${req.headers.host}`)).pathname) {
+        switch (new URL(req.url, `http://${req.headers.host}`).pathname) {
           case '/main.js': {
             return res.writeHead(200, { 'Content-Type': 'text/javascript;charset=utf-8' }).end(mainJS, 'utf-8');
           }
@@ -35,7 +35,6 @@ const server = http.createServer(async (req, res) => {
           default: {
             return res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' }).end(indexHTML, 'utf-8');
           }
-
         }
       }
       default: {
