@@ -1,89 +1,79 @@
 import { test } from 'uvu';
-import * as assert from 'uvu/assert';
-import { makeFetch } from 'supertest-fetch';
+import request from 'supertest';
 import server from './index.js';
+import { readFile } from 'fs/promises';
 
-const fetch = makeFetch(server);
+const instance = request(server.handler);
 
 test('should serve a view', async () => {
-  await fetch('/', { method: 'GET' }).expectStatus(200).expectBody('<h1>coming soon!</h1>').end();
+  await instance.get('/').expect(200, await readFile('./static/index.html', 'utf-8'));
 });
 
 test('should pass cors options', async () => {
-  await fetch('/', { method: 'OPTIONS' }).expectStatus(204).end();
+  await instance.options('/').expect(204);
 });
 
-test('should be error without a code', async () => {
-  await fetch('/', {
-    method: 'POST',
-    body: JSON.stringify({ lang: 'javascript', username: 'breathing_human_iii' }),
-  })
-    .expectStatus(400)
-    .expectHeader('content-type', 'application/json')
-    .expectBody({ msg: '`code` body parameter is required!' })
-    .end();
+test('should error when body is empty', async () => {
+  await instance.post('/api/shot').send({}).expect(400);
+});
+
+test('should error without a code', async () => {
+  await instance
+    .post('/api/shot')
+    .send(JSON.stringify({ lang: 'javascript', username: 'breathing_human_iii' }))
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ['`code` is required!'] });
 });
 
 test('should be error without a language', async () => {
-  await fetch('/', {
-    method: 'POST',
-    body: JSON.stringify({ code: 'console.log("sup world")', username: 'breathing_human_iii' }),
-  })
-    .expectStatus(400)
-    .expectHeader('content-type', 'application/json')
-    .expectBody({ msg: '`lang` body parameter is required!' })
-    .end();
+  await instance
+    .post('/api/shot')
+    .send(JSON.stringify({ code: 'console.log("sup world")', username: 'breathing_human_iii' }))
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ['`lang` is required!'] });
 });
 
-test('should be error without a username', async () => {
-  await fetch('/', {
-    method: 'POST',
-    body: JSON.stringify({ code: 'console.log("sup world")', lang: 'javascript' }),
-  })
-    .expectStatus(400)
-    .expectHeader('content-type', 'application/json')
-    .expectBody({ msg: '`username` body parameter is required!' })
-    .end();
+test('should error without a username', async () => {
+  await instance
+    .post('/api/shot')
+    .send({ body: JSON.stringify({ code: 'console.log("sup world")', lang: 'javascript' }) })
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ['`code` is required!', '`lang` is required!', '`username` is required!'] });
 });
 
-test('should be error without a username *and* code', async () => {
-  await fetch('/', {
-    method: 'POST',
-    body: JSON.stringify({ lang: 'javascript' }),
-  })
-    .expectStatus(400)
-    .expectHeader('content-type', 'application/json')
-    .expectBody({ msg: '`code` + `username` body parameter is required!' })
-    .end();
+test('should error without a username *and* code', async () => {
+  await instance
+    .post('/api/shot')
+    .send(JSON.stringify({ lang: 'javascript' }))
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ['`code` is required!', '`username` is required!'] });
 });
 
-test('should be error without anything', async () => {
-  await fetch('/', {
-    method: 'POST',
-    body: JSON.stringify({}),
-  })
-    .expectStatus(400)
-    .expectHeader('content-type', 'application/json')
-    .expectBody({ msg: '`code` + `lang` + `username` body parameter is required!' })
-    .end();
+test('should error with bad format ', async () => {
+  await instance
+    .post('/api/shot')
+    .send(JSON.stringify({ lang: 'javascript', code: "console.log('foo')", username: 'manusia', format: 'asdf' }))
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ['Bad `format`! Valid options are `oxipng` and `mozjpg`'] });
 });
 
-test.skip('should generate a png image', async () => {
-  const response = await fetch('/', {
-    method: 'POST',
-    body: JSON.stringify({ code: 'console.log("sup world")', lang: 'javascript', username: 'breathing_human_iii' }),
-  }).end();
-  assert.equal(response.status, 200);
-  assert.not.equal(response.headers.get('content-length'), '0');
-  assert.equal(response.headers.get('content-type'), 'image/png');
+test('should generate a png image', async () => {
+  await instance
+    .post('/api/shot')
+    .send(JSON.stringify({ code: 'console.log("sup world")', lang: 'javascript', username: 'breathing_human_iii' }))
+    .expect(200)
+    .expect('content-type', 'image/png');
 });
 
-// TODO: ngestuck
-// test.after(async () => {
-//   const b = await browser.get();
-//   const pages = await b.pages();
-//   await Promise.all(pages.map((page) => page.close()));
-//   await b.close();
-// });
+// workaround to close puppeteer since we only use a single instance for each
+// session instead of spawning for each request
+test.after(async () => {
+  setTimeout(() => process.exit(0), 1000);
+});
 
 test.run();

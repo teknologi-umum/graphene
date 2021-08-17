@@ -11,7 +11,7 @@ import { squooshify } from './utils/squoosh.js';
  * @param {import('http').ServerResponse} res
  */
 const handler = async (req, res) => {
-  if (!req.body) {
+  if (!req.body || !Object.keys(req.body).length) {
     res.writeHead(400, { 'Content-Type': 'application/json' }).end(JSON.stringify({ msg: "Body can't be empty!" }));
     return;
   }
@@ -28,9 +28,7 @@ const handler = async (req, res) => {
   }
 
   if (err.length > 0) {
-    res
-      .writeHead(400, { 'Content-Type': 'application/json' })
-      .end(JSON.stringify({ msg: err.join(' + ') + ' body parameter is required!' }));
+    res.writeHead(400, { 'Content-Type': 'application/json' }).end(JSON.stringify({ msg: err }));
     return;
   }
 
@@ -56,8 +54,10 @@ const handler = async (req, res) => {
   }
 };
 
-polka()
-  .use(cors(), json(), sirv('./static'))
-  .get('/')
-  .post('/api/shot', handler)
-  .listen(process.env.PORT || 3000);
+const server = polka().use(cors(), json(), sirv('./static')).get('/').post('/api/shot', handler);
+
+if (process.env.NODE_ENV !== 'test') {
+  server.listen(process.env.PORT || 3000);
+}
+
+export default server;

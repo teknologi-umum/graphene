@@ -15,6 +15,7 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/` with the fol
 - `upscale` - Self explanatory. Default value is `1`
 
 Example request:
+
 ```
 POST http://yourdomain/api/shot HTTP/1.1
 Content-Type: application/json
