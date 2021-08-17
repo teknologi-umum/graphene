@@ -26,4 +26,4 @@ COPY . .
 ENV EXEC_PATH=google-chrome-stable
 
 EXPOSE 3000
-CMD [ "node", "index.js" ]
+CMD [ "node", "src/index.js" ]
