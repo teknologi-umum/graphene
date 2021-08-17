@@ -126,6 +126,25 @@ test('should error when upscale is not a number', async () => {
     .expect({ msg: ['`upscale` must be a number!'] });
 });
 
+test('should error when theme does not exists', async () => {
+  await instance
+    .post('/api')
+    .send({
+      code: 'console.log("sup world")',
+      lang: 'javascript',
+      username: 'breathing_human_iii',
+      format: 'jpeg',
+      theme: 'foobar',
+    })
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({
+      msg: [
+        'Bad `theme`! See https://github.com/shikijs/shiki/blob/main/docs/themes.md#all-themes for list of valid themes',
+      ],
+    });
+});
+
 // workaround to close puppeteer since we only use a single instance for each
 // session instead of spawning for each request
 test.after(async () => {

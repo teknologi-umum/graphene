@@ -25,12 +25,12 @@ const config = {
  * @param {string} lang - Language
  * @param {string} username - For window title
  */
-export const screenshot = async (code = '', lang, username = '') => {
+export const screenshot = async (code = '', lang, username = '', theme = 'dark-plus') => {
   lang = lang || flourite(code).toLowerCase();
   const browser = await puppeteer.launch(config);
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
-  await page.setContent(makeHtml(await getHighlightedCode(code, lang), username));
+  await page.setContent(makeHtml({ ...(await getHighlightedCode(code, lang, theme)), username }));
 
   await page.waitForSelector('.container');
   const container = await page.$('.container');

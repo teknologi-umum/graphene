@@ -1,5 +1,6 @@
 [shiki-link]: https://shiki.matsu.io
 [shiki-lang-link]: https://github.com/shikijs/shiki/blob/main/docs/languages.md
+[shiki-theme-link]: https://github.com/shikijs/shiki/blob/main/docs/themes.md#all-themes
 [flourite-link]: https://github.com/teknologi-umum/flourite
 
 # Graphene
@@ -25,6 +26,7 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 - `username` - Used for window title.
 - `format` - Valid options are `jpeg` and `png`. Default value is `png`.
 - `upscale` - Self explanatory. Default value is `1`.
+- `theme` - The colorscheme. See [shiki-theme][shiki-theme-link]
 
 Example request:
 

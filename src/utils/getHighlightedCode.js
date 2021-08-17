@@ -6,8 +6,13 @@ import shiki from 'shiki';
  * @param {string} lang - Language
  * @return {Promise<string>} Highlighted code in HTML string
  */
-export const getHighlightedCode = async (code, lang) => {
-  const highlighter = await shiki.getHighlighter({ theme: 'dark-plus' });
+export const getHighlightedCode = async (code, lang, theme) => {
+  const highlighter = await shiki.getHighlighter({ theme });
   const result = highlighter.codeToHtml(code, lang);
-  return result;
+
+  return {
+    highlightedCode: result,
+    windowBackground: highlighter.getBackgroundColor(),
+    titleColor: highlighter.getForegroundColor(),
+  };
 };
