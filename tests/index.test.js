@@ -52,7 +52,7 @@ test('should error with bad format ', async () => {
     })
     .expect(400)
     .expect('content-type', 'application/json')
-    .expect({ msg: ['Bad `format`! Valid options are `png` and `jpeg`'] });
+    .expect({ msg: ['Bad `format`! Valid options are `png`, `jpeg`, and `webp`'] });
 });
 
 test('should generate a png image', async () => {
