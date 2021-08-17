@@ -4,9 +4,11 @@ import { genFont } from './genFont.js';
  * Generate a decorated result
  * @param {string} highlightedCode - Result from Shiki
  * @param {string} username - Used for window title
+ * @param {string} windowBackground - Used for window background
+ * @param {string} titleColor - Used for titlebar color
  * @return {string} Code snippet inside a MacOS-like window
  */
-export const makeHtml = (highlightedCode, username) => `
+export const makeHtml = ({ windowBackground, titleColor, highlightedCode, username }) => `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -34,8 +36,8 @@ export const makeHtml = (highlightedCode, username) => `
       .window {
         position: relative;
         display: inline-block;
-        background-color: #292929;
-        border: 1px solid #696969;
+        background-color: ${windowBackground};
+        border: 1px solid rgba(0, 0, 0, 0.25);
         border-radius: 0.5rem;
         overflow: hidden;
         box-shadow: 0 0.75rem 2rem 0.25rem rgba(0, 0, 0, 0.5);
@@ -52,7 +54,7 @@ export const makeHtml = (highlightedCode, username) => `
         display: block;
         flex: 1;
         font-family: sans-serif;
-        color: #f3f3ed;
+        color: ${titleColor};
         font-weight: 500;
         text-align: center;
         margin-left: -5rem;
@@ -89,7 +91,7 @@ export const makeHtml = (highlightedCode, username) => `
       }
 
       .shiki {
-        border-top: 1px solid #696969;
+        border-top: 1px rgba(0, 0, 0, 0.25) solid;
         width: 100%;
         padding: 0.25rem 1rem 0.5rem 3.5rem;
         font-size: 1.125rem;

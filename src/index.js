@@ -8,6 +8,7 @@ import { json } from './middleware/json.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { rateLimiter } from './middleware/rateLimiter.js';
 import { processImage } from './utils/sharp.js';
+import { validate } from './utils/validate.js';
 
 /**
  * @param {import('polka').Request} req
@@ -19,16 +20,8 @@ const handler = async (req, res) => {
     return;
   }
 
-  const { code, lang, username, format = 'png', upscale = 1 } = req.body;
-  const err = [];
-
-  if (!code) err.push('`code` is required!');
-  if (!username) err.push('`username` is required!');
-  if (typeof upscale !== 'number') err.push('`upscale` must be a number!');
-  if (upscale < 1) err.push("`upscale` can't be lower than 1!");
-  if (!format || !['png', 'jpeg', 'webp'].includes(format)) {
-    err.push('Bad `format`! Valid options are `png`, `jpeg`, and `webp`');
-  }
+  const { code, lang, username, format = 'png', upscale = 1, theme } = req.body;
+  const err = validate(req.body);
 
   if (err.length > 0) {
     res.writeHead(400, { 'Content-Type': 'application/json' }).end(JSON.stringify({ msg: err }));
@@ -36,7 +29,7 @@ const handler = async (req, res) => {
   }
 
   try {
-    const base64 = await screenshot(code, lang, username);
+    const base64 = await screenshot(code, lang, username, theme);
     const image = await processImage(base64, upscale, format);
     res
       .writeHead(200, {
