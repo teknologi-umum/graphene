@@ -1,11 +1,13 @@
 import polka from 'polka';
 import cors from 'cors';
 import sirv from 'sirv';
+import helmet from 'helmet';
 import logger from './utils/logger.js';
 import { screenshot } from './utils/screenshot.js';
-import { json } from 'milliparsec';
+import { json } from './middleware/json.js';
 import { squooshify } from './utils/squoosh.js';
-import helmet from 'helmet';
+import { errorHandler } from './middleware/errorHandler.js';
+import { rateLimiter } from './middleware/rateLimiter.js';
 
 /**
  * @param {import('polka').Request} req
@@ -61,13 +63,14 @@ const handler = async (req, res) => {
   }
 };
 
-/* prettier-ignore */
-const server = (
-  polka()
-    .use(helmet(), cors(), json(), sirv('./static'))
-    .get('/')
-    .post('/api/shot', handler)
-);
+const server = polka({ onError: errorHandler })
+  .use(
+    helmet(),
+    cors(),
+    sirv('./src/static', { dev: process.env.NODE_ENV !== 'production', etag: true, maxAge: 60 * 60 * 24 }),
+  )
+  .get('/')
+  .post('/api', rateLimiter(), json(), handler);
 
 if (process.env.NODE_ENV !== 'test') {
   server.listen(process.env.PORT || 3000);

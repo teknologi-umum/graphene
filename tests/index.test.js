@@ -1,14 +1,14 @@
+import { readFile } from 'fs/promises';
 import { test } from 'uvu';
 import request from 'supertest';
-import server from './index.js';
-import { readFile } from 'fs/promises';
+import server from '../src/index.js';
 
 const instance = request(server.handler);
 
 test('should serve a view', async () => {
   await instance
     .get('/')
-    .expect(200, await readFile('./static/index.html', 'utf-8'))
+    .expect(200, await readFile('./src/static/index.html', 'utf-8'))
     .expect('content-type', 'text/html');
 });
 
@@ -17,12 +17,12 @@ test('should pass cors options', async () => {
 });
 
 test('should error when body is empty', async () => {
-  await instance.post('/api/shot').send({}).expect(400).expect('content-type', 'application/json');
+  await instance.post('/api').send({}).expect(400).expect('content-type', 'application/json');
 });
 
 test('should error without a code', async () => {
   await instance
-    .post('/api/shot')
+    .post('/api')
     .send({ lang: 'javascript', username: 'breathing_human_iii' })
     .expect(400)
     .expect('content-type', 'application/json')
@@ -31,7 +31,7 @@ test('should error without a code', async () => {
 
 test('should error without a username', async () => {
   await instance
-    .post('/api/shot')
+    .post('/api')
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
@@ -43,7 +43,7 @@ test('should error without a username', async () => {
 
 test('should error with bad format ', async () => {
   await instance
-    .post('/api/shot')
+    .post('/api')
     .send({
       lang: 'javascript',
       code: "console.log('foo')",
@@ -57,7 +57,7 @@ test('should error with bad format ', async () => {
 
 test('should generate a png image', async () => {
   await instance
-    .post('/api/shot')
+    .post('/api')
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
@@ -69,7 +69,7 @@ test('should generate a png image', async () => {
 
 test('should generate an upscaled jpeg image', async () => {
   await instance
-    .post('/api/shot')
+    .post('/api')
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
@@ -83,7 +83,7 @@ test('should generate an upscaled jpeg image', async () => {
 
 test('should error when upscale is lower than 1', async () => {
   await instance
-    .post('/api/shot')
+    .post('/api')
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
@@ -98,7 +98,7 @@ test('should error when upscale is lower than 1', async () => {
 
 test('should error when upscale is 0', async () => {
   await instance
-    .post('/api/shot')
+    .post('/api')
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
@@ -113,7 +113,7 @@ test('should error when upscale is 0', async () => {
 
 test('should error when upscale is not a number', async () => {
   await instance
-    .post('/api/shot')
+    .post('/api')
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',

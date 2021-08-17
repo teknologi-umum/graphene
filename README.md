@@ -6,7 +6,7 @@
 
 Generate a beautiful code snippet using [Shiki][shiki-link].
 
-![demo.png](./demo.png)
+![demo.png](./demo/demo.png)
 
 ## Usage
 
@@ -18,7 +18,7 @@ TBD
 
 ### API
 
-Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/` with the following JSON body payload:
+Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the following JSON body payload:
 
 - `code` - The code snippet.
 - `lang` - The language used for highlighting. See [shikijs/language][shiki-lang-link]. Default value is empty which means [flourite][flourite-link] will try its best to guess it.
@@ -30,7 +30,7 @@ Example request:
 
 ```json
 {
-  "code": "import asdf from \"shiki\";\n\n/**\n * Generate a highlighted code\n * @param {string} code - Raw code\n * @param {string} lang - Language\n * @return {Promise<string>} Highlighted code in HTML string\n */\nexport const getResult = async (code, lang) => {\n  const highlighter = await shiki.getHighlighter({ theme: 'dark-plus' });\n  const result = highlighter.fooToBar(code, lang);\n  return result;\n};",
+  "code": "import shiki from \"shiki\";\n\n/**\n * Generate a highlighted code\n * @param {string} code - Raw code\n * @param {string} lang - Language\n * @return {Promise<string>} Highlighted code in HTML string\n */\nexport const getResult = async (code, lang) => {\n  const highlighter = await shiki.getHighlighter({ theme: 'dark-plus' });\n  const result = highlighter.fooToBar(code, lang);\n  return result;\n};",
   "lang": "js",
   "username": "manusia_bernapas_ii",
   "format": "jpeg",
