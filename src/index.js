@@ -5,9 +5,9 @@ import helmet from 'helmet';
 import logger from './utils/logger.js';
 import { screenshot } from './utils/screenshot.js';
 import { json } from './middleware/json.js';
-import { squooshify } from './utils/squoosh.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { rateLimiter } from './middleware/rateLimiter.js';
+import { processImage } from './utils/sharp.js';
 
 /**
  * @param {import('polka').Request} req
@@ -26,8 +26,8 @@ const handler = async (req, res) => {
   if (!username) err.push('`username` is required!');
   if (typeof upscale !== 'number') err.push('`upscale` must be a number!');
   if (upscale < 1) err.push("`upscale` can't be lower than 1!");
-  if (!format || !['png', 'jpeg'].includes(format)) {
-    err.push('Bad `format`! Valid options are `png` and `jpeg`');
+  if (!format || !['png', 'jpeg', 'webp'].includes(format)) {
+    err.push('Bad `format`! Valid options are `png`, `jpeg`, and `webp`');
   }
 
   if (err.length > 0) {
@@ -37,7 +37,7 @@ const handler = async (req, res) => {
 
   try {
     const base64 = await screenshot(code, lang, username);
-    const image = await squooshify(base64, upscale, format);
+    const image = await processImage(base64, upscale, format);
     res
       .writeHead(200, {
         'Content-Type': `image/${format}`,
