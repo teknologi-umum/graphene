@@ -6,7 +6,10 @@ import { readFile } from 'fs/promises';
 const instance = request(server.handler);
 
 test('should serve a view', async () => {
-  await instance.get('/').expect(200, await readFile('./static/index.html', 'utf-8'));
+  await instance
+    .get('/')
+    .expect(200, await readFile('./static/index.html', 'utf-8'))
+    .expect('content-type', 'text/html');
 });
 
 test('should pass cors options', async () => {
@@ -14,13 +17,13 @@ test('should pass cors options', async () => {
 });
 
 test('should error when body is empty', async () => {
-  await instance.post('/api/shot').send({}).expect(400);
+  await instance.post('/api/shot').send({}).expect(400).expect('content-type', 'application/json');
 });
 
 test('should error without a code', async () => {
   await instance
     .post('/api/shot')
-    .send(JSON.stringify({ lang: 'javascript', username: 'breathing_human_iii' }))
+    .send({ lang: 'javascript', username: 'breathing_human_iii' })
     .expect(400)
     .expect('content-type', 'application/json')
     .expect({ msg: ['`code` is required!'] });
@@ -29,36 +32,98 @@ test('should error without a code', async () => {
 test('should error without a username', async () => {
   await instance
     .post('/api/shot')
-    .send({ body: JSON.stringify({ code: 'console.log("sup world")', lang: 'javascript' }) })
+    .send({
+      code: 'console.log("sup world")',
+      lang: 'javascript',
+    })
     .expect(400)
     .expect('content-type', 'application/json')
-    .expect({ msg: ['`code` is required!', '`username` is required!'] });
-});
-
-test('should error without a username *and* code', async () => {
-  await instance
-    .post('/api/shot')
-    .send(JSON.stringify({ lang: 'javascript' }))
-    .expect(400)
-    .expect('content-type', 'application/json')
-    .expect({ msg: ['`code` is required!', '`username` is required!'] });
+    .expect({ msg: ['`username` is required!'] });
 });
 
 test('should error with bad format ', async () => {
   await instance
     .post('/api/shot')
-    .send(JSON.stringify({ lang: 'javascript', code: "console.log('foo')", username: 'manusia', format: 'asdf' }))
+    .send({
+      lang: 'javascript',
+      code: "console.log('foo')",
+      username: 'manusia',
+      format: 'asdf',
+    })
     .expect(400)
     .expect('content-type', 'application/json')
-    .expect({ msg: ['Bad `format`! Valid options are `oxipng` and `mozjpg`'] });
+    .expect({ msg: ['Bad `format`! Valid options are `png` and `jpeg`'] });
 });
 
 test('should generate a png image', async () => {
   await instance
     .post('/api/shot')
-    .send(JSON.stringify({ code: 'console.log("sup world")', lang: 'javascript', username: 'breathing_human_iii' }))
+    .send({
+      code: 'console.log("sup world")',
+      lang: 'javascript',
+      username: 'breathing_human_iii',
+    })
     .expect(200)
     .expect('content-type', 'image/png');
+});
+
+test('should generate an upscaled jpeg image', async () => {
+  await instance
+    .post('/api/shot')
+    .send({
+      code: 'console.log("sup world")',
+      lang: 'javascript',
+      username: 'breathing_human_iii',
+      upscale: 1.5,
+      format: 'jpeg',
+    })
+    .expect(200)
+    .expect('content-type', 'image/jpeg');
+});
+
+test('should error when upscale is lower than 1', async () => {
+  await instance
+    .post('/api/shot')
+    .send({
+      code: 'console.log("sup world")',
+      lang: 'javascript',
+      username: 'breathing_human_iii',
+      upscale: -22,
+      format: 'jpeg',
+    })
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ["`upscale` can't be lower than 1!"] });
+});
+
+test('should error when upscale is 0', async () => {
+  await instance
+    .post('/api/shot')
+    .send({
+      code: 'console.log("sup world")',
+      lang: 'javascript',
+      username: 'breathing_human_iii',
+      upscale: 0,
+      format: 'jpeg',
+    })
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ["`upscale` can't be lower than 1!"] });
+});
+
+test('should error when upscale is not a number', async () => {
+  await instance
+    .post('/api/shot')
+    .send({
+      code: 'console.log("sup world")',
+      lang: 'javascript',
+      username: 'breathing_human_iii',
+      upscale: 'asdf',
+      format: 'jpeg',
+    })
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ['`upscale` must be a number!'] });
 });
 
 // workaround to close puppeteer since we only use a single instance for each

@@ -25,5 +25,5 @@ export const squooshify = async (base64, upscale, format) => {
 
   await pool.close();
 
-  return Buffer.from((await image.encodedWith[format]).binary, 'binary');
+  return Buffer.from((await image.encodedWith[format === 'png' ? 'oxipng' : 'mozjpeg']).binary, 'binary');
 };

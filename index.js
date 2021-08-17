@@ -5,6 +5,7 @@ import logger from './utils/logger.js';
 import { screenshot } from './utils/screenshot.js';
 import { json } from 'milliparsec';
 import { squooshify } from './utils/squoosh.js';
+import helmet from 'helmet';
 
 /**
  * @param {import('polka').Request} req
@@ -16,14 +17,15 @@ const handler = async (req, res) => {
     return;
   }
 
-  const { code, lang, username, format = 'oxipng', upscale = 1 } = req.body;
-  let err = [];
+  const { code, lang, username, format = 'png', upscale = 1 } = req.body;
+  const err = [];
 
   if (!code) err.push('`code` is required!');
   if (!username) err.push('`username` is required!');
-  if (typeof upscale !== 'number') err.push('`upscale` should be a number!');
-  if (!format || !['oxipng', 'mozjpeg'].includes(format)) {
-    err.push('Bad `format`! Valid options are `oxipng` and `mozjpg`');
+  if (typeof upscale !== 'number') err.push('`upscale` must be a number!');
+  if (upscale < 1) err.push("`upscale` can't be lower than 1!");
+  if (!format || !['png', 'jpeg'].includes(format)) {
+    err.push('Bad `format`! Valid options are `png` and `jpeg`');
   }
 
   if (err.length > 0) {
@@ -36,14 +38,20 @@ const handler = async (req, res) => {
     const image = await squooshify(base64, upscale, format);
     res
       .writeHead(200, {
-        'Content-Type': `image/${format === 'oxipng' ? 'png' : 'jpeg'}`,
+        'Content-Type': `image/${format}`,
         'Content-Length': image.length,
       })
       .end(image);
   } catch (err) {
     process.env.NODE_ENV !== 'production' && console.log(err);
     logger.captureException(err, (scope) => {
-      scope.setContext('detail', { lang, username, code, payload: req.body });
+      scope.setContext('request_header', {
+        'Content-Type': req.headers['content-type'],
+        Origin: req.headers['origin'],
+        Accept: req.headers['accept'],
+        'User-Agent': req.headers['user-agent'],
+      });
+      scope.setContext('request_body', { ...req.body });
       scope.setTags({ lang, username });
     });
 
@@ -53,7 +61,13 @@ const handler = async (req, res) => {
   }
 };
 
-const server = polka().use(cors(), json(), sirv('./static')).get('/').post('/api/shot', handler);
+/* prettier-ignore */
+const server = (
+  polka()
+    .use(helmet(), cors(), json(), sirv('./static'))
+    .get('/')
+    .post('/api/shot', handler)
+);
 
 if (process.env.NODE_ENV !== 'test') {
   server.listen(process.env.PORT || 3000);
