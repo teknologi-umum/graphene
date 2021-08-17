@@ -9,7 +9,7 @@ Generate a beautiful code snippet using [Shiki](https://shiki.matsu.io).
 Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/` with the following JSON body payload:
 
 - `code` - The code.
-- `lang` - The language used for highlighting. See [shikijs/language](https://github.com/shikijs/shiki/blob/main/docs/languages.md). Default value is `auto` (WIP)
+- `lang` - The language used for highlighting. See [shikijs/language](https://github.com/shikijs/shiki/blob/main/docs/languages.md). Default value is auto detected using [flourite](https://github.com/teknologi-umum/flourite)
 - `username` - Used for window title.
 - `format` - Valid options are `mozjpeg` and `oxipng`. Default value is `oxipng`
 - `upscale` - Self explanatory. Default value is `1`

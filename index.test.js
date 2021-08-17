@@ -26,22 +26,13 @@ test('should error without a code', async () => {
     .expect({ msg: ['`code` is required!'] });
 });
 
-test('should be error without a language', async () => {
-  await instance
-    .post('/api/shot')
-    .send(JSON.stringify({ code: 'console.log("sup world")', username: 'breathing_human_iii' }))
-    .expect(400)
-    .expect('content-type', 'application/json')
-    .expect({ msg: ['`lang` is required!'] });
-});
-
 test('should error without a username', async () => {
   await instance
     .post('/api/shot')
     .send({ body: JSON.stringify({ code: 'console.log("sup world")', lang: 'javascript' }) })
     .expect(400)
     .expect('content-type', 'application/json')
-    .expect({ msg: ['`code` is required!', '`lang` is required!', '`username` is required!'] });
+    .expect({ msg: ['`code` is required!', '`username` is required!'] });
 });
 
 test('should error without a username *and* code', async () => {

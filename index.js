@@ -20,7 +20,6 @@ const handler = async (req, res) => {
   let err = [];
 
   if (!code) err.push('`code` is required!');
-  if (!lang) err.push('`lang` is required!');
   if (!username) err.push('`username` is required!');
   if (typeof upscale !== 'number') err.push('`upscale` should be a number!');
   if (!format || !['oxipng', 'mozjpeg'].includes(format)) {
