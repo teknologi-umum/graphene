@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/shot.js": {
-      "includeFiles": "node_modules/shiki/**/*.json"
-    }
-  }
-}
