@@ -64,3 +64,6 @@ jobs:
           environment: production
           set_commits: skip
           version: ${{ github.sha }}
+
+      - name: Send coverage report to Codecov
+        uses: codecov/codecov-action@v2
