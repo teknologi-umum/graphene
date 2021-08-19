@@ -1,12 +1,13 @@
 /**
  * Practical JSON parser middleware
+ * @type {import('polka').Middleware}
  */
 export const json =
   () =>
   /**
    * @param {import('polka').Request} req
    * @param {import('http').ServerResponse} res
-   * @param {(err?: any) => void} next
+   * @param {import('polka').Next} next
    */
   async (req, res, next) => {
     try {
@@ -15,6 +16,6 @@ export const json =
       req.body = JSON.parse(body);
       next();
     } catch (error) {
-      next(error);
+      res.writeHead(400, { 'Content-Type': 'application/json' }).end(JSON.stringify({ msg: 'Invalid JSON body' }));
     }
   };

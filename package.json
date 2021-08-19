@@ -10,7 +10,7 @@
     "dev": "nodemon -r dotenv/config --watch src --watch tests src/index.js",
     "format": "prettier --write --ignore-path .gitignore .",
     "lint": "eslint --fix --ignore-path .gitignore .",
-    "test": "NODE_ENV=test c8 uvu tests"
+    "test": "NODE_ENV=test c8 --reporter=text --reporter=lcov uvu tests"
   },
   "type": "module",
   "dependencies": {
