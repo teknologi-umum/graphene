@@ -9,13 +9,14 @@ const rlm = new RateLimiterMemory({
 
 /**
  * Rate limiter, duh!
+ * @type {import('polka').Middleware}
  */
 export const rateLimiter =
   () =>
   /**
-   * @param {import('http').IncomingMessage} req
+   * @param {import('polka').Request} req
    * @param {import('http').ServerResponse} res
-   * @param {(err?: any) => void} next
+   * @param {import('polka').Next} next
    */
   async (req, res, next) => {
     try {
