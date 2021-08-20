@@ -7,7 +7,11 @@
 
 Generate a beautiful code snippet using [Shiki][shiki-link].
 
+<kbd>
+
 ![demo.png](./demo/demo.png)
+
+</kbd>
 
 ## Usage
 
