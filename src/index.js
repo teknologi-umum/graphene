@@ -69,4 +69,16 @@ if (process.env.NODE_ENV !== 'test') {
   server.listen(process.env.PORT || 3000);
 }
 
+// Graceful shutdown
+process.on('SIGINT', () =>
+  server.server.close((err) => {
+    console.log('\nSIGINT: ' + err);
+  }),
+);
+process.on('SIGTERM', () =>
+  server.server.close((err) => {
+    console.log('\nSIGTERM: ' + err);
+  }),
+);
+
 export default server;

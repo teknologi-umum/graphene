@@ -2,7 +2,7 @@ import { RateLimiterMemory } from 'rate-limiter-flexible';
 import { getIP } from '../utils/getIP.js';
 
 const rlm = new RateLimiterMemory({
-  points: 10,
+  points: process.env.NODE_ENV === 'test' ? 100 : 10,
   duration: 60,
   blockDuration: 30,
 });
