@@ -20,6 +20,14 @@ test('should error when body is empty', async () => {
   await instance.post('/api').send({}).expect(400).expect('content-type', 'application/json');
 });
 
+test('should error when json is invalid', async () => {
+  await instance
+    .post('/api')
+    .send(`{"code": "some random text, "username": "Tom", "format": "jpeg"}`)
+    .expect(400)
+    .expect('content-type', 'application/json');
+});
+
 test('should error without a code', async () => {
   await instance
     .post('/api')
@@ -61,6 +69,17 @@ test('should generate a png image', async () => {
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
+      username: 'breathing_human_iii',
+    })
+    .expect(200)
+    .expect('content-type', 'image/png');
+});
+
+test('should guess the language', async () => {
+  await instance
+    .post('/api')
+    .send({
+      code: 'console.log("sup world")',
       username: 'breathing_human_iii',
     })
     .expect(200)
@@ -147,7 +166,7 @@ test('should error when theme does not exists', async () => {
 
 // workaround to close puppeteer since we only use a single instance for each
 // session instead of spawning for each request
-test.after(async () => {
+test.after(() => {
   setTimeout(() => process.exit(0), 1000);
 });
 

@@ -13,7 +13,7 @@ export const getIP = (req) => {
  * `req.connection` is deprecated on node 16.
  * Using req.socket instead.
  * @param {import('net').Socket} socket
- * @returns
+ * @returns {never|boolean}
  */
 const trustRemoteAddress = (socket) => {
   const val = socket.remoteAddress;

@@ -4,8 +4,8 @@ body {
   font-size: 1rem;
 }
 
-#app {
-  max-width: 1024px;
+.app {
+  max-width: 960px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -15,4 +15,11 @@ body {
 h1 {
   font-size: 4rem;
   font-weight: 700;
+  text-align: center;
+}
+
+p {
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
 }
