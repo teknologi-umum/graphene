@@ -38,6 +38,7 @@
     "supertest": "^6.1.5",
     "uvu": "^0.5.1"
   },
+  "engineStrict": true,
   "engines": {
     "node": ">=16.4.0",
     "npm": ">=7.1.0"

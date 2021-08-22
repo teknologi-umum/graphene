@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Graphene</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono" rel="stylesheet"> 
-    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/lib/codemirror.css">
-    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/material.css">
-    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/nord.css">
-    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/night.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/lib/codemirror.css" />
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/material.css" />
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/nord.css" />
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/night.css" />
+    <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/codemirror@5.62.3/lib/codemirror.js"></script>
     <script src="https://unpkg.com/codemirror@5.62.3/addon/edit/closebrackets.js"></script>
     <script src="https://unpkg.com/codemirror@5.62.3/addon/mode/loadmode.js"></script>
@@ -25,7 +25,7 @@
     <script src="https://unpkg.com/codemirror@5.62.3/mode/php/php.js" defer></script>
     <script src="https://unpkg.com/codemirror@5.62.3/mode/markdown/markdown.js" defer></script>
     <script src="https://unpkg.com/codemirror@5.62.3/mode/ruby/ruby.js" defer></script>
-    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon" />
     <script type="module">
       import { createApp, reactive } from 'https://unpkg.com/petite-vue@0.2.2?module';
 
@@ -46,7 +46,8 @@
       backgroundStyleTag.setAttribute('id', 'container-styling');
       document.head.appendChild(backgroundStyleTag);
       const backgroundTarget = document.getElementById('container-styling');
-      backgroundTarget.innerHTML = '.container { background: linear-gradient(0deg, rgba(242,242,242,100), rgba(227,227,227,100)); };';
+      backgroundTarget.innerHTML =
+        '.container { background: linear-gradient(0deg, rgba(242,242,242,100), rgba(227,227,227,100)); };';
 
       createApp({
         language: 'text/javascript',
@@ -57,25 +58,33 @@
         themes: [
           { id: 1, value: 'material', text: 'Material' },
           { id: 2, value: 'nord', text: 'Nord' },
-          { id: 3, value: 'night', text: 'Night'}
+          { id: 3, value: 'night', text: 'Night' },
         ],
         languages: [
           { id: 1, value: 'auto', text: 'Automatic' },
-          { id: 2, value: 'text/x-csrc', text: 'C'},
-          { id: 3, value: 'text/x-c++src', text: 'C++'},
-          { id: 4, value: 'text/x-csharp', text: 'C#'},
-          { id: 5, value: 'text/x-scala', text: 'Scala'},
+          { id: 2, value: 'text/x-csrc', text: 'C' },
+          { id: 3, value: 'text/x-c++src', text: 'C++' },
+          { id: 4, value: 'text/x-csharp', text: 'C#' },
+          { id: 5, value: 'text/x-scala', text: 'Scala' },
           { id: 6, value: 'text/javascript', text: 'Javascript' },
-          { id: 7, value: 'text/x-lua', text: 'Lua'},
-          { id: 8, value: 'text/x-markdown', text: 'Markdown'},
+          { id: 7, value: 'text/x-lua', text: 'Lua' },
+          { id: 8, value: 'text/x-markdown', text: 'Markdown' },
           { id: 9, value: 'text/x-go', text: 'Go' },
           { id: 10, value: 'text/x-clojure', text: 'Clojure' },
-          { id: 11, value: 'application/x-httpd-php', text: 'PHP'},
-          { id: 12, value: 'text/x-ruby', text: 'Ruby'},
+          { id: 11, value: 'application/x-httpd-php', text: 'PHP' },
+          { id: 12, value: 'text/x-ruby', text: 'Ruby' },
         ],
         backgrounds: [
-          { id: 1, value: 'background: linear-gradient(0deg, rgba(242,242,242,100), rgba(227,227,227,100));', text: 'Gray' },
-          { id: 2, value: 'background: linear-gradient(0deg, rgba(56,122,235,100), rgba(54,36,214,50));', text: 'Gradient Blue'}
+          {
+            id: 1,
+            value: 'background: linear-gradient(0deg, rgba(242,242,242,100), rgba(227,227,227,100));',
+            text: 'Gray',
+          },
+          {
+            id: 2,
+            value: 'background: linear-gradient(0deg, rgba(56,122,235,100), rgba(54,36,214,50));',
+            text: 'Gradient Blue',
+          },
         ],
         initCodeMirror() {
           editor.refresh();
@@ -89,8 +98,8 @@
         updateBackground() {
           console.log(this.background);
           backgroundTarget.innerHTML = `.container {${this.background}};`;
-        }
-      }).mount('#app')
+        },
+      }).mount('#app');
     </script>
   </head>
   <body>
@@ -108,24 +117,26 @@
           <textarea id="editor" @mounted="initCodeMirror" v-model="code"></textarea>
         </div>
         <div class="settings">
-            <div class="setting_item">
-              Theme
-              <select id="theme" v-model.lazy="theme" v-on:change="refreshEditor('theme')">
-                <option v-for="theme in themes" v-bind:key="theme.id" v-bind:value="theme.value">{{ theme.text }}</option>
-              </select>
-            </div>
-            <div class="setting_item">
-              Background
-              <select id="background" v-model.lazy="background" @change="updateBackground()">
-                <option v-for="background in backgrounds" v-bind:key="background.id" v-bind:value="background.value">{{ background.text }}</option>
-              </select>
-            </div>
-            <div class="setting_item">
-              Language
-              <select id="language" v-model.lazy="language" v-on:change="refreshEditor('language')">
-                <option v-for="lang in languages" v-bind:key="lang.id" v-bind:value="lang.value">{{ lang.text }}</option>
-              </select>
-            </div>
+          <div class="setting_item">
+            Theme
+            <select id="theme" v-model.lazy="theme" v-on:change="refreshEditor('theme')">
+              <option v-for="theme in themes" v-bind:key="theme.id" v-bind:value="theme.value">{{ theme.text }}</option>
+            </select>
+          </div>
+          <div class="setting_item">
+            Background
+            <select id="background" v-model.lazy="background" @change="updateBackground()">
+              <option v-for="background in backgrounds" v-bind:key="background.id" v-bind:value="background.value">
+                {{ background.text }}
+              </option>
+            </select>
+          </div>
+          <div class="setting_item">
+            Language
+            <select id="language" v-model.lazy="language" v-on:change="refreshEditor('language')">
+              <option v-for="lang in languages" v-bind:key="lang.id" v-bind:value="lang.value">{{ lang.text }}</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
