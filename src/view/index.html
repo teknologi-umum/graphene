@@ -5,21 +5,121 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Graphene</title>
+    <script type="module">
+      import { createApp, reactive } from 'https://unpkg.com/petite-vue@0.2.2?module'
+      import 'https://unpkg.com/codemirror@5.62.3/lib/codemirror.js';
 
-    <script defer type="module" src="main.js"></script>
+      const singleton = reactive({
+        editor: null,
+        initEditor(target) {
+          const editor = CodeMirror.fromTextArea(target, {
+            mode: this.language,
+            theme: this.theme,
+            value: `console.log('hello world!')`,
+            scrollbarStyle: null,
+            lineNumbers: true,
+          });
+        }
+      })
+
+      createApp({
+        language: 'text/javascript',
+        theme: 'nord',
+        title: 'Code - @username',
+        code: '',
+        themes: [
+          { id: 1, value: 'material', text: 'Material' },
+          { id: 2, value: 'nord', text: 'Nord' },
+          { id: 3, value: 'night', text: 'Night'}
+        ],
+        languages: [
+          { id: 1, value: 'auto', text: 'Automatic' },
+          { id: 2, value: 'text/x-csrc', text: 'C'},
+          { id: 3, value: 'text/x-c++src', text: 'C++'},
+          { id: 4, value: 'text/x-csharp', text: 'C#'},
+          { id: 5, value: 'text/x-scala', text: 'Scala'},
+          { id: 6, value: 'text/javascript', text: 'Javascript' },
+          { id: 7, value: 'text/x-lua', text: 'Lua'},
+          { id: 8, value: 'text/x-markdown', text: 'Markdown'},
+          { id: 9, value: 'text/x-go', text: 'Go' },
+          { id: 10, value: 'text/x-clojure', text: 'Clojure' },
+          { id: 11, value: 'application/x-httpd-php', text: 'PHP'},
+          { id: 12, value: 'text/x-ruby', text: 'Ruby'},
+  
+        ],
+        editor: null,
+        editorElement: null,
+        initCodeMirror() {
+          const target = document.getElementById('editor');
+          const editor = CodeMirror.fromTextArea(target, {
+            mode: this.language || 'nord',
+            theme: this.theme || 'javascript',
+            scrollbarStyle: null,
+            styleActiveLine: true,
+            matchBrackets: true,
+            lineNumbers: true,
+          });
+          editor.refresh();
+          this.editor = editor;
+        },
+        refreshEditor(type) {
+          if (type === 'language') this.editor.setOption(type, this.language);
+          if (type === 'theme') this.editor.setOption(type, this.theme);
+        }
+      }).mount('#app')
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono" rel="stylesheet"> 
+    <script src="https://unpkg.com/codemirror@5.62.3/mode/javascript/javascript.js" defer></script>
+    <script src="https://unpkg.com/codemirror@5.62.3/mode/clike/clike.js" defer></script>
+    <script src="https://unpkg.com/codemirror@5.62.3/mode/clojure/clojure.js" defer></script>
+    <script src="https://unpkg.com/codemirror@5.62.3/mode/go/go.js" defer></script>
+    <script src="https://unpkg.com/codemirror@5.62.3/mode/lua/lua.js" defer></script>
+    <script src="https://unpkg.com/codemirror@5.62.3/mode/php/php.js" defer></script>
+    <script src="https://unpkg.com/codemirror@5.62.3/mode/markdown/markdown.js" defer></script>
+    <script src="https://unpkg.com/codemirror@5.62.3/mode/ruby/ruby.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/lib/codemirror.css">
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/material.css">
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/nord.css">
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.62.3/theme/night.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
   </head>
   <body>
-    <div class="container">
-      <div class="window">
-        <div class="titlebar">
-          <div class="buttons">
-            <div class="close"></div>
-            <div class="max"></div>
-            <div class="min"></div>
+    <div id="app" v-cloak v-scope>
+      <div class="container">
+        <div class="window">
+          <div class="titlebar">
+            <div class="buttons">
+              <div class="close"></div>
+              <div class="max"></div>
+              <div class="min"></div>
+            </div>
+            <span class="title" contenteditable="true" v-bind:value="title">{{title}}</span>
           </div>
-          <span class="title">Code - @username</span>
+          <textarea id="editor" @mounted="initCodeMirror" v-model="code">
+            console.log("hello world");
+          </textarea>
         </div>
-        <textarea id="editor"></textarea>
+        <div class="settings">
+            <div class="setting_item">
+              Theme
+              <select id="theme" v-model="theme" v-on:change="refreshEditor('theme')">
+                <option v-for="theme in themes" v-bind:key="theme.id" v-bind:value="theme.value">{{ theme.text }}</option>
+              </select>
+            </div>
+            <div class="setting_item">
+              Background
+            </div>
+            <div class="setting_item">
+              Language
+              <select id="language" v-model="language" v-on:change="refreshEditor('language')">
+                <option v-for="lang in languages" v-bind:key="lang.id" v-bind:value="lang.value">{{ lang.text }}</option>
+              </select>
+            </div>
+        </div>
       </div>
     </div>
   </body>
