@@ -22,7 +22,7 @@ body {
 }
 
 .container {
-  background-color: var(--light);
+  /* background-color: var(--light); */
   display: inline-block;
   padding: 2rem;
   max-width: 960px;
@@ -96,7 +96,7 @@ body {
 
 .CodeMirror {
   padding: 1rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
   font-size: 1rem;
 }
 
@@ -118,5 +118,5 @@ code .line::before {
   counter-increment: step;
   display: inline-block;
   text-align: right;
-  color: rgba(115, 138, 148, 0.8);
+  /* color: rgba(115, 138, 148, 0.8); */
 }
