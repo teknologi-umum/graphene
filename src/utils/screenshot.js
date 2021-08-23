@@ -28,7 +28,7 @@ const config = {
 export const screenshot = async (code = '', lang, username = '', theme = 'dark-plus') => {
   if (!lang) {
     const guess = flourite(code, { heuristic: true, shiki: true });
-    lang = (guess === 'unknown') ? 'markdown' : guess;
+    lang = guess === 'unknown' ? 'markdown' : guess;
   }
   const browser = await puppeteer.launch(config);
   const page = await browser.newPage();
