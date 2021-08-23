@@ -19,7 +19,7 @@
     "chrome-aws-lambda": "^10.1.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
-    "flourite": "^1.0.1",
+    "flourite": "^1.1.0",
     "helmet": "^4.6.0",
     "polka": "^0.5.2",
     "puppeteer-core": "^10.2.0",

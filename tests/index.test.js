@@ -86,6 +86,17 @@ test('should guess the language', async () => {
     .expect('content-type', 'image/png');
 });
 
+test('should use the fallback language the language', async () => {
+  await instance
+    .post('/api')
+    .send({
+      code: 'something something',
+      username: 'breathing_human_iii',
+    })
+    .expect(200)
+    .expect('content-type', 'image/png');
+});
+
 test('should generate an upscaled jpeg image', async () => {
   await instance
     .post('/api')

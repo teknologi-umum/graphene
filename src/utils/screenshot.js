@@ -26,7 +26,10 @@ const config = {
  * @param {string} username - For window title
  */
 export const screenshot = async (code = '', lang, username = '', theme = 'dark-plus') => {
-  lang = lang || flourite(code).toLowerCase();
+  if (!lang) {
+    const guess = flourite(code, { heuristic: true, shiki: true });
+    lang = (guess === 'unknown') ? 'markdown' : guess;
+  }
   const browser = await puppeteer.launch(config);
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
