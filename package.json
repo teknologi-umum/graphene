@@ -10,8 +10,7 @@
     "dev": "nodemon -r dotenv/config --watch src --watch tests src/index.js",
     "format": "prettier --write --ignore-path .gitignore .",
     "lint": "eslint --fix --ignore-path .gitignore .",
-    "test": "NODE_ENV=test c8 --reporter=text --reporter=lcov uvu tests",
-    "prepare": "husky install"
+    "test": "NODE_ENV=test c8 --reporter=text --reporter=lcov uvu tests"
   },
   "type": "module",
   "dependencies": {
@@ -34,12 +33,12 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "husky": "^7.0.1",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
     "supertest": "^6.1.5",
     "uvu": "^0.5.1"
   },
+  "engineStrict": true,
   "engines": {
     "node": ">=16.4.0",
     "npm": ">=7.1.0"
