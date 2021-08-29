@@ -9,7 +9,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    container: node:16-buster
+    container: node:16.6-buster
     steps:
       - name: Setup Chrome
         run: >
