@@ -9,19 +9,26 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    container: node:16-buster
+    container: node:16.6.2-alpine3.13
     steps:
       - name: Setup Chrome
         run: >
-          apt-get update
-          && apt-get install -y wget gnupg ca-certificates procps libxss1
-          && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-          && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-          && apt-get update
-          && apt-get install -y google-chrome-stable
-          && rm -rf /var/lib/apt/lists/*
-          && wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh
-          && chmod +x /usr/sbin/wait-for-it.sh
+          set -x
+          && apk update
+          && apk upgrade
+          && apk add --no-cache
+          dumb-init
+          udev
+          ttf-freefont
+          chromium
+          && npm install puppeteer-core@5.3.1 --silent
+          && apk del --no-cache make gcc g++ binutils-gold gnupg libstdc++
+          && rm -rf /usr/include
+          && rm -rf /var/cache/apk/* /root/.node-gyp /usr/share/man /tmp/*
+          && echo
+        env:
+          CHROME_BIN: /usr/bin/chromium-browser
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -38,7 +45,7 @@ jobs:
       - name: Test
         run: npm run test
         env:
-          EXEC_PATH: google-chrome-stable
+          EXEC_PATH: /usr/bin/chromium-browser
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
