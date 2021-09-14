@@ -1,20 +1,10 @@
-import polka from 'polka';
-import cors from 'cors';
-import sirv from 'sirv';
-import helmet from 'helmet';
-import logger from './utils/logger.js';
-import { screenshot } from './utils/screenshot.js';
-import { json } from './middleware/json.js';
-import { errorHandler } from './middleware/errorHandler.js';
-import { rateLimiter } from './middleware/rateLimiter.js';
-import { processImage } from './utils/sharp.js';
-import { validate } from './utils/validate.js';
+import type { Middleware } from 'polka';
+import { validate } from '../logic/validate';
+import { screenshot } from '../logic/screenshot';
+import { processImage } from '../logic/sharp';
+import logger from '../utils/logger';
 
-/**
- * @param {import('polka').Request} req
- * @param {import('http').ServerResponse} res
- */
-const handler = async (req, res) => {
+export const coreHandler: Middleware = async (req, res) => {
   if (!req.body || !Object.keys(req.body).length) {
     res.writeHead(400, { 'Content-Type': 'application/json' }).end(JSON.stringify({ msg: "Body can't be empty!" }));
     return;
@@ -48,6 +38,7 @@ const handler = async (req, res) => {
       });
       scope.setContext('request_body', { ...req.body });
       scope.setTags({ lang, username });
+      return scope;
     });
 
     res
@@ -55,30 +46,3 @@ const handler = async (req, res) => {
       .end(JSON.stringify({ msg: 'Something went wrong on our side.' }));
   }
 };
-
-const server = polka({ onError: errorHandler })
-  .use(
-    helmet(),
-    cors(),
-    sirv('./src/static', { dev: process.env.NODE_ENV !== 'production', etag: true, maxAge: 60 * 60 * 24 }),
-  )
-  .get('/')
-  .post('/api', rateLimiter(), json(), handler);
-
-if (process.env.NODE_ENV !== 'test') {
-  server.listen(process.env.PORT || 3000);
-}
-
-// Graceful shutdown
-process.on('SIGINT', () =>
-  server.server.close((err) => {
-    console.log('\nSIGINT: ' + err);
-  }),
-);
-process.on('SIGTERM', () =>
-  server.server.close((err) => {
-    console.log('\nSIGTERM: ' + err);
-  }),
-);
-
-export default server;

@@ -2,8 +2,10 @@ import puppeteer from 'puppeteer-core';
 import flourite from 'flourite';
 import { makeHtml } from './makeHtml.js';
 import { getHighlightedCode } from './getHighlightedCode.js';
+import { ScreenshotFunc } from '../types/function.js';
 
 /** @type {import("puppeteer-core").LaunchOptions} */
+// Fuck this.
 const config = {
   headless: process.env?.HEADLESS,
   args: [
@@ -25,7 +27,8 @@ const config = {
  * @param {string} lang - Language
  * @param {string} username - For window title
  */
-export const screenshot = async (code = '', lang, username = '', theme = 'dark-plus') => {
+// Ini juga delete aja ntar.
+export const screenshot: ScreenshotFunc = async (code = '', lang, username = '', theme = 'dark-plus') => {
   if (!lang) {
     const guess = flourite(code, { heuristic: true, shiki: true });
     lang = guess === 'unknown' ? 'markdown' : guess;

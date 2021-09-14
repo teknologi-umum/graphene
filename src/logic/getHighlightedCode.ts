@@ -1,3 +1,4 @@
+import type { IThemeRegistration } from 'shiki';
 import shiki from 'shiki';
 
 /**
@@ -6,7 +7,7 @@ import shiki from 'shiki';
  * @param {string} lang - Language
  * @return {Promise<string>} Highlighted code in HTML string
  */
-export const getHighlightedCode = async (code, lang, theme) => {
+export const getHighlightedCode = async (code: string, lang: string, theme: IThemeRegistration): Promise<string> => {
   const highlighter = await shiki.getHighlighter({ theme });
   const result = highlighter.codeToHtml(code, lang);
 

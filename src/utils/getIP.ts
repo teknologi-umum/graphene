@@ -1,11 +1,13 @@
 import { proxyaddr, compile } from '@tinyhttp/proxy-addr';
+import type { IncomingMessage } from 'http';
+import type { Socket } from 'net';
 
 /**
  * Get client's IP
  * @param {import('http').IncomingMessage} req
  * @returns {String} Client's IP
  */
-export const getIP = (req) => {
+export const getIP = (req: IncomingMessage): string => {
   return proxyaddr(req, trustRemoteAddress(req.socket)).replace(/^.*:/, '');
 };
 
@@ -15,7 +17,7 @@ export const getIP = (req) => {
  * @param {import('net').Socket} socket
  * @returns {never|boolean}
  */
-const trustRemoteAddress = (socket) => {
+const trustRemoteAddress = (socket: Socket): any => {
   const val = socket.remoteAddress;
 
   if (typeof val === 'function') return val;
