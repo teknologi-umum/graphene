@@ -1,4 +1,5 @@
-import { genFont } from './genFont.js';
+import type { MakeHtmlFuncOptions } from '../types/function';
+import { genFont } from '../utils/genFont';
 
 /**
  * Generate a decorated result
@@ -8,7 +9,7 @@ import { genFont } from './genFont.js';
  * @param {string} titleColor - Used for titlebar color
  * @return {string} Code snippet inside a MacOS-like window
  */
-export const makeHtml = ({ windowBackground, titleColor, highlightedCode, username }) => `
+export const makeHtml = ({ windowBackground, titleColor, highlightedCode, username }: MakeHtmlFuncOptions): string => `
 <!DOCTYPE html>
 <html lang="en">
   <head>

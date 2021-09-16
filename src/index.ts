@@ -8,11 +8,6 @@ import { rateLimiter } from './middleware/rateLimiter';
 import { coreHandler } from './handler/core';
 import type { Middleware } from 'polka';
 
-/**
- * @param {import('polka').Request} req
- * @param {import('http').ServerResponse} res
- */
-
 const server = polka({ onError: errorHandler })
   .use(
     helmet() as Middleware,

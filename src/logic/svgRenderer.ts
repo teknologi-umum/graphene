@@ -105,9 +105,9 @@ function escapeHtml(html: string) {
 function getTokenSVGAttributes(token: IThemedToken) {
   const options = {
     fill: '#fff',
-    opacity: undefined,
-    'font-weight': undefined,
-    'font-style': undefined,
+    opacity: 0,
+    'font-weight': '',
+    'font-style': '',
   };
 
   if (token.color.slice(1).length <= 6) options.fill = token.color;

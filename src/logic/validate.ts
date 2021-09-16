@@ -1,10 +1,11 @@
 import { BUNDLED_THEMES } from 'shiki';
+import type { ValidateFuncOptions } from '../types/function';
 
 /**
  * Validate valid options
  * @param {Object}
  */
-export const validate = ({ code, username, upscale, format, theme }) => {
+export const validate = ({ code, username, upscale, format, theme }: ValidateFuncOptions): Array<string> => {
   return [
     !code && '`code` is required!',
     !username && '`username` is required!',
