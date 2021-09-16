@@ -1,23 +1,21 @@
-FROM node:16.6.2-alpine3.13
+FROM node:16-buster
+
+WORKDIR /usr/src/temp
+
+RUN apt-get update \
+    && apt-get install unzip curl \
+    && curl https://www.cdnfonts.com/download/sf-mono-cdnfonts.zip -o sf-mono.zip \
+    && curl https://github.com/tonsky/FiraCode/releases/download/5.2/Fira_Code_v5.2.zip -o fira-code.zip \
+    && curl https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip -o jetbrains-mono.zip \
+    && unzip sf-mono.zip -d sf-mono/ \
+    && unzip fira-code.zip -d fira-code/ \
+    && unzip jetbrains-mono.zip -d jetbrains-mono/ \
+    && mv -v sf-mono /usr/local/share/fonts/ \
+    && mv -v fira-code /usr/local/share/fonts/ \
+    && mv -v jetbrains-mono /usr/local/share/fonts/ \
+    && rm -v fira-code.zip jetbrains-mono.zip sf-mono.zip
 
 WORKDIR /usr/src/app
-
-ENV CHROME_BIN="/usr/bin/chromium-browser" \
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
-
-RUN set -x \
-    && apk update \
-    && apk upgrade \
-    && apk add --no-cache \
-    dumb-init \
-    udev \
-    ttf-freefont \
-    chromium \
-    && npm install puppeteer-core@5.3.1 --silent \
-    && apk del --no-cache make gcc g++ binutils-gold gnupg libstdc++ \
-    && rm -rf /usr/include \
-    && rm -rf /var/cache/apk/* /root/.node-gyp /usr/share/man /tmp/* \
-    && echo
 
 COPY package*.json ./
 
@@ -25,8 +23,10 @@ RUN npm install
 
 COPY . .
 
-ENV EXEC_PATH="/usr/bin/chromium-browser"
+RUN npm run build \
+    && rm -rf node_modules \
+    && npm install --production
 
 EXPOSE 3000
 
-CMD [ "node", "src/index.js" ]
+CMD [ "node", "dist/index.js" ]
