@@ -6,8 +6,9 @@
   "author": "elianiva <dicha.arkana03@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config --unhandled-rejections=strict src/index.js",
-    "dev": "nodemon -r dotenv/config --watch src --watch tests src/index.js",
+    "start": "node -r dotenv/config --unhandled-rejections=strict dist/index.js",
+    "dev:start": "node --experimental-loader esbuild-node-loader -r dotenv/config src/index.ts",
+    "dev": "nodemon -e ts --watch src --exec \"npm run dev:start\"",
     "format": "prettier --write --ignore-path .gitignore .",
     "lint": "eslint --fix --ignore-path .gitignore .",
     "test": "NODE_ENV=test c8 --reporter=text --reporter=lcov uvu tests",
@@ -34,7 +35,7 @@
     "@typescript-eslint/parser": "^4.31.1",
     "c8": "^7.9.0",
     "esbuild": "^0.12.28",
-    "esbuild-register": "^3.0.0",
+    "esbuild-node-loader": "^0.3.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -43,7 +44,8 @@
     "supertest": "^6.1.6",
     "tslib": "^2.3.1",
     "typescript": "^4.4.3",
-    "uvu": "^0.5.1"
+    "uvu": "^0.5.1",
+    "watchlist": "^0.3.1"
   },
   "engineStrict": true,
   "engines": {

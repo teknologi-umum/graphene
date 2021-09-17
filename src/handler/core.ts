@@ -1,8 +1,10 @@
-import type { Middleware } from 'polka';
+import * as shiki from 'shiki';
+import sharp from 'sharp';
 import { validate } from '../logic/validate';
-import { screenshot } from '../logic/screenshot';
-import { processImage } from '../logic/sharp';
+import { svgRenderer as shikiSVGRenderer } from '../logic/svgRenderer';
 import logger from '../utils/logger';
+import type { Middleware } from 'polka';
+import flourite from 'flourite';
 
 export const coreHandler: Middleware = async (req, res) => {
   if (!req.body || !Object.keys(req.body).length) {
@@ -10,7 +12,7 @@ export const coreHandler: Middleware = async (req, res) => {
     return;
   }
 
-  const { code, lang, username, format = 'png', upscale = 1, theme } = req.body;
+  const { code, lang, username, format = 'png', upscale = 1, theme = 'github-dark' } = req.body;
   const err = validate(req.body);
 
   if (err.length > 0) {
@@ -19,14 +21,80 @@ export const coreHandler: Middleware = async (req, res) => {
   }
 
   try {
-    const base64 = await screenshot(code, lang, username, theme);
-    const image = await processImage(base64, upscale, format);
-    res
-      .writeHead(200, {
-        'Content-Type': `image/${format}`,
-        'Content-Length': image.length,
+    const highlighter = await shiki.getHighlighter({ theme });
+    const svgRenderer = shikiSVGRenderer({
+      bg: '#2E3440',
+      fontFamily: 'JetBrainsMono Nerd Font',
+      lineHeightToFontSizeRatio: 1.5,
+      fontSize: 14,
+      fontWidth: 8,
+      horizontalPadding: 4,
+      verticalPadding: 2,
+    });
+
+    // Guess the language using Flourite
+    const guess = lang || flourite(code, { shiki: true, heuristic: true });
+    const language = guess === 'unknown' ? 'md' : guess;
+
+    // split longer lines
+    const processedCode = code
+      .split('\n')
+      .map((line: string) => {
+        const indentSize = line.search(/\S/);
+        return line.replace(
+          /(?![^\n]{1,120}$)([^\n]{1,120})\s/g,
+          `$1\n${' '.repeat(indentSize !== -1 ? indentSize : 0)}`,
+        );
       })
-      .end(image);
+      .join('\n');
+
+    // FIXME FIXME FIXME
+    // BECAUSE I DONT KNOW HOW TO LMAO
+    const tokens = highlighter.codeToThemedTokens(processedCode, language);
+    const { svg, width, height } = svgRenderer.renderToSVG(tokens, {});
+
+    // Convert the SVG to PNG
+    const codeImage = await sharp({
+      create: {
+        // Create Transparent Background
+        width: Math.ceil(width * 1.5),
+        height: Math.ceil(height * 1.5),
+        channels: 4,
+        background: { r: 0, g: 0, b: 0, alpha: 0 },
+      },
+    })
+      .composite([
+        {
+          // Draw the SVG in front of the background
+          input: Buffer.from(svg),
+          blend: 'over',
+          gravity: 'centre',
+          density: 88,
+        },
+      ])
+      .png()
+      .toBuffer();
+
+    const resultingImage = await sharp({
+      create: {
+        // Create Grey Background
+        width: Math.ceil(width * 1.5 + width * 0.1),
+        height: Math.ceil(height * 1.5 + width * 0.1),
+        channels: 4,
+        background: { r: 212, g: 212, b: 212, alpha: 1 },
+      },
+    })
+      .composite([
+        {
+          input: codeImage,
+          blend: 'over',
+          gravity: 'centre',
+        },
+      ])
+      .png()
+      .toBuffer();
+
+    res.writeHead(200, { 'Content-Type': 'image/png', 'Content-Length': resultingImage.length }).end(resultingImage);
   } catch (err) {
     process.env.NODE_ENV !== 'production' && console.log(err);
     logger.captureException(err, (scope) => {
