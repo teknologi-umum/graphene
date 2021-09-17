@@ -7,7 +7,7 @@
 // Types by: @aldy505
 
 import { FontStyle, IThemedToken } from 'shiki';
-import type { RendererOptions, SVGAttributes, SVGOutput } from '../types/renderer';
+import type { HTMLEscapes, RendererOptions, SVGAttributes, SVGOutput } from '../types/renderer';
 
 const DEFAULT_CONFIG: Partial<RendererOptions> = {
   fontFamily: 'JetBrainsMono Nerd Font',
@@ -18,68 +18,62 @@ const DEFAULT_CONFIG: Partial<RendererOptions> = {
   verticalPadding: 2,
 };
 
-export function svgRenderer(options: Partial<RendererOptions>): {
-  renderToSVG: (lines: IThemedToken[][], { bg }: { bg?: string }) => SVGOutput;
-} {
-  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg: _bg } = Object.assign(DEFAULT_CONFIG, options);
+type RenderToSVG = (lines: IThemedToken[][], { bg }: { bg?: string }) => SVGOutput;
 
-  if (!options.fontWidth) throw new Error("options must have 'fontWidth'");
+export function svgRenderer(options: RendererOptions): {
+  renderToSVG: RenderToSVG;
+} {
+  const {
+    fontFamily,
+    fontSize,
+    lineHeightToFontSizeRatio,
+    bg: _bg,
+    fontWidth,
+  }: RendererOptions = Object.assign(DEFAULT_CONFIG, options);
+
+  if (!fontWidth) throw new Error("options must have 'fontWidth'");
 
   const lineHeight = fontSize * lineHeightToFontSizeRatio;
 
   return {
-    renderToSVG(lines, { bg } = { bg: _bg }) {
+    renderToSVG(lines: IThemedToken[][], { bg }: { bg: string } = { bg: _bg }): SVGOutput {
       let longestLineTextLength = 0;
 
       lines.forEach((lineTokens) => {
-        let lineTextLength = 0;
-
-        lineTokens.forEach((l) => (lineTextLength += l.content.length));
+        const lineTextLength = lineTokens.reduce((acc, curr) => (acc += curr.content.length), 0);
 
         if (lineTextLength > longestLineTextLength) {
           longestLineTextLength = lineTextLength;
         }
       });
 
-      const lineNrWidth = 4 * options.fontWidth; // up to 1000 lines
+      const lineNrWidth = 4 * fontWidth; // up to 1000 lines
+      const titlebarHeight = 32;
 
       // longest line + left/right 4 char width
-      // const bgWidth = (longestLineTextLength + horizontalPadding * 2) * options.fontWidth;
-      const bgWidth = longestLineTextLength * options.fontWidth + lineNrWidth;
+      const bgWidth = (longestLineTextLength + 2) * fontWidth + lineNrWidth;
 
       // all rows + 2 rows top/bot
       // const bgHeight = (lines.length + verticalPadding * 2) * lineheight;
-      const bgHeight = (lines.length + 2) * lineHeight;
+      const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight;
+
       let svg = '';
       svg += `<svg viewBox="0 0 ${bgWidth} ${bgHeight}" width="${bgWidth}" height="${bgHeight}" xmlns="http://www.w3.org/2000/svg">\n`;
       svg += `<rect id="bg" fill="${bg}" width="${bgWidth}" height="${bgHeight}" rx="4"></rect>`;
-      svg += '<g id="titlebar" display="block">';
-      svg += `<rect width="${bgWidth}" height="32" fill="${bg}" rx="8"/>`;
-      svg += `<rect x="12.5" y="8.5" width="17" height="17" rx="8.5" stroke="black" stroke-opacity="0.5" />`;
-      svg += `<rect x="34.5" y="8.5" width="17" height="17" rx="8.5" stroke="black" stroke-opacity="0.5" />`;
-      svg += `<rect x="56.5" y="8.5" width="17" height="17" rx="8.5" stroke="black" stroke-opacity="0.5" />`;
-      svg += '<rect x="13" y="9" width="16" height="16" rx="8" fill="#FF496F"/>';
-      svg += '<rect x="35" y="9" width="16" height="16" rx="8" fill="#FFE064"/>';
-      svg += '<rect x="57" y="9" width="16" height="16" rx="8" fill="#44D695"/>';
+      svg += '<g id="titlebar">';
+      svg += `<rect width="${bgWidth}" height="${titlebarHeight}" fill="${bg}" rx="8"/>`;
+      svg += '<rect x="13" y="9" width="14" height="14" rx="8" fill="#FF496F"/>';
+      svg += '<rect x="35" y="9" width="14" height="14" rx="8" fill="#FFE064"/>';
+      svg += '<rect x="57" y="9" width="14" height="14" rx="8" fill="#44D695"/>';
       svg += '</g>';
-      svg += `<g id="tokens"  display="block" transform="translate(${
-        (getIndentOffset(lines.length) + 1) * options.fontWidth
-      }, ${
-        // This was originally * 0.25
-        lineHeight * 1.2
-      })">`;
+      svg += `<g id="tokens" transform="translate(${lineNrWidth}, ${titlebarHeight})">`;
 
       lines.forEach((line, index) => {
         if (line.length === 0) {
+          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight });
           svg += `\n`;
         } else {
-          const offset = getIndentOffset(index) * options.fontWidth;
-          const lineNr = `<tspan x="${offset - 16}" fill="#ffffff" fill-opacity="0.5">${index}</tspan>`;
-
-          svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${
-            lineHeight * (index + 1)
-          }">${lineNr}</text>`;
-
+          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight });
           svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (index + 1)}">\n`;
 
           let indent = 0;
@@ -94,15 +88,15 @@ export function svgRenderer(options: Partial<RendererOptions>): {
 
               // Whitespace + content, such as ` foo`
               // Render as `<tspan> </tspan><tspan>foo</tspan>`, where the second `tspan` is offset by whitespace * width
-              svg += `<tspan x="${indent * options.fontWidth}" ${tokenAttributes}>${escapeHTML(
+              svg += `<tspan x="${indent * fontWidth}" ${tokenAttributes}>${escapeHTML(
                 token.content.slice(0, firstNonWhitespaceIndex),
               )}</tspan>`;
 
-              svg += `<tspan x="${
-                (indent + firstNonWhitespaceIndex) * options.fontWidth
-              }" ${tokenAttributes}>${escapeHTML(token.content.slice(firstNonWhitespaceIndex))}</tspan>`;
+              svg += `<tspan x="${(indent + firstNonWhitespaceIndex) * fontWidth}" ${tokenAttributes}>${escapeHTML(
+                token.content.slice(firstNonWhitespaceIndex),
+              )}</tspan>`;
             } else {
-              svg += `<tspan x="${indent * options.fontWidth}" ${tokenAttributes}>${escapeHTML(token.content)}</tspan>`;
+              svg += `<tspan x="${indent * fontWidth}" ${tokenAttributes}>${escapeHTML(token.content)}</tspan>`;
             }
             indent += token.content.length;
           });
@@ -119,7 +113,7 @@ export function svgRenderer(options: Partial<RendererOptions>): {
   };
 }
 
-const getIndentOffset = (size: string | number) => {
+const getIndentOffset = (size: number): number => {
   const numLength = String(size).length;
   switch (numLength) {
     case 1:
@@ -131,7 +125,19 @@ const getIndentOffset = (size: string | number) => {
   }
 };
 
-const HTML_ESCAPES = {
+const generateLineNumber = (
+  idx: number,
+  { fontFamily, fontSize, fontWidth, lineHeight }: Partial<RendererOptions> & { lineHeight: number },
+) => {
+  const offset = getIndentOffset(idx);
+  const lineNr = `<tspan fill="#ffffff" fill-opacity="0.5">${String(idx + 1).padStart(offset, '\u2800')}</tspan>`;
+
+  return `<text font-family="${fontFamily}" font-size="${fontSize}" x="-${3 * fontWidth}" y="${
+    lineHeight * (idx + 1)
+  }">${lineNr}</text>`;
+};
+
+const HTML_ESCAPES: HTMLEscapes = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
@@ -139,7 +145,7 @@ const HTML_ESCAPES = {
   "'": '&#39;',
 };
 
-const escapeHTML = (html: string) => html.replace(/[&<>"']/g, (chr) => HTML_ESCAPES[chr]);
+const escapeHTML = (html: string) => html.replace(/[&<>"']/g, (chr: keyof HTMLEscapes) => HTML_ESCAPES[chr]);
 
 const OPTIONS: Partial<SVGAttributes> = {
   fill: '#fff',
@@ -159,7 +165,7 @@ function getTokenSVGAttributes(token: IThemedToken) {
   if (token.fontStyle === FontStyle.Italic) OPTIONS['font-style'] = 'italic';
 
   return Object.keys(OPTIONS)
-    .reduce((acc, curr) => {
+    .reduce((acc, curr: keyof SVGAttributes) => {
       if (OPTIONS[curr]) return acc.concat(`${curr}="${OPTIONS[curr]}"`);
       return acc.concat('');
     }, [])

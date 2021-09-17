@@ -27,7 +27,7 @@ export const coreHandler: Middleware = async (req, res) => {
       fontFamily: 'JetBrainsMono Nerd Font',
       lineHeightToFontSizeRatio: 1.5,
       fontSize: 14,
-      fontWidth: 8,
+      fontWidth: 8.25,
       horizontalPadding: 4,
       verticalPadding: 2,
     });
@@ -48,8 +48,6 @@ export const coreHandler: Middleware = async (req, res) => {
       })
       .join('\n');
 
-    // FIXME FIXME FIXME
-    // BECAUSE I DONT KNOW HOW TO LMAO
     const tokens = highlighter.codeToThemedTokens(processedCode, language);
     const { svg, width, height } = svgRenderer.renderToSVG(tokens, {});
 
@@ -78,8 +76,8 @@ export const coreHandler: Middleware = async (req, res) => {
     const resultingImage = await sharp({
       create: {
         // Create Grey Background
-        width: Math.ceil(width * 1.5 + width * 0.1),
-        height: Math.ceil(height * 1.5 + width * 0.1),
+        width: Math.ceil(width * 1.5 + 20),
+        height: Math.ceil(height * 1.5 + 20),
         channels: 4,
         background: { r: 212, g: 212, b: 212, alpha: 1 },
       },
@@ -91,7 +89,7 @@ export const coreHandler: Middleware = async (req, res) => {
           gravity: 'centre',
         },
       ])
-      .png()
+      [format]()
       .toBuffer();
 
     res.writeHead(200, { 'Content-Type': 'image/png', 'Content-Length': resultingImage.length }).end(resultingImage);
