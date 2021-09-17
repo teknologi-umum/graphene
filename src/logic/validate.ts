@@ -5,10 +5,9 @@ import type { ValidateFuncOptions } from '../types/function';
  * Validate valid options
  * @param {Object}
  */
-export const validate = ({ code, username, upscale, format, theme }: ValidateFuncOptions): Array<string> => {
+export const validate = ({ code, upscale, format, theme }: ValidateFuncOptions): Array<string> => {
   return [
     !code && '`code` is required!',
-    !username && '`username` is required!',
     upscale && typeof upscale !== 'number' && '`upscale` must be a number!',
     upscale < 1 && "`upscale` can't be lower than 1!",
     format && !['png', 'jpeg', 'webp'].includes(format) && 'Bad `format`! Valid options are `png`, `jpeg`, and `webp`',

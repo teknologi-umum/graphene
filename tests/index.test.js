@@ -23,7 +23,7 @@ test('should error when body is empty', async () => {
 test('should error when json is invalid', async () => {
   await instance
     .post('/api')
-    .send(`{"code": "some random text, "username": "Tom", "format": "jpeg"}`)
+    .send(`{"code": "some random text, "format": "jpeg"}`)
     .expect(400)
     .expect('content-type', 'application/json');
 });
@@ -31,22 +31,10 @@ test('should error when json is invalid', async () => {
 test('should error without a code', async () => {
   await instance
     .post('/api')
-    .send({ lang: 'javascript', username: 'breathing_human_iii' })
+    .send({ lang: 'javascript' })
     .expect(400)
     .expect('content-type', 'application/json')
     .expect({ msg: ['`code` is required!'] });
-});
-
-test('should error without a username', async () => {
-  await instance
-    .post('/api')
-    .send({
-      code: 'console.log("sup world")',
-      lang: 'javascript',
-    })
-    .expect(400)
-    .expect('content-type', 'application/json')
-    .expect({ msg: ['`username` is required!'] });
 });
 
 test('should error with bad format ', async () => {
@@ -55,7 +43,6 @@ test('should error with bad format ', async () => {
     .send({
       lang: 'javascript',
       code: "console.log('foo')",
-      username: 'manusia',
       format: 'asdf',
     })
     .expect(400)
@@ -69,7 +56,6 @@ test('should generate a png image', async () => {
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
-      username: 'breathing_human_iii',
     })
     .expect(200)
     .expect('content-type', 'image/png');
@@ -80,7 +66,6 @@ test('should guess the language', async () => {
     .post('/api')
     .send({
       code: 'console.log("sup world")',
-      username: 'breathing_human_iii',
     })
     .expect(200)
     .expect('content-type', 'image/png');
@@ -91,7 +76,6 @@ test('should use the fallback language the language', async () => {
     .post('/api')
     .send({
       code: 'something something',
-      username: 'breathing_human_iii',
     })
     .expect(200)
     .expect('content-type', 'image/png');
@@ -103,7 +87,6 @@ test('should generate an upscaled jpeg image', async () => {
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
-      username: 'breathing_human_iii',
       upscale: 1.5,
       format: 'jpeg',
     })
@@ -117,7 +100,6 @@ test('should error when upscale is lower than 1', async () => {
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
-      username: 'breathing_human_iii',
       upscale: -22,
       format: 'jpeg',
     })
@@ -132,7 +114,6 @@ test('should error when upscale is 0', async () => {
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
-      username: 'breathing_human_iii',
       upscale: 0,
       format: 'jpeg',
     })
@@ -147,7 +128,6 @@ test('should error when upscale is not a number', async () => {
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
-      username: 'breathing_human_iii',
       upscale: 'asdf',
       format: 'jpeg',
     })
@@ -162,7 +142,6 @@ test('should error when theme does not exists', async () => {
     .send({
       code: 'console.log("sup world")',
       lang: 'javascript',
-      username: 'breathing_human_iii',
       format: 'jpeg',
       theme: 'foobar',
     })

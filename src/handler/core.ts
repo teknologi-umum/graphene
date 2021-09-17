@@ -12,7 +12,7 @@ export const coreHandler: Middleware = async (req, res) => {
     return;
   }
 
-  const { code, lang, username, format = 'png', upscale = 1, theme = 'github-dark' } = req.body;
+  const { code, lang, format = 'png', upscale, theme = 'github-dark' } = req.body;
   const err = validate(req.body);
 
   if (err.length > 0) {
@@ -73,11 +73,13 @@ export const coreHandler: Middleware = async (req, res) => {
       .png()
       .toBuffer();
 
-    const resultingImage = await sharp({
+    const imageWidth = Math.ceil(width * 1.5 + 20);
+    const imageHeight = Math.ceil(height * 1.5 + 20);
+    const codeWithBG: Buffer = await sharp({
       create: {
         // Create Grey Background
-        width: Math.ceil(width * 1.5 + 20),
-        height: Math.ceil(height * 1.5 + 20),
+        width: imageWidth,
+        height: imageHeight,
         channels: 4,
         background: { r: 212, g: 212, b: 212, alpha: 1 },
       },
@@ -89,10 +91,17 @@ export const coreHandler: Middleware = async (req, res) => {
           gravity: 'centre',
         },
       ])
+      // .resize(imgWidth * upscale)
       [format]()
       .toBuffer();
 
-    res.writeHead(200, { 'Content-Type': 'image/png', 'Content-Length': resultingImage.length }).end(resultingImage);
+    const imageResult: Buffer = upscale
+      ? await sharp(codeWithBG)
+          .resize(imageWidth * upscale, imageHeight * upscale, { fit: 'fill' })
+          .toBuffer()
+      : codeWithBG;
+
+    res.writeHead(200, { 'Content-Type': 'image/png', 'Content-Length': imageResult.length }).end(imageResult);
   } catch (err) {
     process.env.NODE_ENV !== 'production' && console.log(err);
     logger.captureException(err, (scope) => {
@@ -103,7 +112,7 @@ export const coreHandler: Middleware = async (req, res) => {
         'User-Agent': req.headers['user-agent'],
       });
       scope.setContext('request_body', { ...req.body });
-      scope.setTags({ lang, username });
+      scope.setTags({ lang });
       return scope;
     });
 
