@@ -1,4 +1,4 @@
-FROM node:16-buster
+FROM node:14.17.6-buster
 
 WORKDIR /usr/src/temp
 

@@ -11,7 +11,8 @@
     "dev": "nodemon -e ts --watch src --exec \"npm run dev:start\"",
     "format": "prettier --write --ignore-path .gitignore .",
     "lint": "eslint --fix --ignore-path .gitignore .",
-    "test": "NODE_ENV=test c8 --reporter=text --reporter=lcov node --experimental-loader esbuild-node-loader node_modules/uvu/bin.js tests",
+    "test": "NODE_ENV=test c8 --include=src --reporter=text --reporter=lcovonly node --experimental-loader esbuild-node-loader node_modules/uvu/bin.js tests",
+    "build": "tsc",
     "docker:build": "docker build -m 220m -t teknologi-umum/graphene:0.0.18 .",
     "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 teknologi-umum/graphene:0.0.18"
   },
@@ -48,7 +49,7 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">=16.4.0",
+    "node": ">=14.17.6",
     "npm": ">=7.1.0"
   }
 }

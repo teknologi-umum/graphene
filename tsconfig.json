@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "target": "es2020",
+    "target": "ES2019",
     "module": "ESNext",
     "declaration": false,
     "types": ["node"],
@@ -18,6 +18,9 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "strict": true,
+    "listEmittedFiles": true,
     "newLine": "lf"
   },
   "include": ["src"],
