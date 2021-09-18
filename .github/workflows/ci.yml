@@ -11,12 +11,6 @@ jobs:
     timeout-minutes: 15
     container: node:14.17-buster
     steps:
-      - name: Setup Fonts
-        run: >
-          mv -v fonts/sf-mono /usr/local/share/fonts/ \
-          && mv -v fonts/fira-code /usr/local/share/fonts/ \
-          && mv -v fonts/jetbrains-mono /usr/local/share/fonts/
-
       - name: Checkout code
         uses: actions/checkout@v2
 

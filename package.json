@@ -2,6 +2,7 @@
   "name": "graphene",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
   "description": "Generate beautiful code snippet using Shiki",
   "author": "elianiva <dicha.arkana03@gmail.com>",
   "main": "index.js",
@@ -12,9 +13,9 @@
     "format": "prettier --write --ignore-path .gitignore .",
     "lint": "eslint --fix --ignore-path .gitignore .",
     "test": "NODE_ENV=test c8 --include=src --reporter=text --reporter=lcovonly node --experimental-loader esbuild-node-loader node_modules/uvu/bin.js tests",
-    "build": "tsc",
-    "docker:build": "docker build -m 220m -t teknologi-umum/graphene:0.0.18 .",
-    "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 teknologi-umum/graphene:0.0.18"
+    "build": "tsc --noEmit && node build.js",
+    "docker:build": "docker build -m 220m -t teknologi-umum/graphene:0.0.19 .",
+    "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 teknologi-umum/graphene:0.0.19"
   },
   "dependencies": {
     "@sentry/node": "^6.12.0",
@@ -44,8 +45,7 @@
     "supertest": "^6.1.6",
     "tslib": "^2.3.1",
     "typescript": "^4.4.3",
-    "uvu": "^0.5.1",
-    "watchlist": "^0.3.1"
+    "uvu": "^0.5.1"
   },
   "engineStrict": true,
   "engines": {
