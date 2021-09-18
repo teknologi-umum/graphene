@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises';
 import { test } from 'uvu';
 import request from 'supertest';
-import server from '../src/index.js';
+import server from '../src/index';
 
 const instance = request(server.handler);
 

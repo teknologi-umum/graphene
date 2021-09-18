@@ -5,6 +5,15 @@ import { svgRenderer as shikiSVGRenderer } from '../logic/svgRenderer';
 import logger from '../utils/logger';
 import type { Middleware } from 'polka';
 import flourite from 'flourite';
+import { ImageFormat } from '../types/image';
+
+interface RequestBody {
+  code: string;
+  lang: string;
+  format: ImageFormat;
+  upscale: number;
+  theme: shiki.Theme;
+}
 
 export const coreHandler: Middleware = async (req, res) => {
   if (!req.body || !Object.keys(req.body).length) {
@@ -12,7 +21,7 @@ export const coreHandler: Middleware = async (req, res) => {
     return;
   }
 
-  const { code, lang, format = 'png', upscale, theme = 'github-dark' } = req.body;
+  const { code, lang, format = 'png', upscale, theme = 'github-dark' }: RequestBody = req.body;
   const err = validate(req.body);
 
   if (err.length > 0) {
@@ -91,17 +100,16 @@ export const coreHandler: Middleware = async (req, res) => {
           gravity: 'centre',
         },
       ])
-      // .resize(imgWidth * upscale)
       [format]()
       .toBuffer();
 
     const imageResult: Buffer = upscale
       ? await sharp(codeWithBG)
-          .resize(imageWidth * upscale, imageHeight * upscale, { fit: 'fill' })
+          .resize(imageWidth * upscale, null)
           .toBuffer()
       : codeWithBG;
 
-    res.writeHead(200, { 'Content-Type': 'image/png', 'Content-Length': imageResult.length }).end(imageResult);
+    res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': imageResult.length }).end(imageResult);
   } catch (err) {
     process.env.NODE_ENV !== 'production' && console.log(err);
     logger.captureException(err, (scope) => {
