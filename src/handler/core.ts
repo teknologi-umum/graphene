@@ -44,20 +44,7 @@ export const coreHandler: Middleware = async (req, res) => {
     const guess = lang || flourite(code, { shiki: true, heuristic: true });
     const language = guess === 'unknown' ? 'md' : guess;
 
-    // split longer lines
-    const processedCode = code
-      .split('\n')
-      .map((line: string) => {
-        const indentSize = line.search(/\S/);
-        return line.replace(
-          // break line if it's longer than 120 characters
-          /(?![^\n]{1,120}$)([^\n]{1,120})\s/g,
-          `$1\n${' '.repeat(indentSize !== -1 ? indentSize : 0)}`,
-        );
-      })
-      .join('\n');
-
-    const tokens = highlighter.codeToThemedTokens(processedCode, language);
+    const tokens = highlighter.codeToThemedTokens(code, language);
     const { svg, width, height } = svgRenderer.renderToSVG(tokens);
 
     // Convert the SVG to PNG
