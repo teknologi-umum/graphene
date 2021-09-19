@@ -58,7 +58,7 @@ export const coreHandler: Middleware = async (req, res) => {
       .join('\n');
 
     const tokens = highlighter.codeToThemedTokens(processedCode, language);
-    const { svg, width, height } = svgRenderer.renderToSVG(tokens, {});
+    const { svg, width, height } = svgRenderer.renderToSVG(tokens);
 
     // Convert the SVG to PNG
     const codeImage = await sharp({

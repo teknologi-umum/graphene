@@ -18,25 +18,22 @@ const DEFAULT_CONFIG: Partial<RendererOptions> = {
   verticalPadding: 2,
 };
 
-type RenderToSVG = (lines: IThemedToken[][], { bg }: { bg?: string }) => SVGOutput;
+type RenderToSVG = (lines: IThemedToken[][]) => SVGOutput;
 
 export function svgRenderer(options: RendererOptions): {
   renderToSVG: RenderToSVG;
 } {
-  const {
-    fontFamily,
-    fontSize,
-    lineHeightToFontSizeRatio,
-    bg: _bg,
-    fontWidth,
-  }: RendererOptions = Object.assign(DEFAULT_CONFIG, options);
+  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fontWidth }: RendererOptions = Object.assign(
+    DEFAULT_CONFIG,
+    options,
+  );
 
   if (!fontWidth) throw new Error("options must have 'fontWidth'");
 
   const lineHeight = fontSize * lineHeightToFontSizeRatio;
 
   return {
-    renderToSVG(lines: IThemedToken[][], { bg }: { bg: string } = { bg: _bg }): SVGOutput {
+    renderToSVG(lines: IThemedToken[][]): SVGOutput {
       let longestLineTextLength = 0;
 
       lines.forEach((lineTokens) => {
@@ -62,9 +59,9 @@ export function svgRenderer(options: RendererOptions): {
       svg += `<rect id="bg" fill="${bg}" width="${bgWidth}" height="${bgHeight}" rx="4"></rect>`;
       svg += '<g id="titlebar">';
       svg += `<rect width="${bgWidth}" height="${titlebarHeight}" fill="${bg}" rx="8"/>`;
-      svg += '<rect x="13" y="9" width="14" height="14" rx="8" fill="#FF496F"/>';
-      svg += '<rect x="35" y="9" width="14" height="14" rx="8" fill="#FFE064"/>';
-      svg += '<rect x="57" y="9" width="14" height="14" rx="8" fill="#44D695"/>';
+      svg += '<rect x="13" y="9" width="14" height="14" rx="8" fill="#FF605C"/>';
+      svg += '<rect x="35" y="9" width="14" height="14" rx="8" fill="#FFBD44"/>';
+      svg += '<rect x="57" y="9" width="14" height="14" rx="8" fill="#00CA4E"/>';
       svg += '</g>';
       svg += `<g id="tokens" transform="translate(${lineNrWidth}, ${titlebarHeight})">`;
 
