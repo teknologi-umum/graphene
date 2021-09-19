@@ -92,7 +92,11 @@ export function svgRenderer(options: RendererOptions): {
                 token.content.slice(firstNonWhitespaceIndex),
               )}</tspan>`;
             } else {
-              console.log(`"${token.content}:${token.content.length}-${token.content.length * fontWidth}" => ${indent * fontWidth}`);
+              console.log(
+                `"${token.content}:${token.content.length}-${token.content.length * fontWidth}" => ${
+                  indent * fontWidth
+                }`,
+              );
               svg += `<tspan x="${indent * fontWidth}" ${tokenAttributes}>${escapeHTML(token.content)}</tspan>`;
             }
             indent += token.content.length;
