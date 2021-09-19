@@ -60,12 +60,15 @@ export const coreHandler: Middleware = async (req, res) => {
     const tokens = highlighter.codeToThemedTokens(processedCode, language);
     const { svg, width, height } = svgRenderer.renderToSVG(tokens);
 
+    const imageWidth = Math.ceil(width * 1.25);
+    const imageHeight = Math.ceil(height * 1.25);
+
     // Convert the SVG to PNG
     const codeImage = await sharp({
       create: {
         // Create Transparent Background
-        width: Math.ceil(width * 1.5),
-        height: Math.ceil(height * 1.5),
+        width: imageWidth,
+        height: imageHeight,
         channels: 4,
         background: { r: 0, g: 0, b: 0, alpha: 0 },
       },
@@ -79,35 +82,14 @@ export const coreHandler: Middleware = async (req, res) => {
           density: 88,
         },
       ])
-      .png()
-      .toBuffer();
-
-    const imageWidth = Math.ceil(width * 1.5 + 20);
-    const imageHeight = Math.ceil(height * 1.5 + 20);
-    const codeWithBG: Buffer = await sharp({
-      create: {
-        // Create Grey Background
-        width: imageWidth,
-        height: imageHeight,
-        channels: 4,
-        background: { r: 212, g: 212, b: 212, alpha: 1 },
-      },
-    })
-      .composite([
-        {
-          input: codeImage,
-          blend: 'over',
-          gravity: 'centre',
-        },
-      ])
       [format]()
       .toBuffer();
 
     const imageResult: Buffer = upscale
-      ? await sharp(codeWithBG)
+      ? await sharp(codeImage)
           .resize(imageWidth * upscale, null)
           .toBuffer()
-      : codeWithBG;
+      : codeImage;
 
     res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': imageResult.length }).end(imageResult);
   } catch (err) {
