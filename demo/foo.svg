@@ -1,0 +1,114 @@
+<svg viewBox="0 0 600 231" width="600" height="231" xmlns="http://www.w3.org/2000/svg">
+  <rect id="bg" fill="#2E3440" width="600" height="231"></rect>
+  <g class="titlebar">
+    <rect width="600" height="32" fill="#2E3440" />
+    <rect x="12.5" y="8.5" width="17" height="17" rx="8.5" stroke="black" stroke-opacity="0.5" />
+    <rect x="34.5" y="8.5" width="17" height="17" rx="8.5" stroke="black" stroke-opacity="0.5" />
+    <rect x="56.5" y="8.5" width="17" height="17" rx="8.5" stroke="black" stroke-opacity="0.5" />
+    <rect x="13" y="9" width="16" height="16" rx="8" fill="#FF496F" />
+    <rect x="35" y="9" width="16" height="16" rx="8" fill="#FFE064" />
+    <rect x="57" y="9" width="16" height="16" rx="8" fill="#44D695" />
+  </g>
+  <g id="tokens">
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="42">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">1</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="42">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="16" fill="#F97583">let</tspan>
+      <tspan x="40" fill="#E1E4E8"></tspan>
+      <tspan x="48" fill="#E1E4E8">highlighter</tspan>
+      <tspan x="144" fill="#F97583">=</tspan>
+      <tspan x="152" fill="#E1E4E8"></tspan>
+      <tspan x="160" fill="#F97583">await</tspan>
+      <tspan x="200" fill="#E1E4E8"></tspan>
+      <tspan x="208" fill="#E1E4E8">shiki.</tspan>
+      <tspan x="256" fill="#B392F0">getHighlighter</tspan>
+      <tspan x="368" fill="#E1E4E8">({theme:</tspan>
+      <tspan x="440" fill="#9ECBFF">&#39;github-dark&#39;</tspan>
+      <tspan x="544" fill="#E1E4E8">});</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="63">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">2</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="63">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="16" fill="#F97583">let</tspan>
+      <tspan x="40" fill="#E1E4E8"></tspan>
+      <tspan x="48" fill="#E1E4E8">someRandomLongVariableNameUsuallyFoundInJavaProgrammingLanguage</tspan>
+      <tspan x="560" fill="#F97583">=</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="84">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">3</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="84">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="16" fill="#9ECBFF">&quot;somerandomtextiluvmadokaaaaapleasedontcontinuereadingthis&quot;</tspan>
+      <tspan x="488" fill="#E1E4E8">;</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="105">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">4</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="105">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="16" fill="#F97583">let</tspan>
+      <tspan x="40" fill="#E1E4E8"></tspan>
+      <tspan x="48" fill="#E1E4E8">svgRenderer</tspan>
+      <tspan x="144" fill="#F97583">=</tspan>
+      <tspan x="152" fill="#E1E4E8"></tspan>
+      <tspan x="160" fill="#B392F0">shikiSVGRenderer</tspan>
+      <tspan x="288" fill="#E1E4E8">({</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="126">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">5</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="126">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="32" fill="#E1E4E8">bg:</tspan>
+      <tspan x="64" fill="#9ECBFF">&#39;#2E3440&#39;</tspan>
+      <tspan x="136" fill="#E1E4E8">,</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="147">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">6</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="147">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="32" fill="#E1E4E8">fontFamily:</tspan>
+      <tspan x="128" fill="#9ECBFF">&#39;Consolas&#39;</tspan>
+      <tspan x="208" fill="#E1E4E8">,</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="168">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">7</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="168">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="32" fill="#E1E4E8">lineHeightToFontSizeRatio:</tspan>
+      <tspan x="248" fill="#79B8FF">1.5</tspan>
+      <tspan x="272" fill="#E1E4E8">,</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="189">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">8</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="189">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="32" fill="#E1E4E8">fontSize:</tspan>
+      <tspan x="112" fill="#79B8FF">14</tspan>
+      <tspan x="128" fill="#E1E4E8">,</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="210">
+      <tspan x="16" fill="#ffffff" fill-opacity="0.5">9</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="210">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="32" fill="#E1E4E8">fontWidth:</tspan>
+      <tspan x="120" fill="#79B8FF">8</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" y="231">
+      <tspan x="8" fill="#ffffff" fill-opacity="0.5">10</tspan>
+    </text>
+    <text font-family="JetBrainsMono Nerd Font" font-size="14" x="32" y="231">
+      <tspan x="0" fill="#E1E4E8"></tspan>
+      <tspan x="16" fill="#E1E4E8">});</tspan>
+    </text>
+  </g>
+</svg>
