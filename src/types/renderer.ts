@@ -3,9 +3,8 @@ export interface RendererOptions {
   fontFamily: string;
   fontSize: number;
   lineHeightToFontSizeRatio: number;
-  bg: string;
-  horizontalPadding: number;
-  verticalPadding: number;
+  bg?: string;
+  fg?: string;
 }
 
 export interface SVGOutput {

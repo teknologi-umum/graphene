@@ -32,13 +32,12 @@ export const coreHandler: Middleware = async (req, res) => {
   try {
     const highlighter = await shiki.getHighlighter({ theme });
     const svgRenderer = shikiSVGRenderer({
-      bg: '#2E3440',
       fontFamily: 'JetBrainsMono Nerd Font',
       lineHeightToFontSizeRatio: 1.5,
       fontSize: 14,
       fontWidth: 8.25,
-      horizontalPadding: 4,
-      verticalPadding: 2,
+      bg: highlighter.getBackgroundColor(),
+      fg: highlighter.getForegroundColor(),
     });
 
     // Guess the language using Flourite
@@ -51,6 +50,7 @@ export const coreHandler: Middleware = async (req, res) => {
       .map((line: string) => {
         const indentSize = line.search(/\S/);
         return line.replace(
+          // break line if it's longer than 120 characters
           /(?![^\n]{1,120}$)([^\n]{1,120})\s/g,
           `$1\n${' '.repeat(indentSize !== -1 ? indentSize : 0)}`,
         );

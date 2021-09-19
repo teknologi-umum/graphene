@@ -14,8 +14,7 @@ const DEFAULT_CONFIG: Partial<RendererOptions> = {
   fontSize: 14,
   fontWidth: 8,
   bg: '#2E3440',
-  horizontalPadding: 4,
-  verticalPadding: 2,
+  fg: '#FFFFFF',
 };
 
 type RenderToSVG = (lines: IThemedToken[][]) => SVGOutput;
@@ -23,7 +22,7 @@ type RenderToSVG = (lines: IThemedToken[][]) => SVGOutput;
 export function svgRenderer(options: RendererOptions): {
   renderToSVG: RenderToSVG;
 } {
-  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fontWidth }: RendererOptions = Object.assign(
+  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth }: RendererOptions = Object.assign(
     DEFAULT_CONFIG,
     options,
   );
@@ -67,10 +66,10 @@ export function svgRenderer(options: RendererOptions): {
 
       lines.forEach((line, index) => {
         if (line.length === 0) {
-          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight });
+          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
           svg += `\n`;
         } else {
-          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight });
+          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
           svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (index + 1)}">\n`;
 
           let indent = 0;
@@ -119,17 +118,19 @@ const getIndentOffset = (size: number): number => {
       return 1;
     case 3:
       return 0;
+    default:
+      return 0;
   }
 };
 
 const generateLineNumber = (
   idx: number,
-  { fontFamily, fontSize, fontWidth, lineHeight }: Partial<RendererOptions> & { lineHeight: number },
+  { fontFamily, fontSize, fontWidth, lineHeight, fg }: Partial<RendererOptions> & { lineHeight: number },
 ) => {
   const offset = getIndentOffset(idx);
-  const lineNr = `<tspan fill="#ffffff" fill-opacity="0.5">${String(idx + 1).padStart(offset, '\u2800')}</tspan>`;
+  const lineNr = `<tspan fill="${fg}" fill-opacity="0.5">${String(idx + 1).padStart(offset, '\u2800')}</tspan>`;
 
-  return `<text font-family="${fontFamily}" font-size="${fontSize}" x="-${3 * fontWidth}" y="${
+  return `<text font-family="${fontFamily}" font-size="${fontSize}" x="-${3 * (fontWidth as number)}" y="${
     lineHeight * (idx + 1)
   }">${lineNr}</text>`;
 };
@@ -142,7 +143,7 @@ const HTML_ESCAPES: HTMLEscapes = {
   "'": '&#39;',
 };
 
-const escapeHTML = (html: string) => html.replace(/[&<>"']/g, (chr: keyof HTMLEscapes) => HTML_ESCAPES[chr]);
+const escapeHTML = (html: string) => html.replace(/[&<>"']/g, (chr: string) => HTML_ESCAPES[chr]);
 
 const OPTIONS: Partial<SVGAttributes> = {
   fill: '#fff',
@@ -150,19 +151,21 @@ const OPTIONS: Partial<SVGAttributes> = {
 
 function getTokenSVGAttributes(token: IThemedToken) {
   // handle different colour format
-  if (token.color.slice(1).length <= 6) OPTIONS.fill = token.color;
-  else if (token.color.slice(1).length === 8) {
-    const opacity = parseInt(token.color.slice(1 + 6), 16) / 255;
-    const roughRoundedOpacity = Math.floor(opacity * 100) / 100;
-    OPTIONS.fill = token.color.slice(0, 1 + 6);
-    OPTIONS.opacity = roughRoundedOpacity;
+  if (token.color) {
+    if (token.color.slice(1).length <= 6) OPTIONS.fill = token.color;
+    else if (token.color.slice(1).length === 8) {
+      const opacity = parseInt(token.color.slice(1 + 6), 16) / 255;
+      const roughRoundedOpacity = Math.floor(opacity * 100) / 100;
+      OPTIONS.fill = token.color.slice(0, 1 + 6);
+      OPTIONS.opacity = roughRoundedOpacity;
+    }
   }
 
   if (token.fontStyle === FontStyle.Bold) OPTIONS['font-weight'] = 'bold';
   if (token.fontStyle === FontStyle.Italic) OPTIONS['font-style'] = 'italic';
 
   return Object.keys(OPTIONS)
-    .reduce((acc, curr: keyof SVGAttributes) => {
+    .reduce((acc: string[], curr: string) => {
       if (OPTIONS[curr]) return acc.concat(`${curr}="${OPTIONS[curr]}"`);
       return acc.concat('');
     }, [])
