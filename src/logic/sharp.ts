@@ -13,7 +13,7 @@ export const processImage = async (base64: string, upscale: number, format: Imag
   const metadata = await image.metadata();
 
   return image
-    .resize(upscale * metadata.width, null)
+    .resize(upscale * (metadata.width as number), null)
     [format]()
     .toBuffer();
 };
