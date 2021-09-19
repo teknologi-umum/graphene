@@ -35,7 +35,7 @@ export const coreHandler: Middleware = async (req, res) => {
       fontFamily: 'JetBrainsMono Nerd Font',
       lineHeightToFontSizeRatio: 1.5,
       fontSize: 14,
-      fontWidth: 8.25,
+      fontWidth: 8.4,
       bg: highlighter.getBackgroundColor(),
       fg: highlighter.getForegroundColor(),
     });
