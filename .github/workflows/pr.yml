@@ -36,5 +36,8 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
 
+      - name: Build
+        run: npm run build
+
       - name: Send coverage report to Codecov
         uses: codecov/codecov-action@v2
