@@ -55,7 +55,7 @@ export function svgRenderer(options: RendererOptions): {
 
       let svg = '';
       svg += `<svg viewBox="0 0 ${bgWidth} ${bgHeight}" width="${bgWidth}" height="${bgHeight}" xmlns="http://www.w3.org/2000/svg">\n`;
-      svg += `<rect id="bg" fill="${bg}" width="${bgWidth}" height="${bgHeight}" rx="4"></rect>`;
+      svg += `<rect id="bg" fill="${bg}" width="${bgWidth}" height="${bgHeight}" rx="6"></rect>`;
       svg += '<g id="titlebar">';
       svg += `<rect width="${bgWidth}" height="${titlebarHeight}" fill="${bg}" rx="8"/>`;
       svg += '<rect x="13" y="9" width="14" height="14" rx="8" fill="#FF605C"/>';

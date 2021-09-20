@@ -23,7 +23,14 @@ export const coreHandler: Middleware = async (req, res) => {
     return;
   }
 
-  const { code, lang, format = 'png', upscale, theme = 'github-dark', font = 'jetbrains mono' }: RequestBody = req.body;
+  const {
+    code,
+    lang,
+    format = 'png',
+    upscale = 1,
+    theme = 'github-dark',
+    font = 'jetbrains mono',
+  }: RequestBody = req.body;
   const err = validate(req.body);
 
   if (err.length > 0) {
@@ -48,40 +55,42 @@ export const coreHandler: Middleware = async (req, res) => {
     const language = guess === 'unknown' ? 'md' : guess;
 
     const tokens = highlighter.codeToThemedTokens(code, language);
-    const { svg, width, height } = svgRenderer.renderToSVG(tokens);
+    const { svg } = svgRenderer.renderToSVG(tokens);
 
-    const imageWidth = Math.ceil(width * 1.25);
-    const imageHeight = Math.ceil(height * 1.25);
+    const border = {
+      size: 20,
+      colour: { r: 160, g: 173, b: 182, alpha: 1 },
+    };
+    const codeFrame = sharp(Buffer.from(svg), { density: Math.floor(72 * upscale) });
+    const codeFrameMeta = await codeFrame.metadata();
 
     // Convert the SVG to PNG
     const codeImage = await sharp({
       create: {
         // Create Transparent Background
-        width: imageWidth,
-        height: imageHeight,
+        width: codeFrameMeta.width as number,
+        height: codeFrameMeta.height as number,
         channels: 4,
-        background: { r: 0, g: 0, b: 0, alpha: 0 },
+        background: border.colour,
       },
     })
       .composite([
         {
           // Draw the SVG in front of the background
-          input: Buffer.from(svg),
-          blend: 'over',
-          gravity: 'centre',
-          density: 88,
+          input: await codeFrame.toBuffer(),
         },
       ])
+      .extend({
+        left: border.size,
+        right: border.size,
+        bottom: border.size,
+        top: border.size,
+        background: border.colour,
+      })
       [format]()
       .toBuffer();
 
-    const imageResult: Buffer = upscale
-      ? await sharp(codeImage)
-          .resize(Math.ceil(imageWidth * upscale), null)
-          .toBuffer()
-      : codeImage;
-
-    res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': imageResult.length }).end(imageResult);
+    res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': codeImage.length }).end(codeImage);
   } catch (err) {
     process.env.NODE_ENV !== 'production' && console.log(err);
     logger.captureException(err, (scope) => {
