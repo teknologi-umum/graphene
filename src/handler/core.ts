@@ -23,7 +23,14 @@ export const coreHandler: Middleware = async (req, res) => {
     return;
   }
 
-  const { code, lang, format = 'png', upscale, theme = 'github-dark', font = 'jetbrains mono' }: RequestBody = req.body;
+  const {
+    code,
+    lang,
+    format = 'png',
+    upscale = 1,
+    theme = 'github-dark',
+    font = 'jetbrains mono',
+  }: RequestBody = req.body;
   const err = validate(req.body);
 
   if (err.length > 0) {
@@ -54,7 +61,7 @@ export const coreHandler: Middleware = async (req, res) => {
       size: 20,
       colour: { r: 160, g: 173, b: 182, alpha: 1 },
     };
-    const codeFrame = sharp(Buffer.from(svg), { density: 72 * upscale });
+    const codeFrame = sharp(Buffer.from(svg), { density: Math.floor(72 * upscale) });
     const codeFrameMeta = await codeFrame.metadata();
 
     // Convert the SVG to PNG
