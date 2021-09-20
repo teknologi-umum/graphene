@@ -45,38 +45,50 @@ export const coreHandler: Middleware = async (req, res) => {
     const language = guess === 'unknown' ? 'md' : guess;
 
     const tokens = highlighter.codeToThemedTokens(code, language);
-    const { svg, width, height } = svgRenderer.renderToSVG(tokens);
+    const { svg } = svgRenderer.renderToSVG(tokens);
 
-    const imageWidth = Math.ceil(width * 1.25);
-    const imageHeight = Math.ceil(height * 1.25);
+    const border = {
+      size: 20,
+      colour: { r: 160, g: 173, b: 182, alpha: 1 },
+    };
+    const codeFrame = sharp(Buffer.from(svg), { density: 88 });
+    const codeFrameMeta = await codeFrame.metadata();
 
     // Convert the SVG to PNG
-    const codeImage = await sharp({
+    const codeImage = sharp({
       create: {
         // Create Transparent Background
-        width: imageWidth,
-        height: imageHeight,
+        width: codeFrameMeta.width as number,
+        height: codeFrameMeta.height as number,
         channels: 4,
-        background: { r: 0, g: 0, b: 0, alpha: 0 },
+        background: border.colour,
       },
     })
       .composite([
         {
           // Draw the SVG in front of the background
-          input: Buffer.from(svg),
-          blend: 'over',
-          gravity: 'centre',
-          density: 88,
+          input: await codeFrame.toBuffer(),
         },
       ])
-      [format]()
-      .toBuffer();
+      .extend({
+        left: border.size,
+        right: border.size,
+        bottom: border.size,
+        top: border.size,
+        background: border.colour,
+      })
+      [format]();
+
+    const codeImageBuffer = await codeImage.toBuffer();
+    const codeImageMeta = await codeImage.metadata();
+
+    console.log((codeImageMeta.width as number) * upscale);
 
     const imageResult: Buffer = upscale
-      ? await sharp(codeImage)
-          .resize(imageWidth * upscale, null)
+      ? await sharp(codeImageBuffer)
+          .resize((codeImageMeta.width as number) * upscale, null)
           .toBuffer()
-      : codeImage;
+      : codeImageBuffer;
 
     res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': imageResult.length }).end(imageResult);
   } catch (err) {
