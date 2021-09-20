@@ -51,11 +51,11 @@ export const coreHandler: Middleware = async (req, res) => {
       size: 20,
       colour: { r: 160, g: 173, b: 182, alpha: 1 },
     };
-    const codeFrame = sharp(Buffer.from(svg), { density: 88 });
+    const codeFrame = sharp(Buffer.from(svg), { density: 72 * upscale });
     const codeFrameMeta = await codeFrame.metadata();
 
     // Convert the SVG to PNG
-    const codeImage = sharp({
+    const codeImage = await sharp({
       create: {
         // Create Transparent Background
         width: codeFrameMeta.width as number,
@@ -77,20 +77,10 @@ export const coreHandler: Middleware = async (req, res) => {
         top: border.size,
         background: border.colour,
       })
-      [format]();
+      [format]()
+      .toBuffer();
 
-    const codeImageBuffer = await codeImage.toBuffer();
-    const codeImageMeta = await codeImage.metadata();
-
-    console.log((codeImageMeta.width as number) * upscale);
-
-    const imageResult: Buffer = upscale
-      ? await sharp(codeImageBuffer)
-          .resize((codeImageMeta.width as number) * upscale, null)
-          .toBuffer()
-      : codeImageBuffer;
-
-    res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': imageResult.length }).end(imageResult);
+    res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': codeImage.length }).end(codeImage);
   } catch (err) {
     process.env.NODE_ENV !== 'production' && console.log(err);
     logger.captureException(err, (scope) => {
