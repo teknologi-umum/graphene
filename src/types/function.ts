@@ -6,4 +6,5 @@ export type ValidateFuncOptions = {
   upscale: number;
   format: ImageFormat;
   theme: Theme;
+  font: string;
 };

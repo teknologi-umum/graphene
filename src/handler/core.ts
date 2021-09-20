@@ -6,6 +6,7 @@ import logger from '../utils/logger';
 import type { Middleware } from 'polka';
 import flourite from 'flourite';
 import { ImageFormat } from '../types/image';
+import { getFontSetup } from '../logic/getFontSetup';
 
 interface RequestBody {
   code: string;
@@ -13,6 +14,7 @@ interface RequestBody {
   format: ImageFormat;
   upscale: number;
   theme: shiki.Theme;
+  font: 'jetbrains mono' | 'sf mono' | 'fira code';
 }
 
 export const coreHandler: Middleware = async (req, res) => {
@@ -21,7 +23,7 @@ export const coreHandler: Middleware = async (req, res) => {
     return;
   }
 
-  const { code, lang, format = 'png', upscale, theme = 'github-dark' }: RequestBody = req.body;
+  const { code, lang, format = 'png', upscale, theme = 'github-dark', font = 'jetbrains mono' }: RequestBody = req.body;
   const err = validate(req.body);
 
   if (err.length > 0) {
@@ -31,11 +33,12 @@ export const coreHandler: Middleware = async (req, res) => {
 
   try {
     const highlighter = await shiki.getHighlighter({ theme });
+    const { fontFamily, lineHeightToFontSizeRatio, fontSize, fontWidth } = getFontSetup(font);
     const svgRenderer = shikiSVGRenderer({
-      fontFamily: 'JetBrainsMono Nerd Font',
-      lineHeightToFontSizeRatio: 1.5,
-      fontSize: 14,
-      fontWidth: 8.4,
+      fontFamily,
+      lineHeightToFontSizeRatio,
+      fontSize,
+      fontWidth,
       bg: highlighter.getBackgroundColor(),
       fg: highlighter.getForegroundColor(),
     });
