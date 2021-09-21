@@ -9,20 +9,8 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    container: node:16-buster
+    container: node:14.17-buster
     steps:
-      - name: Setup Chrome
-        run: >
-          apt-get update
-          && apt-get install -y wget gnupg ca-certificates procps libxss1
-          && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-          && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-          && apt-get update
-          && apt-get install -y google-chrome-stable
-          && rm -rf /var/lib/apt/lists/*
-          && wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh
-          && chmod +x /usr/sbin/wait-for-it.sh
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -38,7 +26,7 @@ jobs:
       - name: Test
         run: npm run test
         env:
-          EXEC_PATH: google-chrome-stable
+          NODE_ENV: test
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
@@ -47,6 +35,9 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
+
+      - name: Build test
+        run: npm run build
 
       - uses: superfly/flyctl-actions@master
         env:

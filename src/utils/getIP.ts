@@ -1,11 +1,13 @@
 import { proxyaddr, compile } from '@tinyhttp/proxy-addr';
+import type { IncomingMessage } from 'http';
+import type { Socket } from 'net';
 
 /**
  * Get client's IP
  * @param {import('http').IncomingMessage} req
  * @returns {String} Client's IP
  */
-export const getIP = (req) => {
+export const getIP = (req: IncomingMessage): string => {
   return proxyaddr(req, trustRemoteAddress(req.socket)).replace(/^.*:/, '');
 };
 
@@ -13,14 +15,11 @@ export const getIP = (req) => {
  * `req.connection` is deprecated on node 16.
  * Using req.socket instead.
  * @param {import('net').Socket} socket
- * @returns {never|boolean}
+ * @returns {boolean}
  */
-const trustRemoteAddress = (socket) => {
+const trustRemoteAddress = (socket: Socket): ((addr: string) => boolean) => {
   const val = socket.remoteAddress;
 
-  if (typeof val === 'function') return val;
-  if (typeof val === 'boolean' && val === true) return () => true;
-  if (typeof val === 'number') return (_, i) => (val ? i < val : undefined);
   if (typeof val === 'string') return compile(val.split(',').map((x) => x.trim()));
 
   return compile(val || []);
