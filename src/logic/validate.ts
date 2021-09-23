@@ -1,23 +1,29 @@
-import { BUNDLED_THEMES } from 'shiki';
+import { BUNDLED_THEMES, BUNDLED_LANGUAGES } from 'shiki';
 import type { ValidateFuncOptions } from '../types/function';
 
-type Validator = <T>(name: string, what: T) => string;
-type ValidatorWithKeys = <T>(name: string, what: T, keys: T[], err?: string) => string;
-
-const requiredString: Validator = (name, what) => (what ? '' : `${name} is required`);
-
-const requiredNumber: Validator = (name, what) => {
-  if (!what) return `${name} is required!`;
-  if (typeof what !== 'number') return `${name} must be a number!`;
-  if (what < 1) return `${name} can't be lower than 1!`;
+const validateString = (name: string, what: string, required: boolean): string => {
+  if (!what && required) return `${name} is required`;
+  if (what && typeof what !== 'string') return `${name} must be a string!`;
   return '';
 };
 
-const requiredKeys: ValidatorWithKeys = (name, what, keys, err) => {
-  // @ts-ignore 「Intl.ListFormat」がまだないから
+const validateNumber = (name: string, what: number, minmax: [number, number], required: boolean): string => {
+  if (!what && required) return `${name} is required!`;
+
+  if (what && typeof what !== 'number') return `${name} must be a number!`;
+  if (what && what < minmax[0] && what > minmax[1])
+    return `${name} can't be lower than ${minmax[0]} or bigger than ${minmax[1]}!`;
+
+  return '';
+};
+
+const validateKeys = <T>(name: string, what: T, keys: T[], err: string, required: boolean) => {
+  if (!what && required) return `${name} is required!`;
+
+  // @ts-ignore 「Intl.ListFormat」のタイプがまだないから
   const lf = new Intl.ListFormat('en');
-  if (!what) return `${name} is required!`;
-  if (!keys.includes(what)) return err ? err : `Bad \`${name}\`! Valid options are ${lf.format(keys)}`;
+  if (what && !keys.includes(what)) return err ? err : `Bad \`${name}\`! Valid options are ${lf.format(keys)}`;
+
   return '';
 };
 
@@ -25,18 +31,26 @@ const requiredKeys: ValidatorWithKeys = (name, what, keys, err) => {
  * Validate valid options
  * @param {ValidateFuncOptions} validate
  */
-export const validate = ({ code, upscale, format, theme, font, border }: ValidateFuncOptions): string[] => {
+export const validate = ({ code, upscale, format, theme, font, border, lang }: ValidateFuncOptions): string[] => {
   return [
-    requiredString('code', code),
-    requiredNumber('upscale', upscale),
-    requiredNumber('border', border),
-    requiredKeys('format', format, ['png', 'jpeg', 'webp']),
-    requiredKeys(
+    validateString('code', code, true),
+    validateNumber('upscale', upscale, [1, 10], false),
+    validateNumber('border', border, [1, Infinity], false),
+    validateKeys('format', format, ['png', 'jpeg', 'webp'], '', false),
+    validateKeys(
+      'lang',
+      lang,
+      BUNDLED_LANGUAGES.map((l) => l.id),
+      'Bad `lang`! See https://github.com/shikijs/shiki/blob/main/docs/languages.md#all-languages',
+      false,
+    ),
+    validateKeys(
       'theme',
       theme,
       BUNDLED_THEMES,
       'Bad `theme`! See https://github.com/shikijs/shiki/blob/main/docs/themes.md#all-themes for list of valid themes',
+      false,
     ),
-    requiredKeys('font', font?.toLowerCase(), ['sf mono', 'jetbrains mono', 'fira code']),
+    validateKeys('font', (font ?? '').toLowerCase(), ['sf mono', 'jetbrains mono', 'fira code'], '', false),
   ].filter(Boolean) as string[];
 };
