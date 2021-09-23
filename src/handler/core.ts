@@ -1,26 +1,12 @@
-import * as shiki from 'shiki';
-import sharp from 'sharp';
-import { validate } from '../logic/validate';
-import { svgRenderer as shikiSVGRenderer } from '../logic/svgRenderer';
-import logger from '../utils/logger';
-import type { Middleware } from 'polka';
 import flourite from 'flourite';
-import { ImageFormat } from '../types/image';
+import type { Middleware } from 'polka';
+import sharp from 'sharp';
+import * as shiki from 'shiki';
 import { getFontSetup } from '../logic/getFontSetup';
-
-interface RequestBody {
-  code: string;
-  lang: string;
-  format: ImageFormat;
-  upscale: number;
-  border: {
-    thickness: number;
-    colour: string;
-  };
-  theme: shiki.Theme;
-  font: 'jetbrains mono' | 'sf mono' | 'fira code';
-  lineNr: boolean;
-}
+import { svgRenderer as shikiSVGRenderer } from '../logic/svgRenderer';
+import { validate } from '../logic/validate';
+import type { ValidOptions } from '../types/function';
+import logger from '../utils/logger';
 
 export const coreHandler: Middleware = async (req, res) => {
   if (!req.body || !Object.keys(req.body).length) {
@@ -36,8 +22,8 @@ export const coreHandler: Middleware = async (req, res) => {
     upscale = 1,
     theme = 'github-dark',
     font = 'jetbrains mono',
-    lineNr = true,
-  }: RequestBody = req.body;
+    lineNumber = true,
+  }: ValidOptions = req.body;
   const err = validate(req.body);
 
   if (err.length > 0) {
@@ -53,7 +39,7 @@ export const coreHandler: Middleware = async (req, res) => {
       lineHeightToFontSizeRatio,
       fontSize,
       fontWidth,
-      lineNr,
+      lineNumber,
       bg: highlighter.getBackgroundColor(),
       fg: highlighter.getForegroundColor(),
     });

@@ -1,5 +1,11 @@
-import { BUNDLED_THEMES, BUNDLED_LANGUAGES } from 'shiki';
+import { BUNDLED_LANGUAGES, BUNDLED_THEMES } from 'shiki';
 import type { ValidOptions } from '../types/function';
+
+const validateBoolean = (name: string, what: boolean, required: boolean): string => {
+  if (!what && required) return `${name} is required`;
+  if (what && typeof what !== 'boolean') return `${name} must be a boolean!`;
+  return '';
+};
 
 const validateString = (name: string, what: string, required: boolean): string => {
   if (!what && required) return `${name} is required`;
@@ -31,8 +37,9 @@ const validateKeys = <T>(name: string, what: T, keys: T[], err: string, required
  * Validate valid options
  * @param {ValidateFuncOptions} validate
  */
-export const validate = ({ code, upscale, format, theme, font, border, lang }: ValidOptions): string[] => {
+export const validate = ({ code, upscale, format, theme, font, border, lang, lineNumber }: ValidOptions): string[] => {
   return [
+    validateBoolean('lineNumber', lineNumber, false),
     validateString('code', code, true),
     validateNumber('upscale', upscale, [1, 10], false),
     validateNumber('border.thickness', border?.thickness, [1, Infinity], false),

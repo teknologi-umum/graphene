@@ -15,7 +15,7 @@ const DEFAULT_CONFIG: Partial<RendererOptions> = {
   fontWidth: 8,
   bg: '#2E3440',
   fg: '#FFFFFF',
-  lineNr: true,
+  lineNumber: true,
 };
 
 type RenderToSVG = (lines: IThemedToken[][]) => SVGOutput;
@@ -23,7 +23,7 @@ type RenderToSVG = (lines: IThemedToken[][]) => SVGOutput;
 export function svgRenderer(options: RendererOptions): {
   renderToSVG: RenderToSVG;
 } {
-  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth, lineNr }: RendererOptions = Object.assign(
+  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth, lineNumber }: RendererOptions = Object.assign(
     DEFAULT_CONFIG,
     options,
   );
@@ -44,11 +44,11 @@ export function svgRenderer(options: RendererOptions): {
         }
       });
 
-      const lineNrWidth = 4 * fontWidth; // up to 1000 lines
+      const lineNumberWidth = (lineNumber ? 4 : 2) * fontWidth; // up to 1000 lines
       const titlebarHeight = 32;
 
       // longest line + left/right 4 char width
-      const bgWidth = (longestLineTextLength + 2) * fontWidth + lineNrWidth;
+      const bgWidth = (longestLineTextLength + 2) * fontWidth + lineNumberWidth;
 
       // all rows + 2 rows top/bot
       // const bgHeight = (lines.length + verticalPadding * 2) * lineheight;
@@ -65,14 +65,14 @@ export function svgRenderer(options: RendererOptions): {
       svg += '</g>';
 
       // we need to move the code to the right when we have line number
-      if (lineNr) svg += `<g id="tokens" transform="translate(${lineNrWidth}, ${titlebarHeight})">`;
+      svg += `<g id="tokens" transform="translate(${lineNumberWidth}, ${titlebarHeight})">`;
 
       lines.forEach((line, index) => {
         if (line.length === 0) {
-          if (lineNr) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+          if (lineNumber) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
           svg += `\n`;
         } else {
-          if (lineNr) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+          if (lineNumber) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
           svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (index + 1)}">\n`;
 
           let indent = 0;
@@ -131,11 +131,11 @@ const generateLineNumber = (
   { fontFamily, fontSize, fontWidth, lineHeight, fg }: Partial<RendererOptions> & { lineHeight: number },
 ) => {
   const offset = getIndentOffset(idx);
-  const lineNr = `<tspan fill="${fg}" fill-opacity="0.5">${String(idx + 1).padStart(offset, '\u2800')}</tspan>`;
+  const lineNumber = `<tspan fill="${fg}" fill-opacity="0.5">${String(idx + 1).padStart(offset, '\u2800')}</tspan>`;
 
   return `<text font-family="${fontFamily}" font-size="${fontSize}" x="-${3 * (fontWidth as number)}" y="${
     lineHeight * (idx + 1)
-  }">${lineNr}</text>`;
+  }">${lineNumber}</text>`;
 };
 
 const HTML_ESCAPES: HTMLEscapes = {

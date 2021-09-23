@@ -12,5 +12,5 @@ export interface ValidOptions {
   };
   theme: Theme;
   font: 'jetbrains mono' | 'sf mono' | 'fira code';
-  lineNr: boolean;
+  lineNumber: boolean;
 }
