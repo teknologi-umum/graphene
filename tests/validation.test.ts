@@ -75,7 +75,7 @@ test('what if we had multiple errors?', async () => {
     .expect({
       msg: [
         '`code` is required!',
-        "`upscale` can't be lower than 1!",
+        "`upscale` can't be lower than 1 or higher than 10!",
         'Bad `format`! Valid options are `png`, `jpeg`, and `webp`',
         'Bad `theme`! See https://github.com/shikijs/shiki/blob/main/docs/themes.md#all-themes for list of valid themes',
         'Bad `font`! Valid options are `sf mono`, `jetbrains mono`, and `fira code`',
