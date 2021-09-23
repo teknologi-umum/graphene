@@ -1,12 +1,7 @@
-import flourite from 'flourite';
 import type { Middleware } from 'polka';
-import sharp from 'sharp';
-import * as shiki from 'shiki';
-import { getFontSetup } from '../logic/getFontSetup';
-import { svgRenderer as shikiSVGRenderer } from '../logic/svgRenderer';
 import { validate } from '../logic/validate';
-import type { ValidOptions } from '../types/function';
 import logger from '../utils/logger';
+import { generateImage } from '../logic/generateImage';
 
 export const coreHandler: Middleware = async (req, res) => {
   if (!req.body || !Object.keys(req.body).length) {
@@ -14,70 +9,15 @@ export const coreHandler: Middleware = async (req, res) => {
     return;
   }
 
-  const {
-    code,
-    lang,
-    border,
-    format = 'png',
-    upscale = 1,
-    theme = 'github-dark',
-    font = 'jetbrains mono',
-    lineNumber = true,
-  }: ValidOptions = req.body;
   const err = validate(req.body);
-
   if (err.length > 0) {
     res.writeHead(400, { 'Content-Type': 'application/json' }).end(JSON.stringify({ msg: err }));
     return;
   }
 
   try {
-    const highlighter = await shiki.getHighlighter({ theme });
-    const { fontFamily, lineHeightToFontSizeRatio, fontSize, fontWidth } = getFontSetup(font);
-    const svgRenderer = shikiSVGRenderer({
-      fontFamily,
-      lineHeightToFontSizeRatio,
-      fontSize,
-      fontWidth,
-      lineNumber,
-      bg: highlighter.getBackgroundColor(),
-      fg: highlighter.getForegroundColor(),
-    });
-
-    // Guess the language using Flourite
-    const guess = lang || flourite(code, { shiki: true, heuristic: true });
-    const language = guess === 'unknown' ? 'md' : guess;
-
-    const tokens = highlighter.codeToThemedTokens(code, language);
-    const { svg } = svgRenderer.renderToSVG(tokens);
-
-    const codeFrame = sharp(Buffer.from(svg), { density: Math.floor(72 * upscale) });
-    const codeFrameMeta = await codeFrame.metadata();
-
-    const borderThickness = border?.thickness || 0;
-    const borderColour = border?.colour || '#a0adb6';
-
-    // Convert the SVG to PNG
-    const codeImage = await sharp({
-      create: {
-        width: codeFrameMeta.width as number,
-        height: codeFrameMeta.height as number,
-        channels: 4,
-        background: borderColour,
-      },
-    })
-      .composite([{ input: await codeFrame.toBuffer() }])
-      .extend({
-        left: borderThickness,
-        right: borderThickness,
-        bottom: borderThickness,
-        top: borderThickness,
-        background: borderColour,
-      })
-      [format]()
-      .toBuffer();
-
-    res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': codeImage.length }).end(codeImage);
+    const { image, format, length } = await generateImage(req.body);
+    res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': length }).end(image);
   } catch (err) {
     process.env.NODE_ENV !== 'production' && console.log(err);
     logger.captureException(err, (scope) => {
@@ -88,7 +28,7 @@ export const coreHandler: Middleware = async (req, res) => {
         'User-Agent': req.headers['user-agent'],
       });
       scope.setContext('request_body', { ...req.body });
-      scope.setTags({ lang });
+      scope.setTags({ lang: req.body.lang });
       return scope;
     });
 
