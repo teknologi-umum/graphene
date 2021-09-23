@@ -10,11 +10,12 @@ import { FontStyle, IThemedToken } from 'shiki';
 import type { HTMLEscapes, RendererOptions, SVGAttributes, SVGOutput } from '../types/renderer';
 
 const DEFAULT_CONFIG: Partial<RendererOptions> = {
-  fontFamily: 'JetBrainsMono Nerd Font',
+  fontFamily: 'JetBrains Mono',
   fontSize: 14,
   fontWidth: 8,
   bg: '#2E3440',
   fg: '#FFFFFF',
+  lineNr: true,
 };
 
 type RenderToSVG = (lines: IThemedToken[][]) => SVGOutput;
@@ -22,7 +23,7 @@ type RenderToSVG = (lines: IThemedToken[][]) => SVGOutput;
 export function svgRenderer(options: RendererOptions): {
   renderToSVG: RenderToSVG;
 } {
-  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth }: RendererOptions = Object.assign(
+  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth, lineNr }: RendererOptions = Object.assign(
     DEFAULT_CONFIG,
     options,
   );
@@ -62,14 +63,16 @@ export function svgRenderer(options: RendererOptions): {
       svg += '<rect x="35" y="9" width="14" height="14" rx="8" fill="#FFBD44"/>';
       svg += '<rect x="57" y="9" width="14" height="14" rx="8" fill="#00CA4E"/>';
       svg += '</g>';
-      svg += `<g id="tokens" transform="translate(${lineNrWidth}, ${titlebarHeight})">`;
+
+      // we need to move the code to the right when we have line number
+      if (lineNr) svg += `<g id="tokens" transform="translate(${lineNrWidth}, ${titlebarHeight})">`;
 
       lines.forEach((line, index) => {
         if (line.length === 0) {
-          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+          if (lineNr) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
           svg += `\n`;
         } else {
-          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+          if (lineNr) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
           svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (index + 1)}">\n`;
 
           let indent = 0;

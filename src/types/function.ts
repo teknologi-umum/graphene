@@ -1,10 +1,16 @@
 import type { Theme } from 'shiki';
 import type { ImageFormat } from './image';
 
-export type ValidateFuncOptions = {
+export interface ValidOptions {
   code: string;
-  upscale: number;
+  lang: string;
   format: ImageFormat;
+  upscale: number;
+  border: {
+    thickness: number;
+    colour: string;
+  };
   theme: Theme;
-  font: string;
-};
+  font: 'jetbrains mono' | 'sf mono' | 'fira code';
+  lineNr: boolean;
+}

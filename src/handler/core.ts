@@ -13,8 +13,13 @@ interface RequestBody {
   lang: string;
   format: ImageFormat;
   upscale: number;
+  border: {
+    thickness: number;
+    colour: string;
+  };
   theme: shiki.Theme;
   font: 'jetbrains mono' | 'sf mono' | 'fira code';
+  lineNr: boolean;
 }
 
 export const coreHandler: Middleware = async (req, res) => {
@@ -26,10 +31,12 @@ export const coreHandler: Middleware = async (req, res) => {
   const {
     code,
     lang,
+    border,
     format = 'png',
     upscale = 1,
     theme = 'github-dark',
     font = 'jetbrains mono',
+    lineNr = true,
   }: RequestBody = req.body;
   const err = validate(req.body);
 
@@ -46,6 +53,7 @@ export const coreHandler: Middleware = async (req, res) => {
       lineHeightToFontSizeRatio,
       fontSize,
       fontWidth,
+      lineNr,
       bg: highlighter.getBackgroundColor(),
       fg: highlighter.getForegroundColor(),
     });
@@ -57,35 +65,28 @@ export const coreHandler: Middleware = async (req, res) => {
     const tokens = highlighter.codeToThemedTokens(code, language);
     const { svg } = svgRenderer.renderToSVG(tokens);
 
-    const border = {
-      size: 20,
-      colour: { r: 160, g: 173, b: 182, alpha: 1 },
-    };
     const codeFrame = sharp(Buffer.from(svg), { density: Math.floor(72 * upscale) });
     const codeFrameMeta = await codeFrame.metadata();
+
+    const borderThickness = border?.thickness || 0;
+    const borderColour = border?.colour || '#a0adb6';
 
     // Convert the SVG to PNG
     const codeImage = await sharp({
       create: {
-        // Create Transparent Background
         width: codeFrameMeta.width as number,
         height: codeFrameMeta.height as number,
         channels: 4,
-        background: border.colour,
+        background: borderColour,
       },
     })
-      .composite([
-        {
-          // Draw the SVG in front of the background
-          input: await codeFrame.toBuffer(),
-        },
-      ])
+      .composite([{ input: await codeFrame.toBuffer() }])
       .extend({
-        left: border.size,
-        right: border.size,
-        bottom: border.size,
-        top: border.size,
-        background: border.colour,
+        left: borderThickness,
+        right: borderThickness,
+        bottom: borderThickness,
+        top: borderThickness,
+        background: borderColour,
       })
       [format]()
       .toBuffer();

@@ -5,6 +5,7 @@ export interface RendererOptions {
   lineHeightToFontSizeRatio: number;
   bg?: string;
   fg?: string;
+  lineNr: boolean;
 }
 
 export interface SVGOutput {
