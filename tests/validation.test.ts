@@ -17,6 +17,23 @@ test('should error without a code', async () => {
     .expect({ msg: ['`code` is required!'] });
 });
 
+test('should error when lineNumber is not a boolean', async () => {
+  await instance
+    .post('/api')
+    .send({ code: 'console.log("foo");', lineNumber: 'asd' })
+    .expect(400)
+    .expect('content-type', 'application/json')
+    .expect({ msg: ['`lineNumber` must be a boolean!'] });
+});
+
+test('should work when lineNumber is a boolean', async () => {
+  await instance
+    .post('/api')
+    .send({ code: 'console.log("foo");', lineNumber: false })
+    .expect(200)
+    .expect('content-type', 'image/png');
+});
+
 test('should error with bad format', async () => {
   await instance
     .post('/api')
@@ -75,7 +92,7 @@ test('what if we had multiple errors?', async () => {
     .expect({
       msg: [
         '`code` is required!',
-        "`upscale` can't be lower than 1!",
+        "`upscale` can't be lower than 1 or higher than 10!",
         'Bad `format`! Valid options are `png`, `jpeg`, and `webp`',
         'Bad `theme`! See https://github.com/shikijs/shiki/blob/main/docs/themes.md#all-themes for list of valid themes',
         'Bad `font`! Valid options are `sf mono`, `jetbrains mono`, and `fira code`',

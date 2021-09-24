@@ -15,17 +15,62 @@ const DEFAULT_CONFIG: Partial<RendererOptions> = {
   fontWidth: 8,
   bg: '#2E3440',
   fg: '#FFFFFF',
+  lineNumber: true,
 };
 
-type RenderToSVG = (lines: IThemedToken[][]) => SVGOutput;
+const generateLineNumber = (
+  idx: number,
+  lineNumberWidth: number,
+  { fontFamily, fontSize, lineHeight, fg }: Partial<RendererOptions> & { lineHeight: number },
+) => {
+  const lineNumber = `<tspan fill="${fg}" fill-opacity="0.5">${String(idx + 1).padStart(3, '\u2800')}</tspan>`;
+
+  return `<text font-family="${fontFamily}" font-size="${fontSize}" x="-${lineNumberWidth * 0.75}" y="${
+    lineHeight * (idx + 1)
+  }">${lineNumber}</text>`;
+};
+
+const HTML_ESCAPES: HTMLEscapes = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
+const escapeHTML = (html: string) => html.replace(/[&<>"']/g, (chr: string) => HTML_ESCAPES[chr]);
+
+const OPTIONS: Partial<SVGAttributes> = {
+  fill: '#fff',
+};
+
+function getTokenSVGAttributes(token: IThemedToken) {
+  // handle different colour format
+  if (token.color) {
+    if (token.color.slice(1).length <= 6) OPTIONS.fill = token.color;
+    else if (token.color.slice(1).length === 8) {
+      const opacity = parseInt(token.color.slice(1 + 6), 16) / 255;
+      const roughRoundedOpacity = Math.floor(opacity * 100) / 100;
+      OPTIONS.fill = token.color.slice(0, 1 + 6);
+      OPTIONS.opacity = roughRoundedOpacity;
+    }
+  }
+
+  if (token.fontStyle === FontStyle.Bold) OPTIONS['font-weight'] = 'bold';
+  if (token.fontStyle === FontStyle.Italic) OPTIONS['font-style'] = 'italic';
+
+  return Object.keys(OPTIONS)
+    .reduce((acc: string[], curr: string) => {
+      if (OPTIONS[curr]) return acc.concat(`${curr}="${OPTIONS[curr]}"`);
+      return acc.concat('');
+    }, [])
+    .join(' ');
+}
 
 export function svgRenderer(options: RendererOptions): {
-  renderToSVG: RenderToSVG;
+  renderToSVG: (lines: IThemedToken[][]) => SVGOutput;
 } {
-  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth }: RendererOptions = Object.assign(
-    DEFAULT_CONFIG,
-    options,
-  );
+  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth, lineNumber }: RendererOptions =
+    Object.assign(DEFAULT_CONFIG, options);
 
   if (!fontWidth) throw new Error("options must have 'fontWidth'");
 
@@ -43,11 +88,11 @@ export function svgRenderer(options: RendererOptions): {
         }
       });
 
-      const lineNrWidth = 4 * fontWidth; // up to 1000 lines
+      const lineNumberWidth = (lineNumber ? String(lines.length).length + 2 : 2) * fontWidth; // up to 1000 lines
       const titlebarHeight = 32;
 
       // longest line + left/right 4 char width
-      const bgWidth = (longestLineTextLength + 2) * fontWidth + lineNrWidth;
+      const bgWidth = (longestLineTextLength + 2) * fontWidth + lineNumberWidth;
 
       // all rows + 2 rows top/bot
       // const bgHeight = (lines.length + verticalPadding * 2) * lineheight;
@@ -62,14 +107,16 @@ export function svgRenderer(options: RendererOptions): {
       svg += '<rect x="35" y="9" width="14" height="14" rx="8" fill="#FFBD44"/>';
       svg += '<rect x="57" y="9" width="14" height="14" rx="8" fill="#00CA4E"/>';
       svg += '</g>';
-      svg += `<g id="tokens" transform="translate(${lineNrWidth}, ${titlebarHeight})">`;
+
+      // we need to move the code to the right when we have line number
+      svg += `<g id="tokens" transform="translate(${lineNumberWidth}, ${titlebarHeight})">`;
 
       lines.forEach((line, index) => {
         if (line.length === 0) {
-          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+          if (lineNumber) svg += generateLineNumber(index, lineNumberWidth, { fontFamily, fontWidth, lineHeight, fg });
           svg += `\n`;
         } else {
-          svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+          if (lineNumber) svg += generateLineNumber(index, lineNumberWidth, { fontFamily, fontWidth, lineHeight, fg });
           svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (index + 1)}">\n`;
 
           let indent = 0;
@@ -107,67 +154,4 @@ export function svgRenderer(options: RendererOptions): {
       return { width: bgWidth, height: bgHeight, svg };
     },
   };
-}
-
-const getIndentOffset = (size: number): number => {
-  const numLength = String(size).length;
-  switch (numLength) {
-    case 1:
-      return 2;
-    case 2:
-      return 1;
-    case 3:
-      return 0;
-    default:
-      return 0;
-  }
-};
-
-const generateLineNumber = (
-  idx: number,
-  { fontFamily, fontSize, fontWidth, lineHeight, fg }: Partial<RendererOptions> & { lineHeight: number },
-) => {
-  const offset = getIndentOffset(idx);
-  const lineNr = `<tspan fill="${fg}" fill-opacity="0.5">${String(idx + 1).padStart(offset, '\u2800')}</tspan>`;
-
-  return `<text font-family="${fontFamily}" font-size="${fontSize}" x="-${3 * (fontWidth as number)}" y="${
-    lineHeight * (idx + 1)
-  }">${lineNr}</text>`;
-};
-
-const HTML_ESCAPES: HTMLEscapes = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-};
-
-const escapeHTML = (html: string) => html.replace(/[&<>"']/g, (chr: string) => HTML_ESCAPES[chr]);
-
-const OPTIONS: Partial<SVGAttributes> = {
-  fill: '#fff',
-};
-
-function getTokenSVGAttributes(token: IThemedToken) {
-  // handle different colour format
-  if (token.color) {
-    if (token.color.slice(1).length <= 6) OPTIONS.fill = token.color;
-    else if (token.color.slice(1).length === 8) {
-      const opacity = parseInt(token.color.slice(1 + 6), 16) / 255;
-      const roughRoundedOpacity = Math.floor(opacity * 100) / 100;
-      OPTIONS.fill = token.color.slice(0, 1 + 6);
-      OPTIONS.opacity = roughRoundedOpacity;
-    }
-  }
-
-  if (token.fontStyle === FontStyle.Bold) OPTIONS['font-weight'] = 'bold';
-  if (token.fontStyle === FontStyle.Italic) OPTIONS['font-style'] = 'italic';
-
-  return Object.keys(OPTIONS)
-    .reduce((acc: string[], curr: string) => {
-      if (OPTIONS[curr]) return acc.concat(`${curr}="${OPTIONS[curr]}"`);
-      return acc.concat('');
-    }, [])
-    .join(' ');
 }
