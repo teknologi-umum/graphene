@@ -10,7 +10,7 @@ import { FontStyle, IThemedToken } from 'shiki';
 import type { HTMLEscapes, RendererOptions, SVGAttributes, SVGOutput } from '../types/renderer';
 
 const DEFAULT_CONFIG: Partial<RendererOptions> = {
-  fontFamily: 'JetBrains Mono',
+  fontFamily: 'JetBrainsMono Nerd Font',
   fontSize: 14,
   fontWidth: 8,
   bg: '#2E3440',
