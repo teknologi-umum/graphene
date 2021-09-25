@@ -18,16 +18,11 @@ const DEFAULT_CONFIG: Partial<RendererOptions> = {
   lineNumber: true,
 };
 
-const generateLineNumber = (
-  idx: number,
-  lineNumberWidth: number,
-  { fontFamily, fontSize, lineHeight, fg }: Partial<RendererOptions> & { lineHeight: number },
-) => {
-  const lineNumber = `<tspan fill="${fg}" fill-opacity="0.5">${String(idx + 1).padStart(3, '\u2800')}</tspan>`;
-
-  return `<text font-family="${fontFamily}" font-size="${fontSize}" x="-${lineNumberWidth * 0.75}" y="${
-    lineHeight * (idx + 1)
-  }">${lineNumber}</text>`;
+const generateLineNumber = (idx: number, { fg, fontWidth }: Partial<RendererOptions> & { lineHeight: number }) => {
+  return `<tspan fill="${fg}" fill-opacity="0.25" x="-${(fontWidth as number) * 4}">${String(idx + 1).padStart(
+    3,
+    '\u2800',
+  )}</tspan>`;
 };
 
 const HTML_ESCAPES: HTMLEscapes = {
@@ -88,11 +83,11 @@ export function svgRenderer(options: RendererOptions): {
         }
       });
 
-      const lineNumberWidth = (lineNumber ? String(lines.length).length + 2 : 2) * fontWidth; // up to 1000 lines
+      const lineNumberWidth = (lineNumber ? String(lines.length).length + 3 : 2) * fontWidth;
       const titlebarHeight = 32;
 
       // longest line + left/right 4 char width
-      const bgWidth = (longestLineTextLength + 2) * fontWidth + lineNumberWidth;
+      const bgWidth = (longestLineTextLength + 4) * fontWidth + lineNumberWidth;
 
       // all rows + 2 rows top/bot
       // const bgHeight = (lines.length + verticalPadding * 2) * lineheight;
@@ -113,11 +108,11 @@ export function svgRenderer(options: RendererOptions): {
 
       lines.forEach((line, index) => {
         if (line.length === 0) {
-          if (lineNumber) svg += generateLineNumber(index, lineNumberWidth, { fontFamily, fontWidth, lineHeight, fg });
+          if (lineNumber) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
           svg += `\n`;
         } else {
-          if (lineNumber) svg += generateLineNumber(index, lineNumberWidth, { fontFamily, fontWidth, lineHeight, fg });
           svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (index + 1)}">\n`;
+          if (lineNumber) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
 
           let indent = 0;
           line.forEach((token) => {
@@ -151,6 +146,7 @@ export function svgRenderer(options: RendererOptions): {
       svg += '</g>';
       svg += '\n</svg>\n';
 
+      console.log(svg);
       return { width: bgWidth, height: bgHeight, svg };
     },
   };
