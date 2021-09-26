@@ -100,7 +100,9 @@ Example request:
 Example output:
 
 <kbd>
+
 ![output.png](./scratch/ouput.png)
+
 </kbd>
 
 ## Development
