@@ -35,7 +35,17 @@ export async function generateImage({
 
   const language = guessLanguage(code, lang);
   const tokens = highlighter.codeToThemedTokens(code, language);
+
   const { svg } = svgRenderer.renderToSVG(tokens);
+
+  if (format === 'svg') {
+    const svgBuffer = Buffer.from(svg);
+    return {
+      image: svgBuffer,
+      format: format,
+      length: svgBuffer.byteLength,
+    };
+  }
 
   const codeFrame = sharp(Buffer.from(svg), { density: Math.floor(72 * upscale) });
   const codeFrameMeta = await codeFrame.metadata();
@@ -54,10 +64,10 @@ export async function generateImage({
   })
     .composite([{ input: await codeFrame.toBuffer() }])
     .extend({
-      left: borderThickness,
-      right: borderThickness,
-      bottom: borderThickness,
-      top: borderThickness,
+      left: borderThickness * upscale,
+      right: borderThickness * upscale,
+      bottom: borderThickness * upscale,
+      top: borderThickness * upscale,
       background: borderColour,
     })
     [format]()

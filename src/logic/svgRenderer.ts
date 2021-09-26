@@ -108,7 +108,11 @@ export function svgRenderer(options: RendererOptions): {
 
       lines.forEach((line, index) => {
         if (line.length === 0) {
-          if (lineNumber) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+          if (lineNumber) {
+            svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (index + 1)}">\n`;
+            svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+            svg += '</text>';
+          }
           svg += `\n`;
         } else {
           svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (index + 1)}">\n`;
@@ -146,7 +150,6 @@ export function svgRenderer(options: RendererOptions): {
       svg += '</g>';
       svg += '\n</svg>\n';
 
-      console.log(svg);
       return { width: bgWidth, height: bgHeight, svg };
     },
   };

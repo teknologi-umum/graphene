@@ -44,7 +44,7 @@ test('should error with bad format', async () => {
     })
     .expect(400)
     .expect('content-type', 'application/json')
-    .expect({ msg: ['Bad `format`! Valid options are `png`, `jpeg`, and `webp`'] });
+    .expect({ msg: ['Bad `format`! Valid options are `png`, `jpeg`, `webp`, and `svg`'] });
 });
 
 test('should error when theme does not exists', async () => {
@@ -93,7 +93,7 @@ test('what if we had multiple errors?', async () => {
       msg: [
         '`code` is required!',
         "`upscale` can't be lower than 1 or higher than 10!",
-        'Bad `format`! Valid options are `png`, `jpeg`, and `webp`',
+        'Bad `format`! Valid options are `png`, `jpeg`, `webp`, and `svg`',
         'Bad `theme`! See https://github.com/shikijs/shiki/blob/main/docs/themes.md#all-themes for list of valid themes',
         'Bad `font`! Valid options are `sf mono`, `jetbrains mono`, and `fira code`',
       ],

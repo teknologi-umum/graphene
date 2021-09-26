@@ -15,5 +15,7 @@ export const coreHandler: Middleware = async (req, res) => {
   }
 
   const { image, format, length } = await generateImage(req.body);
-  res.writeHead(200, { 'Content-Type': `image/${format}`, 'Content-Length': length }).end(image);
+  res
+    .writeHead(200, { 'Content-Type': `image/${format === 'svg' ? 'svg+xml' : format}`, 'Content-Length': length })
+    .end(image);
 };
