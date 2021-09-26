@@ -101,7 +101,7 @@ Example output:
 
 <kbd>
 
-![output.png](./scratch/ouput.png)
+![output.png](https://github.com/teknologi-umum/graphene/blob/master/scratch/output.png)
 
 </kbd>
 
