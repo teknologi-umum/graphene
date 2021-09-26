@@ -33,7 +33,7 @@ test('should output svg', async () => {
     .post('/api')
     .send(`{ "code": "console.log('foo');", "format": "svg" }`)
     .expect(200)
-    .expect('content-type', 'image/svg+xml')
+    .expect('content-type', 'image/svg+xml');
 });
 
 test.run();

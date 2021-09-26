@@ -27,12 +27,14 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 - `code`
 
   The code snippet you want to prettify.
+
   - Required: `true`
   - Default: `undefined`
 
 - `lang`
 
   The language used for highlighting. See [shikijs/language][shiki-lang-link]. If you leave this field empty, [flourite][flourite-link] will try its best to guess it.
+
   - Required: `false`
   - Default: `''`
   - Valid Options: [`See here`][shiki-lang-link]
@@ -40,6 +42,7 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 - `format`
 
   The output format. If you choose `svg`, you won't get `border` since the border is created by [sharpjs][sharp-link] instead of embedding it in the svg.
+
   - Required: `false`
   - Default: `png`
   - Valid Options: `jpeg`, `png`, `webp`, and `svg`
@@ -47,6 +50,7 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 - `upscale`
 
   How much do you want to upscale the image.
+
   - Required: `false`
   - Default: `false`
   - Valid Options: `1 - 10`
@@ -54,14 +58,15 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 - `theme`
 
   Colorscheme used for the code.
+
   - Required: `false`
   - Default: `github-dark`
   - Valid Options: [`See here`][shiki-theme-link]
 
-
 - `font`
 
   Font used for the code.
+
   - Required: `false`
   - Default: `JetBrains Mono`
   - Valid Options: `SF Mono`, `JetBrains Mono` and `Fira Code`
@@ -69,6 +74,7 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 - `border.thickness`
 
   How thick do you want the border to be.
+
   - Required: `false`
   - Default: `0`
   - Valid Options: `1 - Infinity`
@@ -76,6 +82,7 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 - `border.colour`
 
   The border colour in hex format.
+
   - Required: `false`
   - Default: `'#a0adb6'`
 
@@ -120,10 +127,13 @@ You will need Node.js >=16.
 - `npm run docker:run` - 'it works on my machine' is no more
 
 ## FAQ
+
 ### Why Shiki?
-Because it gives pretty much the same *accurate* highlighting as Visual Studio Code. Though it won't highlight it semantically since it still uses RegEx.
+
+Because it gives pretty much the same _accurate_ highlighting as Visual Studio Code. Though it won't highlight it semantically since it still uses RegEx.
 
 ### How it works
+
 - You send a request with stuff
 - Graphene does its magic
 - ???
@@ -142,8 +152,10 @@ Because it gives pretty much the same *accurate* highlighting as Visual Studio C
 </details>
 
 ### ..what is up with the commit messages?
+
 I don't even know
 
 ### Why do I prefer this over, say, carbon.now.sh?
+
 Well, I made this because I want it to be used programatically, without having to open a browser and doing it myself.
 Because it uses [shiki][shiki-link], the highlight produced is more accurate, it's identical to the one used in vscode.
