@@ -24,11 +24,13 @@ if (process.env.NODE_ENV !== 'test') {
 // Graceful shutdown
 process.on('SIGINT', () =>
   server.server.close((err) => {
+    /* eslint-disable-next-line */
     console.log('\nSIGINT: ' + err);
   }),
 );
 process.on('SIGTERM', () =>
   server.server.close((err) => {
+    /* eslint-disable-next-line */
     console.log('\nSIGTERM: ' + err);
   }),
 );

@@ -5,6 +5,7 @@ import logger from '../utils/logger';
  * Default error handler
  */
 export const errorHandler: ErrorHandler = (err, req, res) => {
+  /* eslint-disable-next-line */
   process.env.NODE_ENV !== 'production' && console.log(err);
   logger.captureException(err, (scope) => {
     scope.setContext('request_header', {

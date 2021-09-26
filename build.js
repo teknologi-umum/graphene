@@ -23,6 +23,7 @@ esbuild
     tsconfig: 'tsconfig.json',
   })
   .catch((e) => {
+    /* eslint-disable-next-line */
     console.error(e);
     process.exit(1);
   });
