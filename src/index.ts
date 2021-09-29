@@ -6,6 +6,7 @@ import { json } from './middleware/json';
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
 import { coreHandler } from './handler/core';
+import logtail from './utils/logtail';
 import type { Middleware } from 'polka';
 
 const server = polka({ onError: errorHandler })
@@ -18,7 +19,11 @@ const server = polka({ onError: errorHandler })
   .post('/api', rateLimiter, json, coreHandler);
 
 if (process.env.NODE_ENV !== 'test') {
-  server.listen(process.env.PORT || 3000);
+  server.listen(process.env.PORT || 3000, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Running on http://localhost:${process.env.PORT || 3000}`);
+    logtail.info('Launching');
+  });
 }
 
 // Graceful shutdown
