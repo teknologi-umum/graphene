@@ -11,8 +11,8 @@ If you think you can go ahead without opening up an issue, please explain change
 in as much detail as possible.
 
 Here is a few checklist that act as a reminder for your PR:
-[ ] I've opened a Github issue beforehand
-[ ] I've explained my PR in as much detail as possible.
-[ ] I've added test files for new features.
+- [ ] I've opened a Github issue beforehand
+- [ ] I've explained my PR in as much detail as possible.
+- [ ] I've added test files for new features.
 
 After everything's complete, you can delete this placeholder text. Again, thank you!
