@@ -1,0 +1,14 @@
+{
+  "useTabs": false,
+  "endOfLine": "lf",
+  "arrowParens": "always",
+  "semi": true,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 80,
+  "svelteSortOrder": "options-styles-markup-scripts",
+  "svelteAllowShorthand": true,
+  "svelteBracketNewLine": true,
+  "svelteIndentScriptAndStyle": false
+}
