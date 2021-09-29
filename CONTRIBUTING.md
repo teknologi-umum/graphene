@@ -35,9 +35,7 @@ $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bas
 $ nvm use
 ```
 
-2. [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) if you don't have Redis and MongoDB installed on your machine.
-
-3. Telegram Bot Token. You must create one in order to take the bot into development. Telegram has [a guide about it](https://core.telegram.org/bots#6-botfather).
+2. [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) if you want to test the app using docker. (Optional)
 
 ### Getting Started
 
