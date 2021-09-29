@@ -53,7 +53,7 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 
   - Required: `false`
   - Default: `false`
-  - Valid Options: `1 - 10`
+  - Valid Options: `1 - 5`
 
 - `theme`
 

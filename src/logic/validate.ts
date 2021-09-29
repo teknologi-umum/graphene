@@ -42,7 +42,7 @@ export const validate = ({ code, upscale, format, theme, font, border, lang, lin
   return [
     validateBoolean('lineNumber', lineNumber),
     validateString('code', code, true),
-    validateNumber('upscale', upscale, 10, false),
+    validateNumber('upscale', upscale, 5, false),
     validateNumber('border.thickness', border?.thickness, Infinity, false),
     validateString('border.colour', border?.colour, false),
     validateKeys('format', format, ['png', 'jpeg', 'webp', 'svg'], '', false),
