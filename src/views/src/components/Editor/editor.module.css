@@ -1,0 +1,41 @@
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 0.125rem #e2e8f0 solid;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+}
+
+.main__editor {
+  border-right: 0.125rem #e2e8f0 solid;
+}
+
+.editor__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-bottom: 0.125rem #e2e8f0 solid;
+  padding: 0.75rem;
+}
+
+.editor__input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: #2d3748;
+}
+
+.main__preview {
+  padding: 1rem;
+}
+
+.main__preview-title {
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  color: #2d3748;
+}

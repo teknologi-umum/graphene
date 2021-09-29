@@ -1,4 +1,3 @@
-<style>
 .header {
   text-align: center;
   font-family: 'Rubik', sans-serif;
@@ -21,11 +20,3 @@
   font-weight: 500;
   font-size: 2rem;
 }
-</style>
-
-<header class="header">
-  <h1 class="header__title">GRAPHENE</h1>
-  <span class="header__subtitle">
-    Create and share beautiful code snippets!
-  </span>
-</header>

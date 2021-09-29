@@ -175,3 +175,5 @@ export const VALID_THEMES = [
   'vitesse-dark',
   'vitesse-light',
 ];
+
+export const VALID_FORMAT = ['png', 'jpeg', 'webp', 'svg'];

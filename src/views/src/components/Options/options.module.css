@@ -1,11 +1,10 @@
-<style>
 .options {
   display: flex;
   position: relative;
   border: 0.125rem #e2e8f0 solid;
   box-sizing: border-box;
   border-radius: 0.5rem;
-  max-width: 14rem;
+  flex: 1 0 auto;
 }
 
 .options__icon {
@@ -33,6 +32,11 @@
   outline: none;
   border: none;
   border-radius: 0.5rem;
+  text-transform: capitalize;
+}
+
+.options__input::placeholder {
+  text-transform: capitalize;
 }
 
 :global(.arrow) {
@@ -85,47 +89,3 @@
 .candidate:hover {
   background-color: #edf2f7;
 }
-</style>
-
-<div class="options">
-  <div class="options__icon">
-    <svelte:component this={icon} />
-  </div>
-  <div class="options__input-wrapper">
-    <input
-      class="options__input"
-      type="text"
-      on:input={filterCandidate}
-      on:focus={() => (isCandidateVisible = true)}
-      on:blur={() => (isCandidateVisible = false)}
-      placeholder={inputValue}
-    />
-    <ArrowIcon className="arrow" />
-    {#if isCandidateVisible}
-      <ul class="options__candidates">
-        {#each filteredItems as item}
-          <li class="candidate">{item}</li>
-        {/each}
-      </ul>
-    {/if}
-  </div>
-</div>
-
-<script>
-import ArrowIcon from './ArrowIcon.svelte';
-export let items, selected, icon;
-
-$: inputValue = '' || selected;
-
-// so we don't mutate the original items;
-let filteredItems = items;
-
-let isCandidateVisible = false;
-
-function filterCandidate(e) {
-  const query = e.currentTarget.value;
-  filteredItems = items.filter((item) =>
-    item.toLowerCase().includes(query.toLowerCase()),
-  );
-}
-</script>
