@@ -9,14 +9,10 @@
     "sourceType": "module"
   },
   "rules": {},
-  "plugins": [
-    "svelte3"
-  ],
+  "plugins": ["svelte3"],
   "overrides": [
     {
-      "files": [
-        "*.svelte"
-      ],
+      "files": ["*.svelte"],
       "processor": "svelte3/svelte3"
     }
   ]
