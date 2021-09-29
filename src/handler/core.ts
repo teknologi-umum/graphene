@@ -1,6 +1,7 @@
 import type { Middleware } from 'polka';
 import { validate } from '../logic/validate';
 import { generateImage } from '../logic/generateImage';
+import logtail from '../utils/logtail';
 
 export const coreHandler: Middleware = async (req, res) => {
   if (!req.body || !Object.keys(req.body).length) {
@@ -18,4 +19,16 @@ export const coreHandler: Middleware = async (req, res) => {
   res
     .writeHead(200, { 'Content-Type': `image/${format === 'svg' ? 'svg+xml' : format}`, 'Content-Length': length })
     .end(image);
+
+  await logtail.info('Incoming POST request', {
+    body: req.body,
+    headers: {
+      accept: req.headers.accept || '',
+      'content-type': req.headers['content-type'] || '',
+      origin: req.headers.origin || '',
+      referer: req.headers.referer || '',
+    },
+    port: req.socket.remotePort || '',
+    ipv: req.socket.remoteFamily || '',
+  });
 };

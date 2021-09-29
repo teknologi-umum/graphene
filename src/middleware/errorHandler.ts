@@ -1,5 +1,6 @@
 import type { ErrorHandler } from 'polka';
 import logger from '../utils/logger';
+import logtail from '../utils/logtail';
 
 /**
  * Default error handler
@@ -21,4 +22,6 @@ export const errorHandler: ErrorHandler = (err, req, res) => {
   res
     .writeHead(500, { 'Content-Type': 'application/json' })
     .end(JSON.stringify({ msg: 'Something went wrong on our side.' }));
+
+  logtail.error('Error was thrown', { error: String(err) });
 };
