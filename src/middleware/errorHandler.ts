@@ -1,5 +1,5 @@
 import type { ErrorHandler } from 'polka';
-import logger from '../utils/logger';
+import sentry from '../utils/sentry';
 import logtail from '../utils/logtail';
 
 /**
@@ -8,7 +8,7 @@ import logtail from '../utils/logtail';
 export const errorHandler: ErrorHandler = (err, req, res) => {
   /* eslint-disable-next-line */
   process.env.NODE_ENV !== 'production' && console.log(err);
-  logger.captureException(err, (scope) => {
+  sentry.captureException(err, (scope) => {
     scope.setContext('request_header', {
       'Content-Type': req.headers['content-type'],
       Origin: req.headers['origin'],

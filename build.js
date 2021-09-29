@@ -7,6 +7,7 @@ esbuild
     format: 'esm',
     platform: 'node',
     external: [
+      '@logtail/node',
       '@sentry/node',
       '@tinyhttp/proxy-addr',
       'dotenv',
@@ -19,7 +20,7 @@ esbuild
       'sirv',
     ],
     outdir: 'dist',
-    target: ['es2019', 'node14'],
+    target: ['es2021', 'node14.17'],
     tsconfig: 'tsconfig.json',
   })
   .catch((e) => {
