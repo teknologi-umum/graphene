@@ -3,12 +3,17 @@ import LanguageIcon from '/#/icons/LanguageIcon';
 import ArrowIcon from '/#/icons/ArrowIcon';
 import styles from './options.module.css';
 import PaletteIcon from '/#/icons/PaletteIcon';
+import FormatIcon from '/#/icons/FormatIcon';
+import FontIcon from '/#/icons/FontIcon';
+import UpscaleIcon from '/#/icons/UpscaleIcon';
+import LineNumberIcon from '/#/icons/LineNumberIcon';
 
 interface OptionsProps {
   items: string[];
-  icon: 'language' | 'palette';
+  icon: 'language' | 'palette' | 'format' | 'font' | 'upscale' | 'linenr';
   selected: string;
-  setSelected: <U extends string>(v: (U extends Function ? never : U) | ((prev: U) => U)) => U;
+  setSelected: Function;
+  width: string;
 }
 
 export default function Options(props: OptionsProps) {
@@ -22,7 +27,7 @@ export default function Options(props: OptionsProps) {
   }
 
   return (
-    <div class={styles.options}>
+    <div class={styles.options} style={{ width: props.width }}>
       <div class={styles.options__icon}>
         <Switch>
           <Match when={props.icon === 'language'}>
@@ -30,6 +35,18 @@ export default function Options(props: OptionsProps) {
           </Match>
           <Match when={props.icon === 'palette'}>
             <PaletteIcon />
+          </Match>
+          <Match when={props.icon === 'format'}>
+            <FormatIcon />
+          </Match>
+          <Match when={props.icon === 'font'}>
+            <FontIcon />
+          </Match>
+          <Match when={props.icon === 'upscale'}>
+            <UpscaleIcon />
+          </Match>
+          <Match when={props.icon === 'linenr'}>
+            <LineNumberIcon />
           </Match>
         </Switch>
       </div>

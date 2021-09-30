@@ -1,7 +1,8 @@
 import Options from '/#/components/Options/options';
-import { VALID_FORMAT, VALID_LANGUAGES, VALID_THEMES } from '/#/libs/constant';
+import { VALID_FONT, VALID_FORMAT, VALID_LANGUAGES, VALID_THEMES, VALID_UPSCALE } from '/#/libs/constant';
 import { createSignal } from 'solid-js';
 import styles from './editor.module.css';
+import ColourPicker from '../ColourPicker/colourPicker';
 
 export default function Editor() {
   const languages = ['Auto Detect'].concat(VALID_LANGUAGES);
@@ -13,21 +14,60 @@ export default function Editor() {
   }, []);
   const [selectedTheme, setSelectedTheme] = createSignal('Github Dark');
 
-  const format = VALID_FORMAT;
-  const [selectedFormat, setSelectedFormat] = createSignal('png');
+  const [selectedFormat, setSelectedFormat] = createSignal(VALID_FORMAT[0]);
+  const [selectedUpscale, setSelectedUpscale] = createSignal('2');
+  const [colour, setColour] = createSignal('#a0adb6');
+  const [selectedFontFamily, setSelectedFontFamily] = createSignal(VALID_FONT[0]);
+  const [lineNumber, setLineNumber] = createSignal('off');
 
   return (
     <section class={styles.main}>
+      <div class={styles.main__options}>
+        <Options
+          items={themes}
+          selected={selectedTheme()}
+          setSelected={setSelectedTheme}
+          icon="palette"
+          width="14rem"
+        />
+        <Options
+          items={languages}
+          selected={selectedLang()}
+          setSelected={setSelectedLang}
+          icon="language"
+          width="14rem"
+        />
+        <Options
+          items={VALID_FONT}
+          selected={selectedFontFamily()}
+          setSelected={setSelectedFontFamily}
+          icon="font"
+          width="14rem"
+        />
+        <Options
+          items={VALID_FORMAT}
+          selected={selectedFormat()}
+          setSelected={setSelectedFormat}
+          icon="format"
+          width="8rem"
+        />
+        <Options
+          items={VALID_UPSCALE}
+          selected={selectedUpscale()}
+          setSelected={setSelectedUpscale}
+          icon="upscale"
+          width="6rem"
+        />
+        <Options items={['on', 'off']} selected={lineNumber()} setSelected={setLineNumber} icon="linenr" width="8rem" />
+        <ColourPicker selected={colour()} setSelected={setColour} width="2.5rem" height="2.5rem" />
+      </div>
       <div class={styles.main__editor}>
-        <div class={styles.editor__options}>
-          <Options items={languages} selected={selectedLang()} setSelected={setSelectedLang} icon="language" />
-          <Options items={format} selected={selectedFormat()} setSelected={setSelectedFormat} icon="palette" />
-          <Options items={themes} selected={selectedTheme()} setSelected={setSelectedTheme} icon="palette" />
-        </div>
-        <textarea class={styles.editor__input} rows="20" placeholder="Paste your code here..." />
+        <textarea class={styles.editor__input} placeholder="Paste your code here..." />
       </div>
       <div class={styles.main__preview}>
-        <h3 class={styles['preview__preview-title']}>Your image will appear here</h3>
+        <div class={styles['main__preview-placeholder']}>
+          <h3 class={styles['main__preview-title']}>Your image will appear here</h3>
+        </div>
       </div>
     </section>
   );
