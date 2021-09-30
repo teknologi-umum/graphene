@@ -1,4 +1,6 @@
-export default function LanguageIcon() {
+import { JSXElement } from 'solid-js';
+
+export default function LanguageIcon(): JSXElement {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

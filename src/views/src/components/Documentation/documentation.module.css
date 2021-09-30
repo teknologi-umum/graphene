@@ -1,12 +1,33 @@
 .docs {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
 .docs__title {
+  font-size: 2.25rem;
   font-family: 'Rubik', sans-serif;
   text-align: center;
   color: #2d3748;
   margin-bottom: 2rem;
   font-weight: 500;
+}
+
+.docs__example-title {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+:global(code) {
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: #e2e8f0;
+  font-size: 1rem;
+}
+
+:global(pre) {
+  line-height: 2em;
+  background-color: #e2e8f0;
+  border-radius: 0.25rem;
+  padding: 1rem;
 }

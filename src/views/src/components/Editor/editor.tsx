@@ -1,10 +1,10 @@
 import Options from '/#/components/Options/options';
 import { VALID_FONT, VALID_FORMAT, VALID_LANGUAGES, VALID_THEMES, VALID_UPSCALE } from '/#/libs/constant';
-import { createSignal } from 'solid-js';
+import { createSignal, JSXElement } from 'solid-js';
 import styles from './editor.module.css';
 import ColourPicker from '../ColourPicker/colourPicker';
 
-export default function Editor() {
+export default function Editor(): JSXElement {
   const languages = ['Auto Detect'].concat(VALID_LANGUAGES);
   const [selectedLang, setSelectedLang] = createSignal(languages[0]);
 

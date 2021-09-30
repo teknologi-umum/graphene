@@ -1,4 +1,4 @@
-import { createSignal, For, Match, Switch } from 'solid-js';
+import { createSignal, For, JSXElement, Match, Switch } from 'solid-js';
 import LanguageIcon from '/#/icons/LanguageIcon';
 import ArrowIcon from '/#/icons/ArrowIcon';
 import PaletteIcon from '/#/icons/PaletteIcon';
@@ -12,14 +12,14 @@ interface OptionsProps {
   items: string[];
   icon: 'language' | 'palette' | 'format' | 'font' | 'upscale' | 'linenr';
   selected: string;
-  setSelected: Function;
+  setSelected: <T>(state: T) => void;
   width: string;
 }
 
-export default function Options(props: OptionsProps) {
+export default function Options(props: OptionsProps): JSXElement {
   const [isCandidateVisible, setCandidateVisible] = createSignal(false);
   const [filteredItems, setFilteredItems] = createSignal(props.items);
-  let inputRef: HTMLInputElement | undefined = undefined;
+  const inputRef: HTMLInputElement | undefined = undefined;
 
   function filterCandidate(e: InputEvent) {
     const query = (e.currentTarget as HTMLInputElement)?.value;

@@ -1,4 +1,6 @@
-export default function FormatIcon() {
+import { JSXElement } from "solid-js";
+
+export default function FormatIcon(): JSXElement {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

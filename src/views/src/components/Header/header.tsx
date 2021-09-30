@@ -1,6 +1,7 @@
+import { JSXElement } from 'solid-js';
 import styles from './header.module.css';
 
-export default function Header() {
+export default function Header(): JSXElement {
   return (
     <header className={styles.header}>
       <h1 className={styles.header__title}>GRAPHENE</h1>
