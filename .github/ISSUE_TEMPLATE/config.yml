@@ -1,8 +1,11 @@
 blank_issues_enabled: true
 contact_links:
   - name: Ask a question
-    url: https://github.com/teknologi-umum/graphene/discussions
+    url: https://github.com/teknologi-umum/bot/discussions
     about: Please use the following link to ask a question.
+  - name: Ask a question (but in Telegram)
+    url: https://t.me/teknologi_umum
+    about: Please use the following link if you wish for a fast response.
   - name: Saweria
     url: https://saweria.co/teknologiumum
     about: Love Teknologi Umum? Consider supporting us via Saweria.
