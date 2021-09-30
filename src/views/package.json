@@ -1,5 +1,6 @@
 {
-  "name": "vite-template-solid",
+  "name": "views",
+  "private": true,
   "version": "0.0.0",
   "description": "",
   "scripts": {
@@ -18,5 +19,14 @@
   },
   "dependencies": {
     "solid-js": "^1.1.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teknologi-umum/graphene.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/teknologi-umum/graphene/issues"
+  },
+  "homepage": "https://github.com/teknologi-umum/graphene#readme"
 }

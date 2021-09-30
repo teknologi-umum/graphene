@@ -18,6 +18,7 @@
     "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 teknologi-umum/graphene:0.0.19"
   },
   "dependencies": {
+    "@logtail/node": "^0.1.10",
     "@sentry/node": "^6.12.0",
     "@tinyhttp/proxy-addr": "^2.0.1",
     "dotenv": "^10.0.0",
@@ -49,7 +50,10 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">=14.17.6",
+    "node": ">=16.6.0",
     "npm": ">=7.1.0"
-  }
+  },
+  "workspaces": [
+    "src/views"
+  ]
 }

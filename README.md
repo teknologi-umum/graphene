@@ -53,7 +53,7 @@ Send a `POST` request to `https://teknologi-umum-graphene.fly.dev/api` with the 
 
   - Required: `false`
   - Default: `false`
-  - Valid Options: `1 - 10`
+  - Valid Options: `1 - 5`
 
 - `theme`
 
@@ -111,20 +111,6 @@ Example output:
 ![output.png](https://github.com/teknologi-umum/graphene/blob/master/scratch/output.png)
 
 </kbd>
-
-## Development
-
-You will need Node.js >=16.
-
-- `npm install` - Your typical 5 million packages installation
-- `npm run build` - Node won't automagically run Typescript files
-- `npm run start` - Start the fun stuff, make sure you've run the build step before running this.
-- `npm run dev` - When you want stuff to be automated
-- `npm run test` - Make sure everything works correctly
-- `npm run lint` - Check the files from your silly mistakes
-- `npm run format` - You like pretty formatted code, right?
-- `npm run docker:build` - Prepare for 'it works on my machine' solution
-- `npm run docker:run` - 'it works on my machine' is no more
 
 ## FAQ
 

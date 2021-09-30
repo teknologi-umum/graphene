@@ -23,6 +23,6 @@
     "listEmittedFiles": true,
     "newLine": "lf"
   },
-  "include": ["src"],
+  "include": ["src", "views"],
   "exclude": ["tests", "dist"]
 }
