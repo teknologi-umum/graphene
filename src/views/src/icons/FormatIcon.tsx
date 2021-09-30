@@ -1,4 +1,4 @@
-import { JSXElement } from "solid-js";
+import { JSXElement } from 'solid-js';
 
 export default function FormatIcon(): JSXElement {
   return (
