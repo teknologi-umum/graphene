@@ -1,0 +1,17 @@
+.item {
+  padding: 0.5rem 0;
+}
+
+.item__title {
+  display: block;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  line-height: 1.75em;
+}
+
+.item__desc {
+  line-height: 1.5em;
+  font-size: 1.125rem;
+}
