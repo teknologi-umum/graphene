@@ -1,12 +1,12 @@
 import { createSignal, For, Match, Switch } from 'solid-js';
 import LanguageIcon from '/#/icons/LanguageIcon';
 import ArrowIcon from '/#/icons/ArrowIcon';
-import styles from './options.module.css';
 import PaletteIcon from '/#/icons/PaletteIcon';
 import FormatIcon from '/#/icons/FormatIcon';
 import FontIcon from '/#/icons/FontIcon';
 import UpscaleIcon from '/#/icons/UpscaleIcon';
 import LineNumberIcon from '/#/icons/LineNumberIcon';
+import styles from './options.module.css';
 
 interface OptionsProps {
   items: string[];
@@ -19,7 +19,7 @@ interface OptionsProps {
 export default function Options(props: OptionsProps) {
   const [isCandidateVisible, setCandidateVisible] = createSignal(false);
   const [filteredItems, setFilteredItems] = createSignal(props.items);
-  let inputRef: HTMLInputElement;
+  let inputRef: HTMLInputElement | undefined = undefined;
 
   function filterCandidate(e: InputEvent) {
     const query = (e.currentTarget as HTMLInputElement)?.value;
@@ -78,7 +78,7 @@ export default function Options(props: OptionsProps) {
                   onMouseDown={(e) => {
                     e.preventDefault();
                     props.setSelected(item);
-                    inputRef.blur();
+                    inputRef?.blur();
                   }}
                 >
                   {item}

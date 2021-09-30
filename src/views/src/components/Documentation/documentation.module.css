@@ -1,5 +1,5 @@
 .docs {
-  max-width: 1200;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -8,4 +8,5 @@
   text-align: center;
   color: #2d3748;
   margin-bottom: 2rem;
+  font-weight: 500;
 }

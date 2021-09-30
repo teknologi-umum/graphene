@@ -15,7 +15,7 @@ export default function Editor() {
   const [selectedTheme, setSelectedTheme] = createSignal('Github Dark');
 
   const [selectedFormat, setSelectedFormat] = createSignal(VALID_FORMAT[0]);
-  const [selectedUpscale, setSelectedUpscale] = createSignal('2');
+  const [selectedUpscale, setSelectedUpscale] = createSignal(VALID_UPSCALE[1]);
   const [colour, setColour] = createSignal('#a0adb6');
   const [selectedFontFamily, setSelectedFontFamily] = createSignal(VALID_FONT[0]);
   const [lineNumber, setLineNumber] = createSignal('off');
@@ -28,14 +28,14 @@ export default function Editor() {
           selected={selectedTheme()}
           setSelected={setSelectedTheme}
           icon="palette"
-          width="14rem"
+          width="15rem"
         />
         <Options
           items={languages}
           selected={selectedLang()}
           setSelected={setSelectedLang}
           icon="language"
-          width="14rem"
+          width="13rem"
         />
         <Options
           items={VALID_FONT}
