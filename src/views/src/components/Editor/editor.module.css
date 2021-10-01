@@ -31,10 +31,16 @@
   cursor: pointer;
 }
 
+.main__border,
 .main__upscale {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.main__upscale-label {
+  font-weight: 500;
 }
 
 .upscale__item {
@@ -48,10 +54,33 @@
   color: #2d3748 !important;
 }
 
+.main__border-label {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.main__border-input {
+  width: 3rem;
+  padding: 0.25rem 0.5rem;
+  border: 0.125rem #e2e8f0 solid;
+  border-radius: 0.5rem;
+  outline: none;
+  color: #2d3748;
+  font-size: 1rem;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+}
+
+.main__border-input::-webkit-inner-spin-button,
+.main__border-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .main__panes {
   display: flex;
   flex-direction: row;
-  max-width: 100%;
+  width: 100%;
 }
 
 .main__editor {
@@ -62,7 +91,7 @@
 
 .editor__input {
   position: relative;
-  width: 36rem;
+  width: 100%;
   max-width: 800px;
   min-width: 400px;
   min-height: 24rem;
@@ -112,8 +141,13 @@
   min-height: 24rem;
   width: 100%;
   display: flex;
-  justify-content: stretch;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
+}
+
+.main__preview-img {
+  object-fit: contain;
+  max-width: 100%;
 }
 
 .main__preview-placeholder {
@@ -121,6 +155,7 @@
   border-radius: 0.5rem;
   border: 0.25rem #cbd5e0 dotted;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

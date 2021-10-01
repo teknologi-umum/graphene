@@ -12,12 +12,12 @@ const validateString = (name: string, str: string, required: boolean): string =>
   return '';
 };
 
-const validateNumber = (name: string, num: number, max: number, required: boolean): string => {
+const validateNumber = (name: string, num: number, min: number, max: number, required: boolean): string => {
   if (!num && required) return `\`${name}\` is required!`;
 
   if (num === 0 || num) {
     if (typeof num !== 'number') return `\`${name}\` must be a number!`;
-    if (!(num >= 1 && num <= max)) return `\`${name}\` can't be lower than ${1} or higher than ${max}!`;
+    if (!(num >= min && num <= max)) return `\`${name}\` can't be lower than ${1} or higher than ${max}!`;
   }
 
   return '';
@@ -42,8 +42,8 @@ export const validate = ({ code, upscale, format, theme, font, border, lang, lin
   return [
     validateBoolean('lineNumber', lineNumber),
     validateString('code', code, true),
-    validateNumber('upscale', upscale, 5, false),
-    validateNumber('border.thickness', border?.thickness, Infinity, false),
+    validateNumber('upscale', upscale, 1, 5, false),
+    validateNumber('border.thickness', border?.thickness, 0, Infinity, false),
     validateString('border.colour', border?.colour, false),
     validateKeys('format', format, ['png', 'jpeg', 'webp', 'svg'], '', false),
     validateKeys(

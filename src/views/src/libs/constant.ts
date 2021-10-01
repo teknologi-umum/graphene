@@ -1,3 +1,6 @@
+// TODO(elianiva): change this to an actual URL
+export const BASE_URL = 'http://localhost:3000';
+
 export const VALID_LANGUAGES = [
   'abap',
   'actionscript-3',

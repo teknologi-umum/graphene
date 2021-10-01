@@ -15,6 +15,7 @@ export default function ColourPicker(props: ColorPickerProps): JSXElement {
       type="color"
       style={{ width: props.width, height: props.height }}
       value={props.selected}
+      onInput={(e) => props.setSelected(e.currentTarget.value)}
     />
   );
 }
