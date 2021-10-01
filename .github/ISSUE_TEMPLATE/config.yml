@@ -1,7 +1,7 @@
 blank_issues_enabled: true
 contact_links:
   - name: Ask a question
-    url: https://github.com/teknologi-umum/bot/discussions
+    url: https://github.com/teknologi-umum/graphene/discussions
     about: Please use the following link to ask a question.
   - name: Ask a question (but in Telegram)
     url: https://t.me/teknologi_umum
