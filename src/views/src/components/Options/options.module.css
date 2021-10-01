@@ -5,15 +5,15 @@
   box-sizing: border-box;
   border: 0.125rem #e2e8f0 solid;
   border-radius: 0.5rem;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
 }
 
 .options__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border-right: 0.125rem #e2e8f0 solid;
   color: #2d3748;
 }

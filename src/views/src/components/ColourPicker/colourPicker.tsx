@@ -1,9 +1,9 @@
-import { JSXElement } from 'solid-js';
+import type { JSXElement, Setter } from 'solid-js';
 import styles from './colourPicker.module.css';
 
 interface ColorPickerProps {
   selected: string;
-  setSelected: <T>(state: T) => void;
+  setSelected: Setter<string>;
   width: string;
   height: string;
 }

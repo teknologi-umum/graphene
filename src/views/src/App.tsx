@@ -1,7 +1,7 @@
-import Header from './components/Header/header';
-import Editor from './components/Editor/editor';
+import type { JSXElement } from 'solid-js';
 import Documentation from './components/Documentation/documentation';
-import { JSXElement } from 'solid-js';
+import Editor from './components/Editor/editor';
+import Header from './components/Header/header';
 
 export default function App(): JSXElement {
   return (

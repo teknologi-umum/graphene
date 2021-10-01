@@ -1,4 +1,4 @@
-import { JSXElement } from 'solid-js';
+import type { JSXElement } from 'solid-js';
 import styles from './header.module.css';
 
 export default function Header(): JSXElement {

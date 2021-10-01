@@ -1,25 +1,28 @@
-import { createSignal, For, JSXElement, Match, Switch } from 'solid-js';
-import LanguageIcon from '/#/icons/LanguageIcon';
-import ArrowIcon from '/#/icons/ArrowIcon';
-import PaletteIcon from '/#/icons/PaletteIcon';
-import FormatIcon from '/#/icons/FormatIcon';
-import FontIcon from '/#/icons/FontIcon';
-import UpscaleIcon from '/#/icons/UpscaleIcon';
-import LineNumberIcon from '/#/icons/LineNumberIcon';
+import type { JSXElement, Setter } from 'solid-js';
+import { createSignal, For, Match, Switch } from 'solid-js';
 import styles from './options.module.css';
+import ArrowIcon from '/#/icons/ArrowIcon';
+import FontIcon from '/#/icons/FontIcon';
+import FormatIcon from '/#/icons/FormatIcon';
+import LanguageIcon from '/#/icons/LanguageIcon';
+import LineNumberIcon from '/#/icons/LineNumberIcon';
+import PaletteIcon from '/#/icons/PaletteIcon';
+import UpscaleIcon from '/#/icons/UpscaleIcon';
 
 interface OptionsProps {
   items: string[];
   icon: 'language' | 'palette' | 'format' | 'font' | 'upscale' | 'linenr';
   selected: string;
-  setSelected: <T>(state: T) => void;
+  setSelected: Setter<string>;
   width: string;
 }
 
 export default function Options(props: OptionsProps): JSXElement {
   const [isCandidateVisible, setCandidateVisible] = createSignal(false);
   const [filteredItems, setFilteredItems] = createSignal(props.items);
-  const inputRef: HTMLInputElement | undefined = undefined;
+
+  // eslint-disable-next-line
+  let inputRef: HTMLInputElement | undefined = undefined;
 
   function filterCandidate(e: InputEvent) {
     const query = (e.currentTarget as HTMLInputElement)?.value;

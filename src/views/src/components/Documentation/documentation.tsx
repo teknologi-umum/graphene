@@ -1,4 +1,5 @@
-import { For, JSXElement } from 'solid-js';
+import type { JSXElement } from 'solid-js';
+import { For } from 'solid-js';
 import OptionItem from '../OptionItem/optionItem';
 import styles from './documentation.module.css';
 
