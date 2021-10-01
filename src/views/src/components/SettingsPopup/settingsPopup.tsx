@@ -12,7 +12,9 @@ export default function SettingsPopup(props: { children: JSXElement[] }): JSXEle
         <GearIcon />
       </button>
       <Show when={isPopupVisible()}>
-        <div class={styles.settings__popup}>{props.children}</div>
+        <div class={styles.settings__popup} id="popup">
+          {props.children}
+        </div>
       </Show>
     </div>
   );

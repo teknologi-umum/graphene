@@ -1,4 +1,5 @@
-import { For, JSXElement } from 'solid-js';
+import { For, Show } from 'solid-js';
+import type { JSXElement } from 'solid-js';
 import { createSignal } from 'solid-js';
 import ColourPicker from '../ColourPicker/colourPicker';
 import SettingsPopup from '../SettingsPopup/settingsPopup';
@@ -6,9 +7,12 @@ import styles from './editor.module.css';
 import Options from '/#/components/Options/options';
 import PlayIcon from '/#/icons/PlayIcon';
 import { VALID_FONT, VALID_FORMAT, VALID_LANGUAGES, VALID_THEMES, VALID_UPSCALE } from '/#/libs/constant';
+import { useWinSize } from '/#/libs/hooks';
 
 export default function Editor(): JSXElement {
   const [code, setCode] = createSignal('');
+  const winWidth = useWinSize();
+
   const languages = ['Auto Detect'].concat(VALID_LANGUAGES);
   const [selectedLang, setSelectedLang] = createSignal(languages[0]);
 
@@ -22,7 +26,7 @@ export default function Editor(): JSXElement {
   const [upscale, setUpscale] = createSignal(VALID_UPSCALE[1]);
   const [colour, setColour] = createSignal('#a0adb6');
   const [font, setFont] = createSignal(VALID_FONT[0]);
-  const [lineNumber, setLineNumber] = createSignal('off');
+  const [lineNumber, setLineNumber] = createSignal(false);
 
   const submit = () => {
     const body = {
@@ -38,30 +42,74 @@ export default function Editor(): JSXElement {
       lineNumber: lineNumber(),
     };
 
+    /* eslint-disable-next-line */
     console.log(body);
   };
 
   return (
     <section class={styles.main}>
       <div class={styles.main__options}>
-        <Options items={themes} selected={theme()} setSelected={setTheme} icon="palette" width="15rem" />
-        <Options
-          items={languages}
-          selected={selectedLang()}
-          setSelected={setSelectedLang}
-          icon="language"
-          width="13rem"
-        />
-        <Options items={VALID_FONT} selected={font()} setSelected={setFont} icon="font" width="14rem" />
-        <Options items={VALID_FORMAT} selected={format()} setSelected={setFormat} icon="format" width="8rem" />
+        <Show when={winWidth() > 600}>
+          <Options items={themes} selected={theme()} setSelected={setTheme} icon="palette" width="15rem" />
+        </Show>
+        <Show when={winWidth() > 800}>
+          <Options
+            items={languages}
+            selected={selectedLang()}
+            setSelected={setSelectedLang}
+            icon="language"
+            width="13rem"
+          />
+        </Show>
+        <Show when={winWidth() > 1000}>
+          <Options items={VALID_FONT} selected={font()} setSelected={setFont} icon="font" width="14rem" />
+        </Show>
+        <Show when={winWidth() > 1100}>
+          <Options items={VALID_FORMAT} selected={format()} setSelected={setFormat} icon="format" width="8rem" />
+        </Show>
         <ColourPicker selected={colour()} setSelected={setColour} width="2.5rem" height="2.5rem" />
+
         <SettingsPopup>
+          <Show when={winWidth() < 600}>
+            <Options items={themes} selected={theme()} setSelected={setTheme} icon="palette" width="15rem" />
+          </Show>
+          <Show when={winWidth() < 800}>
+            <Options
+              items={languages}
+              selected={selectedLang()}
+              setSelected={setSelectedLang}
+              icon="language"
+              width="13rem"
+            />
+          </Show>
+          <Show when={winWidth() < 1000}>
+            <Options items={VALID_FONT} selected={font()} setSelected={setFont} icon="font" width="14rem" />
+          </Show>
+          <Show when={winWidth() < 1100}>
+            <Options items={VALID_FORMAT} selected={format()} setSelected={setFormat} icon="format" width="8rem" />
+          </Show>
+
           <div class={styles.main__linenr}>
             <span class={styles['main__linenr-label']}>Line Number: </span>
-            <input type="checkbox" />
+            <input
+              class={styles['main__linenr-checkbox']}
+              type="checkbox"
+              checked={lineNumber()}
+              onChange={() => setLineNumber((prev: boolean) => !prev)}
+            />
           </div>
-          <div class={styles.main__upscales}>
-            <For each={VALID_UPSCALE}>{(upscale) => <span class={styles.upscales__item}>{upscale}</span>}</For>
+          <div class={styles.main__upscale}>
+            <For each={VALID_UPSCALE}>
+              {(scale) => (
+                <span
+                  class={styles.upscale__item}
+                  onClick={() => setUpscale(scale)}
+                  style={{ color: scale === upscale() ? '#2d3748' : '#718096' }}
+                >
+                  {scale}x
+                </span>
+              )}
+            </For>
           </div>
         </SettingsPopup>
       </div>

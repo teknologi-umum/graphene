@@ -1,6 +1,7 @@
 .settings {
   position: relative;
   margin-left: auto;
+  z-index: 10;
 }
 
 .settings__button {

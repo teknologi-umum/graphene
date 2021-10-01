@@ -178,6 +178,6 @@ export const VALID_THEMES = [
 
 export const VALID_FORMAT = ['png', 'jpeg', 'webp', 'svg'];
 
-export const VALID_UPSCALE = ['1x', '2x', '3x', '4x', '5x'];
+export const VALID_UPSCALE = [1, 2, 3, 4, 5];
 
 export const VALID_FONT = ['jetbrains mono', 'fira code', 'sf mono'];
