@@ -34,3 +34,28 @@
 .item__detail :global(b) {
   font-weight: 500;
 }
+
+.item__detail :global(a) {
+  position: relative;
+  text-decoration: none;
+}
+
+.item__detail :global(a::after) {
+  content: '';
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #bee3f8;
+  z-index: -1;
+  transition: all 0.1s ease-out;
+}
+
+.item__detail :global(a:hover::after) {
+  top: 0;
+}
+
+.item__detail :global(a:visited) {
+  color: #2d3748;
+}
