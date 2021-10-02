@@ -1,16 +1,8 @@
-import { readFile } from 'fs/promises';
 import { test } from 'uvu';
 import request from 'supertest';
 import server from '../src/index';
 
 const instance = request(server.handler);
-
-test('should serve a view', async () => {
-  await instance
-    .get('/')
-    .expect(200, await readFile('./src/static/index.html', 'utf-8'))
-    .expect('content-type', 'text/html');
-});
 
 test('should generate a png image', async () => {
   await instance
