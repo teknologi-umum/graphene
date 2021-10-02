@@ -9,7 +9,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    container: node:14.17-buster
+    container: node:16.10-buster
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
