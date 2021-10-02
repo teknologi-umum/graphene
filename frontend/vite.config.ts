@@ -5,7 +5,7 @@ import solidPlugin from 'vite-plugin-solid';
 export default defineConfig({
   plugins: [solidPlugin()],
   build: {
-    outDir: '../dist',
+    outDir: '../backend/src/dist',
     emptyOutDir: true,
     target: 'esnext',
     polyfillDynamicImport: false,

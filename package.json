@@ -1,59 +1,7 @@
 {
   "name": "graphene",
-  "version": "1.0.0",
-  "license": "MIT",
-  "type": "module",
-  "description": "Generate beautiful code snippet using Shiki",
-  "author": "elianiva <dicha.arkana03@gmail.com>",
-  "main": "index.js",
-  "scripts": {
-    "start": "node -r dotenv/config --unhandled-rejections=strict dist/index.js",
-    "dev:start": "node --experimental-loader esbuild-node-loader -r dotenv/config src/index.ts",
-    "dev": "nodemon -e ts --watch src --exec \"npm run dev:start\"",
-    "format": "prettier --write --ignore-path .gitignore .",
-    "lint": "eslint --fix --ignore-path .gitignore .",
-    "test": "NODE_ENV=test c8 --include=src --reporter=text --reporter=lcovonly node --experimental-loader esbuild-node-loader node_modules/uvu/bin.js tests",
-    "build": "tsc --noEmit && node build.js",
-    "docker:build": "docker build -m 220m -t teknologi-umum/graphene:0.0.19 .",
-    "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 teknologi-umum/graphene:0.0.19"
-  },
-  "dependencies": {
-    "@logtail/node": "^0.1.10",
-    "@sentry/node": "^6.12.0",
-    "@tinyhttp/proxy-addr": "^2.0.1",
-    "dotenv": "^10.0.0",
-    "flourite": "^1.1.0",
-    "helmet": "^4.6.0",
-    "polka": "^1.0.0-next.20",
-    "rate-limiter-flexible": "^2.2.4",
-    "sharp": "^0.29.1",
-    "shiki": "^0.9.10",
-    "sirv": "^1.0.17"
-  },
-  "devDependencies": {
-    "@types/node": "^16.9.1",
-    "@types/sharp": "^0.29.1",
-    "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.31.1",
-    "c8": "^7.9.0",
-    "esbuild": "^0.12.28",
-    "esbuild-node-loader": "^0.3.1",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "nodemon": "^2.0.12",
-    "prettier": "^2.4.0",
-    "supertest": "^6.1.6",
-    "tslib": "^2.3.1",
-    "typescript": "^4.4.3",
-    "uvu": "^0.5.1"
-  },
-  "engineStrict": true,
-  "engines": {
-    "node": ">=16.6.0",
-    "npm": ">=7.1.0"
-  },
   "workspaces": [
-    "src/views"
+    "frontend",
+    "backend"
   ]
 }

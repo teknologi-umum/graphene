@@ -19,7 +19,7 @@ esbuild
       'shiki',
       'sirv',
     ],
-    outdir: 'dist',
+    outdir: './dist',
     target: ['es2021', 'node14.17'],
     tsconfig: 'tsconfig.json',
   })

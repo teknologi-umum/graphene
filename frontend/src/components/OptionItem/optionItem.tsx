@@ -13,6 +13,7 @@ export default function OptionItem(props: OptionItemProps): JSXElement {
   return (
     <div class={styles.item}>
       <span class={styles.item__title}>{props.title}</span>
+      {/* eslint-disable-next-line solid/no-innerhtml */}
       <p class={styles.item__desc} innerHTML={props.desc}></p>
       <span class={styles.item__detail}>
         <b>Required</b>: {props.required ? 'Yes' : 'No'}
@@ -21,6 +22,7 @@ export default function OptionItem(props: OptionItemProps): JSXElement {
         <b>Default Value</b>: {props.defaultValue}
       </span>
       <span class={styles.item__detail}>
+        {/* eslint-disable-next-line solid/no-innerhtml */}
         <b>Valid Values</b>: <span innerHTML={props.validValues}></span>
       </span>
     </div>
