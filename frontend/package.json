@@ -8,8 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "eslint --ignore-path .gitignore .",
-    "prettier": "prettier --write --ignore-path .gitignore ."
+    "lint": "eslint --ignore-path ../.gitignore .",
+    "prettier": "prettier --write --ignore-path ../.gitignore ."
   },
   "license": "MIT",
   "devDependencies": {
