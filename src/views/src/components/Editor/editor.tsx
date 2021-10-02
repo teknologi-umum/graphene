@@ -1,4 +1,4 @@
-import { createEffect, For, Match, Show, Switch } from 'solid-js';
+import { For, Match, Show, Switch } from 'solid-js';
 import type { JSXElement } from 'solid-js';
 import { createSignal } from 'solid-js';
 import ColourPicker from '../ColourPicker/colourPicker';
@@ -58,7 +58,6 @@ export default function Editor(): JSXElement {
       lineNumber: lineNumber(),
     };
 
-    console.log(body);
     const imageResponse = await fetch(BASE_URL + '/api', {
       method: 'POST',
       headers: {

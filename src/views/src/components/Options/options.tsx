@@ -71,7 +71,7 @@ export default function Options(props: OptionsProps): JSXElement {
           placeholder={props.selected}
           value={props.selected}
         />
-        <ArrowIcon className="arrow" />
+        <ArrowIcon class="arrow" />
         {isCandidateVisible() && (
           <ul class={styles.options__candidates}>
             <For each={filteredItems()}>

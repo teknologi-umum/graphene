@@ -51,7 +51,7 @@ const optionItems = [
     desc: 'The code snippet you want to prettify. Use <code>\\n</code> for newline',
     required: true,
     defaultValue: 'None',
-    validValues: 'any string',
+    validValues: 'String',
   },
   {
     title: 'lang',
