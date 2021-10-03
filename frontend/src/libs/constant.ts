@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://teknologi-umum-graphene.fly.dev/';
+export const BASE_URL = 'https://teknologi-umum-graphene.fly.dev';
 
 export const VALID_LANGUAGES = [
   'abap',
