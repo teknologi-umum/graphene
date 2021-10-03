@@ -19,8 +19,8 @@ esbuild
       'shiki',
       'sirv',
     ],
-    outdir: './dist',
-    target: ['es2021', 'node14.17'],
+    outdir: '../dist',
+    target: ['es2021', 'node16.10'],
     tsconfig: 'tsconfig.json',
   })
   .catch((e) => {

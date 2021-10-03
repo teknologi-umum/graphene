@@ -129,7 +129,7 @@ This repo is using npm@v7 workspaces so you can add `-w backend` or `-w frontend
 - `npm run build` - Node won't automagically run Typescript files.
 - `npm run start` - Start the fun stuff, make sure you've run the build step before running this.
 - `npm run dev` - When you want stuff to be automagically reloaded.
-- `npm run test` - Make sure everything works correctly  Only works for backend workspaces.
+- `npm run test` - Make sure everything works correctly. Only works for backend workspaces.
 - `npm run lint` - Check the files from your silly mistakes.
 - `npm run prettier` - You like pretty formatted code, right?
 - `npm run docker:build` - Prepare for 'it works on my machine' solution. Only works for backend workspaces.

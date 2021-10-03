@@ -1,4 +1,6 @@
-FROM node:14.17.6-buster
+FROM node:16.10-buster
+
+ENV NODE_ENV=production
 
 WORKDIR /usr/src/temp
 
@@ -12,12 +14,11 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install -g npm \
-    && npm install
+RUN npm install
 
 COPY . .
 
-RUN npm run build \
+RUN npm run build --workspaces \
     && rm -rf node_modules \
     && npm install --production
 

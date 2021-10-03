@@ -1,5 +1,10 @@
 {
   "name": "graphene",
+  "type": "module",
+  "scripts": {
+    "lint": "npm run lint -w frontend && npm run lint -w backend",
+    "prettier": "prettier --write --ignore-path .gitignore ."
+  },
   "workspaces": [
     "frontend",
     "backend"

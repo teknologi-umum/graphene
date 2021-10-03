@@ -12,11 +12,10 @@ import type { Middleware } from 'polka';
 const server = polka({ onError: errorHandler })
   .use(
     helmet() as Middleware,
-    cors,
-    sirv('./src/dist', { dev: process.env.NODE_ENV !== 'production', etag: true, maxAge: 60 * 60 * 24 }),
+    sirv('./views', { dev: process.env.NODE_ENV !== 'production', etag: true, maxAge: 60 * 60 * 24 }),
   )
   .get('/')
-  .post('/api', rateLimiter, json, coreHandler);
+  .post('/api', cors, rateLimiter, json, coreHandler);
 
 if (process.env.NODE_ENV !== 'test') {
   server.listen(process.env.PORT || 3000, () => {

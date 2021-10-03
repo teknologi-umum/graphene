@@ -1,27 +1,31 @@
-name: CI
+name: Check
 
 on:
   pull_request:
-    branches: ['*']
+    branches: ["*"]
 
 jobs:
   ci:
-    name: Check
+    name: CI
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    container: node:16.10-buster
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
 
       - name: Installling dependencies
         run: npm install --workspaces
 
       - name: ESLint check
-        run: npm run lint --workspaces
+        run: npm run lint:check --workspaces
 
       - name: Format with prettier
-        run: npm run prettier --workspaces
+        run: npx prettier --check --ignore-path .gitignore .
 
       - name: Test
         run: npm run test -w backend
@@ -38,9 +42,13 @@ jobs:
 
       - name: Build frontend
         run: npm run build -w frontend
+        env:
+          NODE_ENV: production
 
       - name: Build backend
         run: npm run build -w backend
+        env:
+          NODE_ENV: production
 
       - name: Send coverage report to Codecov
         uses: codecov/codecov-action@v2
