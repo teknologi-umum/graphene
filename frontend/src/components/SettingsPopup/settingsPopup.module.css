@@ -36,4 +36,12 @@
   border: 0.125rem #e2e8f0 solid;
   border-radius: 0.5rem;
   background-color: #ffffff;
+  font-family: 'Rubik', sans-serif;
+}
+
+.settings__popup > * {
+  display: flex;
+  align-items: center;
+  max-width: 100% !important;
+  height: 2rem;
 }

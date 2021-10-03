@@ -30,7 +30,7 @@ export default function Options(props: OptionsProps): JSXElement {
   }
 
   return (
-    <div class={styles.options} style={{ width: props.width }}>
+    <div class={styles.options} style={{ 'max-width': props.width }}>
       <div class={styles.options__icon}>
         <Switch>
           <Match when={props.icon === 'language'}>
