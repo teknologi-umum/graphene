@@ -23,6 +23,7 @@
     "vite-plugin-solid": "2.0.3"
   },
   "dependencies": {
+    "@fontsource/rubik": "^4.5.0",
     "solid-js": "1.1.1"
   },
   "repository": {

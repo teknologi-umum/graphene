@@ -20,7 +20,7 @@ COPY . .
 
 RUN npm run build --workspaces \
     && rm -rf node_modules \
-    && npm install --production
+    && npm install --production --workspaces
 
 EXPOSE 3000
 

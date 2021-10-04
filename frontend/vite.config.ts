@@ -2,12 +2,10 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
 
-const outDirPath = process.env?.NODE_ENV === 'production' ? '../dist/views' : '../backend/src/views';
-
 export default defineConfig({
   plugins: [solidPlugin()],
   build: {
-    outDir: outDirPath,
+    outDir: process.env.NODE_ENV === 'production' ? '../dist/views' : '../backend/src/views',
     emptyOutDir: true,
     target: 'esnext',
     polyfillDynamicImport: false,
