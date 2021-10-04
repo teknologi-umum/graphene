@@ -23,16 +23,16 @@ async function blobToBase64(blob: Blob): Promise<string> {
 }
 
 export default function Editor(): JSXElement {
-  const [image, setImage] = createSignal('');
-
-  const [code, setCode] = createSignal('');
   const winWidth = useWinSize();
+
+  const [image, setImage] = createSignal('');
+  const [code, setCode] = createSignal('');
 
   const languages = ['Auto Detect'].concat(VALID_LANGUAGES);
   const [selectedLang, setSelectedLang] = createSignal(languages[0]);
 
   const themes = VALID_THEMES.reduce((acc: string[], curr: string) => {
-    const lang = curr.split('-').join(' ');
+    const lang = curr.replace(/-/g, ' ');
     return acc.concat(lang);
   }, []);
   const [theme, setTheme] = createSignal('Github Dark');
