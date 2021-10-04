@@ -14,7 +14,11 @@ import type { Middleware } from 'polka';
 const server = polka({ onError: errorHandler })
   .use(
     helmet() as Middleware,
-    sirv(resolve(dirname(fileURLToPath(import.meta.url)), './views'), { dev: process.env.NODE_ENV !== 'production', etag: true, maxAge: 60 * 60 * 24 }),
+    sirv(resolve(dirname(fileURLToPath(import.meta.url)), './views'), {
+      dev: process.env.NODE_ENV !== 'production',
+      etag: true,
+      maxAge: 60 * 60 * 24,
+    }),
   )
   .get('/')
   .post('/api', cors, rateLimiter, json, coreHandler);
