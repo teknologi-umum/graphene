@@ -23,16 +23,20 @@
     "@tinyhttp/proxy-addr": "2.0.2",
     "dotenv": "10.0.0",
     "flourite": "1.1.2",
+    "gura": "1.4.2",
     "helmet": "4.6.0",
-    "polka": "1.0.0-next.20",
+    "polka": "1.0.0-next.22",
     "rate-limiter-flexible": "2.3.1",
     "sharp": "0.29.1",
     "shiki": "0.9.11",
-    "sirv": "1.0.17"
+    "sirv": "1.0.17",
+    "toml": "3.0.0",
+    "yaml": "1.10.2"
   },
   "devDependencies": {
     "@types/node": "16.10.2",
     "@types/sharp": "0.29.2",
+    "@types/supertest": "2.0.11",
     "@typescript-eslint/eslint-plugin": "4.32.0",
     "@typescript-eslint/parser": "4.32.0",
     "c8": "7.9.0",

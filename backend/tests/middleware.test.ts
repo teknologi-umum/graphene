@@ -4,7 +4,7 @@ import server from '../src/index';
 
 const instance = request(server.handler);
 
-test.only('should pass cors options', async () => {
+test('should pass cors options', async () => {
   await instance.options('/api').expect(204);
 });
 

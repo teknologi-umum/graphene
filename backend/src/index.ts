@@ -4,7 +4,7 @@ import polka from 'polka';
 import sirv from 'sirv';
 import helmet from 'helmet';
 import { cors } from './middleware/cors';
-import { json } from './middleware/json';
+import { parser } from './middleware/parser';
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
 import { coreHandler } from './handler/core';
@@ -22,7 +22,7 @@ const server = polka({ onError: errorHandler })
   )
   .get('/')
   .options('/api', cors)
-  .post('/api', cors, rateLimiter, json, coreHandler);
+  .post('/api', cors, rateLimiter, parser, coreHandler);
 
 if (process.env.NODE_ENV !== 'test') {
   server.listen(process.env.PORT || 3000, () => {
