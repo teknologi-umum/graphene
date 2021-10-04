@@ -1,8 +1,8 @@
 import type { Middleware } from 'polka';
 import querystring from 'querystring';
-import yaml from 'yaml'
-import toml from 'toml'
-import gura from 'gura'
+import yaml from 'yaml';
+import toml from 'toml';
+import gura from 'gura';
 
 /**
  * Practical JSON parser middleware
