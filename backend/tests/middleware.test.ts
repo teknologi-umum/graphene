@@ -4,8 +4,8 @@ import server from '../src/index';
 
 const instance = request(server.handler);
 
-test('should pass cors options', async () => {
-  await instance.options('/').expect(204);
+test.only('should pass cors options', async () => {
+  await instance.options('/api').expect(204);
 });
 
 test('should error when json is invalid', async () => {

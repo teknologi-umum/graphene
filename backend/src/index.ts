@@ -21,6 +21,7 @@ const server = polka({ onError: errorHandler })
     }),
   )
   .get('/')
+  .options('/api', cors)
   .post('/api', cors, rateLimiter, json, coreHandler);
 
 if (process.env.NODE_ENV !== 'test') {
