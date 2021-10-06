@@ -12,6 +12,56 @@
   font-weight: 500;
 }
 
+.docs__description :global(p) {
+  font-size: 1.125rem;
+  font-family: 'Rubik', sans-serif;
+  text-align: left;
+  line-height: 1.75em;
+  color: #2d3748;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+}
+
+.docs__description :global(ul) {
+  margin-bottom: 1.25rem;
+}
+
+.docs__description :global(li) {
+  font-size: 1.125rem;
+  font-family: 'Rubik', sans-serif;
+  text-align: left;
+  line-height: 1.75em;
+  color: #2d3748;
+  font-weight: 400;
+  margin-left: 1rem;
+  margin-bottom: 0.15rem;
+}
+
+.docs__description :global(a) {
+  position: relative;
+  text-decoration: none;
+}
+
+.docs__description :global(a::after) {
+  content: '';
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #bee3f8;
+  z-index: -1;
+  transition: all 0.1s ease-out;
+}
+
+.docs__description :global(a:hover::after) {
+  top: 0;
+}
+
+.docs__description :global(a:visited) {
+  color: #2d3748;
+}
+
 .docs__example {
   margin: 2rem 0;
 }

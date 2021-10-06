@@ -27,6 +27,7 @@ export const coreHandler: Middleware = async (req, res) => {
       'content-type': req.headers['content-type'] || '',
       origin: req.headers.origin || '',
       referer: req.headers.referer || '',
+      'user-agent': req.headers['user-agent'] || '',
     },
     port: req.socket.remotePort || '',
     ipv: req.socket.remoteFamily || '',

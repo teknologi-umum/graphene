@@ -11,29 +11,25 @@ export const parser: Middleware = async (req, res, next) => {
   try {
     let body = '';
     for await (const chunk of req) body += chunk;
-    if (!req.headers?.['content-type']) {
-      req.body = JSON.parse(body);
-    } else {
-      switch (req.headers['content-type']) {
-        case 'application/x-www-form-urlencoded':
-          req.body = querystring.parse(body);
-          break;
-        case 'application/toml':
-        case 'text/x-toml':
-          req.body = toml.parse(body);
-          break;
-        case 'application/x-yaml':
-        case 'text/yaml':
-          req.body = yaml.parse(body);
-          break;
-        case 'application/gura':
-        case 'text/gura':
-          req.body = gura.parse(body);
-          break;
-        case 'application/json':
-        default:
-          req.body = JSON.parse(body);
-      }
+    switch (req.headers['content-type']) {
+      case 'application/x-www-form-urlencoded':
+        req.body = querystring.parse(body);
+        break;
+      case 'application/toml':
+      case 'text/x-toml':
+        req.body = toml.parse(body);
+        break;
+      case 'application/x-yaml':
+      case 'text/yaml':
+        req.body = yaml.parse(body);
+        break;
+      case 'application/gura':
+      case 'text/gura':
+        req.body = gura.parse(body);
+        break;
+      case 'application/json':
+      default:
+        req.body = JSON.parse(body);
     }
     next();
   } catch (error) {

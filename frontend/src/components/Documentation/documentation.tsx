@@ -7,6 +7,38 @@ export default function Documentation(): JSXElement {
   return (
     <div class={styles.docs}>
       <h2 class={styles.docs__title}>Documentation for Graphene API</h2>
+      <section class={styles.docs__description}>
+        <p>
+          Simply send a HTTP POST request to&nbsp;
+          <span>
+            <code>https://teknologi-umum-graphene.fly.dev/api</code>
+          </span>
+          &nbsp; with a payload body as specified below.
+        </p>
+        <p>
+          If no <code>Content-Type</code> header was given, the API by default would parse it as JSON. If you don't feel
+          like doing JSON, we support URL encoded,
+          <a href="https://yaml.org/">YAML</a>, <a href="https://toml.io/en/">TOML</a>, and
+          <a href="https://gura.netlify.app/">Gura</a>. Valid <code>Content-Type</code> values are:
+        </p>
+        <ul>
+          <li>
+            JSON: <code>application/json</code>
+          </li>
+          <li>
+            URL encoded: <code>application/x-www-form-urlencoded</code>
+          </li>
+          <li>
+            YAML: <code>application/x-yaml</code> or <code>text/yaml</code>
+          </li>
+          <li>
+            TOML: <code>application/toml</code> or <code>text/x-toml</code>
+          </li>
+          <li>
+            Gura: <code>application/gura</code> or <code>text/gura</code>
+          </li>
+        </ul>
+      </section>
       <section class={styles.docs__items}>
         <For each={optionItems}>
           {({ title, desc, defaultValue, required, validValues }) => (
@@ -21,7 +53,7 @@ export default function Documentation(): JSXElement {
         </For>
       </section>
       <section class={styles.docs__example}>
-        <h2 class={styles['docs__example-title']}>Example Request</h2>
+        <h2 class={styles['docs__example-title']}>Example Request Body</h2>
         <pre>
           <code>
             {`{
