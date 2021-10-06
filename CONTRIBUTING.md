@@ -137,5 +137,8 @@ This repo is using npm@v7 workspaces so you can add `-w backend` or `-w frontend
 #### Extra command for backend
 
 - `npm run test` - Make sure everything works correctly.
+
+#### Only available from project root
+
 - `npm run docker:build` - Prepare for 'it works on my machine' solution.
 - `npm run docker:run` - 'it works on my machine' is no more.
