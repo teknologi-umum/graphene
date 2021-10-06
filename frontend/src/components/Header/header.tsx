@@ -1,6 +1,6 @@
 import type { JSXElement } from 'solid-js';
 import styles from './header.module.css';
-import GithubIcon from '/#/icons/GithubIcon';
+import GithubIcon from '#/icons/GithubIcon';
 
 export default function Header(): JSXElement {
   return (

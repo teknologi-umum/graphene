@@ -1,13 +1,13 @@
 import type { JSXElement, Setter } from 'solid-js';
 import { createSignal, For, Match, Switch } from 'solid-js';
 import styles from './options.module.css';
-import ArrowIcon from '/#/icons/ArrowIcon';
-import FontIcon from '/#/icons/FontIcon';
-import FormatIcon from '/#/icons/FormatIcon';
-import LanguageIcon from '/#/icons/LanguageIcon';
-import LineNumberIcon from '/#/icons/LineNumberIcon';
-import PaletteIcon from '/#/icons/PaletteIcon';
-import UpscaleIcon from '/#/icons/UpscaleIcon';
+import ArrowIcon from '#/icons/ArrowIcon';
+import FontIcon from '#/icons/FontIcon';
+import FormatIcon from '#/icons/FormatIcon';
+import LanguageIcon from '#/icons/LanguageIcon';
+import LineNumberIcon from '#/icons/LineNumberIcon';
+import PaletteIcon from '#/icons/PaletteIcon';
+import UpscaleIcon from '#/icons/UpscaleIcon';
 
 interface OptionsProps {
   items: string[];

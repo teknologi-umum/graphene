@@ -1,7 +1,7 @@
 import type { JSXElement } from 'solid-js';
 import { createSignal, Show } from 'solid-js';
 import styles from './settingsPopup.module.css';
-import GearIcon from '/#/icons/GearIcon';
+import GearIcon from '#/icons/GearIcon';
 
 export default function SettingsPopup(props: { children: JSXElement[] }): JSXElement {
   const [isPopupVisible, setPopupVisible] = createSignal(false);
