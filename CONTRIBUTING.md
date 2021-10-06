@@ -53,55 +53,61 @@ It's really up to you to have an unit test or not. But if you do, just create on
 npm run test
 ```
 
-### Directory structure
-
 ```
-├── build.js                          - build script
-├── CONTRIBUTING.md                   - the file you're reading right now
-├── docker-compose.yml
-├── Dockerfile
+.
+├── backend
+│   ├── build.js                 -- esbuild script
+│   ├── fonts
+│   ├── package.json
+│   ├── src
+│   │   ├── dist                        -- build artifacts
+│   │   ├── handler
+│   │   │   └── core.ts
+│   │   ├── index.ts
+│   │   ├── logic
+│   │   │   ├── generateImage.ts
+│   │   │   ├── getFontSetup.ts
+│   │   │   ├── getHighlightedCode.ts   -- get highlighted code using shiki
+│   │   │   ├── svgRenderer.ts
+│   │   │   └── validate.ts
+│   │   ├── middleware
+│   │   │   ├── cors.ts
+│   │   │   ├── errorHandler.ts         -- handle errors
+│   │   │   ├── json.ts                 -- json body parser
+│   │   │   └── rateLimiter.ts
+│   │   ├── types                       -- types declaration
+│   │   └── utils
+│   │       ├── getIP.ts
+│   │       ├── logtail.ts              -- logtail logger
+│   │       └── sentry.ts               -- sentry logger
+│   ├── tests                           -- test files
+│   └── tsconfig.json
+├── CONTRIBUTING.md
+├── docker-compose.yml                  -- docker-compose config
+├── Dockerfile                          -- docker config
 ├── fly.toml
-├── fonts                             - fonts for graphene
+├── frontend
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── README.md
+│   ├── src
+│   │   ├── App.tsx                     -- entry point
+│   │   ├── assets                      -- assets
+│   │   ├── components                  -- any components
+│   │   ├── global.css                  -- global stylesheets
+│   │   ├── icons                       -- icons component
+│   │   ├── index.tsx
+│   │   └── libs                        -- helpers
+│   ├── tsconfig.json
+│   └── vite.config.ts
 ├── LICENSE
 ├── package.json
 ├── package-lock.json
 ├── README.md
-├── scratch                           - experimental stuff or files not related to the app
-│   ├── logo.png
-│   └── output.png
-├── src
-│   ├── handler
-│   │   └── core.ts                    - core handler for `/api` route
-│   ├── index.ts                       - entry point
-│   ├── logic
-│   │   ├── generateImage.ts           - this is where the image is generated
-│   │   ├── getFontSetup.ts            - get font options
-│   │   ├── getHighlightedCode.ts      - highlight the code using shiki
-│   │   ├── svgRenderer.ts             - code for svg renderer
-│   │   └── validate.ts                - validate options
-│   ├── middleware
-│   │   ├── cors.ts
-│   │   ├── errorHandler.ts
-│   │   ├── json.ts
-│   │   └── rateLimiter.ts
-│   ├── types                          - type definition goes here
-│   │   ├── function.ts
-│   │   ├── highlight.ts
-│   │   ├── image.ts
-│   │   └── renderer.ts
-│   └── utils
-│       ├── getIP.ts
-│       ├── logtail.ts                 - logtail logger
-│       └── sentry.ts                  - sentry logger
-├── tests
-│   ├── font.test.ts
-│   ├── highlight.test.ts
-│   ├── language.test.ts
-│   ├── middleware.test.ts
-│   ├── output.test.ts
-│   ├── upscale.test.ts
-│   └── validation.test.ts
-└── tsconfig.json
+└── scratch
+    ├── logo.png
+    └── output.png
 ```
 
 ### Before creating a PR
@@ -110,19 +116,29 @@ Please run ESLint and Prettier with these commands so you're good on the CI proc
 
 ```sh
 $ npm run lint
-$ npm run format
+$ npm run prettier
 ```
 
 And you're set!
 
 ### NPM scripts
 
-- `npm install` - Your typical 5 million packages installation
-- `npm run build` - Node won't automagically run Typescript files
+This repo is using npm@v7 workspaces so you can add `-w backend` or `-w frontend` to each of these commands. You can use `--workspaces` to run the command on both workspaces.
+
+#### Available on both workspaces
+
+- `npm install` - Your typical 5 million packages installation.
+- `npm run build` - Node won't automagically run Typescript files.
 - `npm run start` - Start the fun stuff, make sure you've run the build step before running this.
-- `npm run dev` - When you want stuff to be automated
-- `npm run test` - Make sure everything works correctly
-- `npm run lint` - Check the files from your silly mistakes
-- `npm run format` - You like pretty formatted code, right?
-- `npm run docker:build` - Prepare for 'it works on my machine' solution
-- `npm run docker:run` - 'it works on my machine' is no more
+- `npm run dev` - When you want stuff to be automagically reloaded.
+- `npm run lint` - Check the files from your silly mistakes.
+- `npm run prettier` - You like pretty formatted code, right?
+
+#### Extra command for backend
+
+- `npm run test` - Make sure everything works correctly.
+
+#### Only available from project root
+
+- `npm run docker:build` - Prepare for 'it works on my machine' solution.
+- `npm run docker:run` - 'it works on my machine' is no more.
