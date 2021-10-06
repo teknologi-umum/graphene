@@ -89,6 +89,8 @@
 }
 
 .editor__input {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 400;
   position: relative;
   width: 100%;
   max-width: 800px;

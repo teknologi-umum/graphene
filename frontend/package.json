@@ -23,6 +23,7 @@
     "vite-plugin-solid": "2.1.0"
   },
   "dependencies": {
+    "@fontsource/jetbrains-mono": "^4.5.0",
     "@fontsource/rubik": "4.5.0",
     "solid-js": "1.1.5"
   },
