@@ -126,6 +126,7 @@ And you're set!
 This repo is using npm@v7 workspaces so you can add `-w backend` or `-w frontend` to each of these commands. You can use `--workspaces` to run the command on both workspaces.
 
 #### Available on both workspaces
+
 - `npm install` - Your typical 5 million packages installation.
 - `npm run build` - Node won't automagically run Typescript files.
 - `npm run start` - Start the fun stuff, make sure you've run the build step before running this.
@@ -134,6 +135,7 @@ This repo is using npm@v7 workspaces so you can add `-w backend` or `-w frontend
 - `npm run prettier` - You like pretty formatted code, right?
 
 #### Extra command for backend
+
 - `npm run test` - Make sure everything works correctly.
 - `npm run docker:build` - Prepare for 'it works on my machine' solution.
 - `npm run docker:run` - 'it works on my machine' is no more.
