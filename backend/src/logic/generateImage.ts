@@ -2,8 +2,8 @@ import flourite from 'flourite';
 import sharp from 'sharp';
 import * as shiki from 'shiki';
 import { svgRenderer as shikiSVGRenderer } from '../logic/svgRenderer';
-import { ValidOptions } from '../types/function';
 import { getFontSetup } from '../logic/getFontSetup';
+import type { ValidOptions } from '../types/function';
 
 const guessLanguage = (code: string, lang: string): string => {
   const guess = lang || flourite(code, { shiki: true, heuristic: true });

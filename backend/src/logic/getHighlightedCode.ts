@@ -1,5 +1,5 @@
-import type { IThemeRegistration } from 'shiki';
 import shiki from 'shiki';
+import type { IThemeRegistration } from 'shiki';
 import type { HighlightedCode } from '../types/highlight';
 
 /**

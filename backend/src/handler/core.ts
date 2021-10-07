@@ -21,7 +21,7 @@ export const coreHandler: Middleware = async (req, res) => {
     .end(image);
 
   await logtail.info('Incoming POST request', {
-    body: req.body,
+    body: req.body || '',
     headers: {
       accept: req.headers.accept || '',
       'content-type': req.headers['content-type'] || '',

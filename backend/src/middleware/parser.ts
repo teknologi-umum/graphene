@@ -33,6 +33,8 @@ export const parser: Middleware = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    res.writeHead(400, { 'Content-Type': 'application/json' }).end(JSON.stringify({ msg: 'Invalid JSON body' }));
+    res
+      .writeHead(400, { 'Content-Type': 'application/json' })
+      .end(JSON.stringify({ msg: 'Invalid body content with the Content-Type header specification' }));
   }
 };

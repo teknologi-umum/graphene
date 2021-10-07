@@ -1,6 +1,8 @@
 import type { Theme } from 'shiki';
 import type { ImageFormat } from './image';
 
+export type ValidFont = 'jetbrains mono' | 'sf mono' | 'fira code';
+
 export interface ValidOptions {
   code: string;
   lang: string;
@@ -11,6 +13,6 @@ export interface ValidOptions {
     colour: string;
   };
   theme: Theme;
-  font: 'jetbrains mono' | 'sf mono' | 'fira code';
+  font: ValidFont;
   lineNumber: boolean;
 }
