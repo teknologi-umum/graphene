@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npm run install --workspaces \
+RUN npm install --workspaces \
     && npm run build --workspaces \
     && rm -rf node_modules \
     && npm install --production --workspaces
