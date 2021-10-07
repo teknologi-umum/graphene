@@ -1,6 +1,5 @@
 FROM node:16.10-buster
 
-ENV NODE_ENV=production
 
 WORKDIR /usr/src/temp
 
@@ -14,8 +13,11 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npm install --workspaces \
-    && npm run build --workspaces \
+RUN npm install --workspaces
+
+ENV NODE_ENV=production
+
+RUN npm run build --workspaces \
     && rm -rf node_modules \
     && npm install --production --workspaces
 
