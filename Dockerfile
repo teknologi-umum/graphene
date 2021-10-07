@@ -12,13 +12,10 @@ RUN mv -v sf-mono /usr/local/share/fonts/ \
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-
-RUN npm install
-
 COPY . .
 
-RUN npm run build --workspaces \
+RUN npm run install --workspaces \
+    && npm run build --workspaces \
     && rm -rf node_modules \
     && npm install --production --workspaces
 
