@@ -10,7 +10,6 @@ const rlm = new RateLimiterMemory({
 
 /**
  * Rate limiter, duh!
- * @type {import('polka').Middleware}
  */
 export const rateLimiter: Middleware = async (req, res, next) => {
   try {

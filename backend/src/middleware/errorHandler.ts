@@ -15,7 +15,7 @@ export const errorHandler: ErrorHandler = (err, req, res) => {
       Accept: req.headers['accept'],
       'User-Agent': req.headers['user-agent'],
     });
-    scope.setContext('request_body', { ...req.body });
+    scope.setContext('request_body', { body: req.body });
     return scope;
   });
 
@@ -23,5 +23,14 @@ export const errorHandler: ErrorHandler = (err, req, res) => {
     .writeHead(500, { 'Content-Type': 'application/json' })
     .end(JSON.stringify({ msg: 'Something went wrong on our side.' }));
 
-  logtail.error('Error was thrown', { error: String(err) });
+  logtail.error('Error was thrown', {
+    error: err.toString(),
+    headers: {
+      'Content-Type': req.headers['content-type'] || '',
+      Origin: req.headers['origin'] || '',
+      Accept: req.headers['accept'] || '',
+      'User-Agent': req.headers['user-agent'] || '',
+    },
+    body: req.body,
+  });
 };

@@ -1,3 +1,5 @@
+import type { ValidFont } from '../types/function';
+
 interface FontSetupOutput {
   fontFamily: 'JetBrainsMono Nerd Font' | 'FiraCode Nerd Font' | 'SFMono Nerd Font';
   lineHeightToFontSizeRatio: number;
@@ -10,7 +12,7 @@ interface FontSetupOutput {
  * @param {'jetbrains mono' | 'sf mono' | 'fira code'} font
  * @returns {FontSetupOutput}
  */
-export const getFontSetup = (font: 'jetbrains mono' | 'sf mono' | 'fira code'): FontSetupOutput => {
+export const getFontSetup = (font: ValidFont): FontSetupOutput => {
   switch (font.toLowerCase()) {
     case 'jetbrains mono': {
       return {
