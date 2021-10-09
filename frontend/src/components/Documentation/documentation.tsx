@@ -54,7 +54,7 @@ export default function Documentation(): JSXElement {
       </section>
       <section class={styles.docs__example}>
         <h2 class={styles['docs__example-title']}>Example Request Body</h2>
-        <pre>
+        <pre class={styles['docs__example-preformatted-content']}>
           <code>
             {`{
   "code": "import foo from './bar';",

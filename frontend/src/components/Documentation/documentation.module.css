@@ -66,6 +66,11 @@
   margin: 2rem 0;
 }
 
+.docs__example-preformatted-content {
+  white-space: pre-wrap; 
+  word-break: break-word;
+}
+
 .docs__example-title {
   font-family: 'Rubik', sans-serif;
   font-weight: 500;
