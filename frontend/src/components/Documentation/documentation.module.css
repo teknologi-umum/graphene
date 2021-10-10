@@ -88,5 +88,6 @@
   line-height: 2em;
   background-color: #e2e8f0;
   border-radius: 0.25rem;
+  overflow-x: scroll;
   padding: 1rem;
 }
