@@ -13,6 +13,7 @@
   color: var(--theme-dark-color);
   background-color: var(--theme-light-blue);
   padding: 0 1rem;
+  border-radius: 0.25rem;
 }
 
 .item__desc {
