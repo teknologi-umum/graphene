@@ -1,7 +1,7 @@
 .picker {
   position: relative;
   background: none;
-  border: 0.125rem #e2e8f0 solid;
+  border: 0.125rem var(--theme-light-gray) solid;
   border-radius: 0.5rem;
 }
 

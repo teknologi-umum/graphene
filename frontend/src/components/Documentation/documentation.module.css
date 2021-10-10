@@ -7,7 +7,7 @@
   font-size: 2.25rem;
   font-family: 'Rubik', sans-serif;
   text-align: center;
-  color: #2d3748;
+  color: var(--theme-dark-color);
   margin-bottom: 2rem;
   font-weight: 500;
 }
@@ -17,7 +17,7 @@
   font-family: 'Rubik', sans-serif;
   text-align: left;
   line-height: 1.75em;
-  color: #2d3748;
+  color: var(--theme-dark-color);
   font-weight: 400;
   margin-bottom: 1.25rem;
 }
@@ -31,13 +31,14 @@
   font-family: 'Rubik', sans-serif;
   text-align: left;
   line-height: 1.75em;
-  color: #2d3748;
+  color: var(--theme-dark-color);
   font-weight: 400;
   margin-left: 1rem;
   margin-bottom: 0.15rem;
 }
 
 .docs__description :global(a) {
+  color: var(--theme-link);
   position: relative;
   text-decoration: none;
 }
@@ -49,7 +50,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #bee3f8;
+  background-color: var(--theme-light-blue);
   z-index: -1;
   transition: all 0.1s ease-out;
 }
@@ -59,7 +60,7 @@
 }
 
 .docs__description :global(a:visited) {
-  color: #2d3748;
+  color: var(--theme-dark-color);
 }
 
 .docs__example {
@@ -78,7 +79,7 @@
   font-weight: 400;
   padding: 0.25rem;
   border-radius: 0.25rem;
-  background-color: #e2e8f0;
+  background-color: var(--theme-light-gray);
   font-size: 1rem;
 }
 
@@ -86,7 +87,7 @@
   font-family: 'JetBrains Mono', monospace;
   font-weight: 400;
   line-height: 2em;
-  background-color: #e2e8f0;
+  background-color: var(--theme-light-gray);
   border-radius: 0.25rem;
   overflow-x: scroll;
   padding: 1rem;
