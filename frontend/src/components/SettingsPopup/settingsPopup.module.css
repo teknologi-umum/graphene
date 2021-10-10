@@ -10,13 +10,13 @@
   justify-content: center;
   position: relative;
   outline: none;
-  border: 0.125rem #e2e8f0 solid;
+  border: 0.125rem var(--theme-light-gray) solid;
   border-radius: 0.5rem;
   width: 2.5rem;
   height: 2.5rem;
-  color: #2d3748;
+  color: var(--theme-dark-color);
   cursor: pointer;
-  background-color: #ffffff;
+  background-color: var(--theme-white);
 }
 
 .settings__button:hover {
@@ -33,9 +33,9 @@
   flex-direction: column;
   gap: 0.5rem;
   padding: 0.75rem;
-  border: 0.125rem #e2e8f0 solid;
+  border: 0.125rem var(--theme-light-gray) solid;
   border-radius: 0.5rem;
-  background-color: #ffffff;
+  background-color: var(--theme-white);
   font-family: 'Rubik', sans-serif;
 }
 
