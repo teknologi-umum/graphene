@@ -6,7 +6,7 @@ import SettingsPopup from '../SettingsPopup/settingsPopup';
 import styles from './editor.module.css';
 import Options from '#/components/Options/options';
 import PlayIcon from '#/icons/PlayIcon';
-import { BASE_URL, VALID_FONT, VALID_FORMAT, VALID_LANGUAGES, VALID_THEMES, VALID_UPSCALE } from '#/libs/constant';
+import { VALID_FONT, VALID_FORMAT, VALID_LANGUAGES, VALID_THEMES, VALID_UPSCALE } from '#/libs/constant';
 import { useWinSize } from '#/libs/hooks';
 
 async function blobToBase64(blob: Blob): Promise<string> {
@@ -58,7 +58,7 @@ export default function Editor(): JSXElement {
       lineNumber: lineNumber(),
     };
 
-    const imageResponse = await fetch(BASE_URL + '/api', {
+    const imageResponse = await fetch('/api', {
       method: 'POST',
       headers: {
         Accept: `image/${format}`,
