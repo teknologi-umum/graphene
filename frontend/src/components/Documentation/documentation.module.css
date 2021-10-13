@@ -12,6 +12,11 @@
   font-weight: 500;
 }
 
+a {
+  text-decoration: none;
+  color: var(--theme-dark-color);
+}
+
 .docs__description :global(p) {
   font-size: 1.125rem;
   font-family: 'Rubik', sans-serif;
@@ -59,10 +64,6 @@
   top: 0;
 }
 
-.docs__description :global(a:visited) {
-  color: var(--theme-dark-color);
-}
-
 .docs__example {
   margin: 2rem 0;
 }
@@ -89,6 +90,6 @@
   line-height: 2em;
   background-color: var(--theme-light-gray);
   border-radius: 0.25rem;
-  overflow-x: scroll;
+  overflow-x: auto;
   padding: 1rem;
 }

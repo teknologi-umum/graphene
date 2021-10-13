@@ -6,7 +6,9 @@ import styles from './documentation.module.css';
 export default function Documentation(): JSXElement {
   return (
     <div class={styles.docs}>
-      <h2 class={styles.docs__title}>Documentation for Graphene API</h2>
+      <h2 class={styles.docs__title} id="documentation">
+        <a href="#documentation">Documentation for Graphene API</a>
+      </h2>
       <section class={styles.docs__description}>
         <p>
           Simply send a HTTP POST request to&nbsp;
@@ -18,7 +20,7 @@ export default function Documentation(): JSXElement {
         <p>
           If no <code>Content-Type</code> header was given, the API by default would parse it as JSON. If you don't feel
           like doing JSON, we support URL encoded,
-          <a href="https://yaml.org/">YAML</a>, <a href="https://toml.io/en/">TOML</a>, and
+          <a href="https://yaml.org/">YAML</a>, <a href="https://toml.io/en/">TOML</a>, and{' '}
           <a href="https://gura.netlify.app/">Gura</a>. Valid <code>Content-Type</code> values are:
         </p>
         <ul>
@@ -53,7 +55,9 @@ export default function Documentation(): JSXElement {
         </For>
       </section>
       <section class={styles.docs__example}>
-        <h2 class={styles['docs__example-title']}>Example Request Body</h2>
+        <h2 class={styles['docs__example-title']} id="example">
+          <a href="#example">Example Request Body</a>
+        </h2>
         <pre>
           <code>
             {`{

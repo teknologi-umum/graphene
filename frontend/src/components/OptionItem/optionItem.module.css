@@ -16,6 +16,11 @@
   border-radius: 0.25rem;
 }
 
+a {
+  text-decoration: none;
+  color: var(--theme-dark-color);
+}
+
 .item__desc {
   font-family: 'Rubik', sans-serif;
   display: block;

@@ -12,7 +12,9 @@ interface OptionItemProps {
 export default function OptionItem(props: OptionItemProps): JSXElement {
   return (
     <div class={styles.item}>
-      <span class={styles.item__title}>{props.title}</span>
+      <span class={styles.item__title} id={props.title}>
+        <a href={'#' + props.title}>{props.title}</a>
+      </span>
       {/* eslint-disable-next-line solid/no-innerhtml */}
       <p class={styles.item__desc} innerHTML={props.desc}></p>
       <span class={styles.item__detail}>
