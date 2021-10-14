@@ -45,9 +45,9 @@ Because it gives pretty much the same _accurate_ highlighting as Visual Studio C
 
 <summary>ok sorry, click here for the real answer</summary>
 
-- You send a POST request with a JSON body containing [valid options](#api)
+- You send a POST request with a JSON body containing [valid options](https://graphene.teknologiumum.com/#documentation)
 - It will Highlight the code using Shiki and apply some options
-- Then, render the result to svg using [custom svg renderer](./src/logic/svgRenderer.ts) which is a heavily modified version of the [original svg renderer](https://github.com/shikijs/shiki/tree/main/packages/renderer-svg)
+- Then, render the result to svg using [custom svg renderer](./src/backend/src/logic/svgRenderer.ts) which is a heavily modified version of the [original svg renderer](https://github.com/shikijs/shiki/tree/main/packages/renderer-svg)
 - Apply border, upscale, and convert to the desired output format using [sharpjs][sharp-link]
 - Send it back to you
 
