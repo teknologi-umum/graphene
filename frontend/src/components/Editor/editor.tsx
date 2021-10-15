@@ -61,7 +61,7 @@ export default function Editor(): JSXElement {
     const imageResponse = await fetch('/api', {
       method: 'POST',
       headers: {
-        Accept: `image/${format}`,
+        Accept: `image/${format()}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
