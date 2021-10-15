@@ -6,7 +6,7 @@ import { getFontSetup } from '../logic/getFontSetup';
 import type { ValidOptions } from '../types/function';
 
 const guessLanguage = (code: string, lang: string): string => {
-  const guess = lang || flourite(code, { shiki: true, heuristic: true });
+  const guess = lang || flourite(code, { shiki: true, heuristic: true }).language;
   const language = guess === 'unknown' ? 'md' : guess;
   return language;
 };
