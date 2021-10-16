@@ -18,7 +18,7 @@ export async function generateImage({
   format = 'png',
   upscale = 1,
   theme = 'github-dark',
-  font = 'jetbrains mono',
+  font = 'sf mono',
   lineNumber = true,
 }: ValidOptions): Promise<{ image: Buffer; length: number; format: string }> {
   const highlighter = await shiki.getHighlighter({ theme });
