@@ -25,6 +25,7 @@ async function blobToBase64(blob: Blob): Promise<string> {
 export default function Editor(): JSXElement {
   const winWidth = useWinSize();
 
+  const [isFetching, setFetching] = createSignal(false);
   const [image, setImage] = createSignal('');
   const [code, setCode] = createSignal('');
 
@@ -45,12 +46,14 @@ export default function Editor(): JSXElement {
   const [borderThickness, setBorderThickness] = createSignal(0);
 
   const submit = async () => {
+    setFetching(true);
     const body = {
       code: code(),
       lang: selectedLang().toLowerCase() === 'auto detect' ? '' : selectedLang(),
       theme: theme().toLowerCase().replace(/\s/g, '-'),
       format: format(),
       upscale: upscale(),
+      font: font(),
       border: {
         colour: colour(),
         thickness: borderThickness(),
@@ -68,10 +71,14 @@ export default function Editor(): JSXElement {
     });
     const imageBlob = await imageResponse.blob();
     setImage(await blobToBase64(imageBlob));
+    setFetching(false);
   };
 
   return (
-    <section class={styles.main}>
+    <section class={styles.main} style={{ cursor: isFetching() ? 'wait' : 'auto' }}>
+      <Show when={isFetching()}>
+        <div class={styles.main__overlay} />
+      </Show>
       <div class={styles.main__options}>
         {/* :start this copypasta is bad */}
         <Show when={winWidth() > 600}>
@@ -162,7 +169,11 @@ export default function Editor(): JSXElement {
           >
             {code}
           </textarea>
-          <button class={styles.main__button} onClick={submit}>
+          <button
+            class={styles.main__button}
+            onClick={submit}
+            style={{ filter: isFetching() ? 'saturate(0)' : 'none' }}
+          >
             <PlayIcon />
           </button>
         </div>

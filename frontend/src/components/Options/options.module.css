@@ -76,7 +76,7 @@
 }
 
 .options__candidates::-webkit-scrollbar {
-  background-color: var(--theme-white);
+  background-color: var(--theme-light-color);
   width: 0.25rem;
 }
 
@@ -85,7 +85,7 @@
   display: flex;
   align-items: center;
   height: 2.5rem;
-  background-color: var(--theme-white);
+  background-color: var(--theme-light-color);
   font-family: 'Rubik', sans-serif;
   padding: 0 1rem;
   cursor: pointer;
