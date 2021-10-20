@@ -1,5 +1,5 @@
-import { JSXElement, onMount } from 'solid-js';
-import { createSignal, Show } from 'solid-js';
+import type { JSXElement } from 'solid-js';
+import { createSignal, Show, onMount } from 'solid-js';
 import styles from './settingsPopup.module.css';
 import GearIcon from '#/icons/GearIcon';
 
