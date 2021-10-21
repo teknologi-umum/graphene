@@ -65,8 +65,9 @@ export default function Options(props: OptionsProps): JSXElement {
           }}
           onBlur={(e) => {
             e.currentTarget.value = props.selected;
-            setCandidateVisible(false);
-            setFilteredItems(props.items);
+            setTimeout(() => {
+              setCandidateVisible(false)
+            }, 140)
           }}
           placeholder={props.selected}
           value={props.selected}
@@ -81,6 +82,7 @@ export default function Options(props: OptionsProps): JSXElement {
                   onMouseUp={(e) => {
                     e.preventDefault();
                     props.setSelected(item);
+                    setFilteredItems(props.items)
                     inputRef?.blur();
                   }}
                 >
