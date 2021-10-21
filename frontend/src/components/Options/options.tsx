@@ -78,7 +78,7 @@ export default function Options(props: OptionsProps): JSXElement {
               {(item) => (
                 <li
                   class={styles.candidate}
-                  onMouseUp={(e) => {
+                  onMouseDown={(e) => {
                     e.preventDefault();
                     props.setSelected(item);
                     inputRef?.blur();
