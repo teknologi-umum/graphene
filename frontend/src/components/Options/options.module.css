@@ -43,6 +43,10 @@
   text-transform: capitalize;
 }
 
+.options__input:focus::placeholder {
+  opacity: 0.5;
+}
+
 :global(.arrow) {
   pointer-events: none;
   position: absolute;
