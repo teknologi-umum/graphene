@@ -140,7 +140,7 @@ export default function Editor(): JSXElement {
                 <span
                   class={styles.upscale__item}
                   onClick={() => setUpscale(scale)}
-                  style={{ color: scale === upscale() ? '#2d3748' : '#718096' }}
+                  style={{ opacity: scale === upscale() ? 1 : 0.5 }}
                 >
                   {scale}x
                 </span>

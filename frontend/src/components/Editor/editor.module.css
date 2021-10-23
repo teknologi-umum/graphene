@@ -54,11 +54,12 @@
   cursor: pointer;
   font-weight: 500;
   font-family: 'Rubik', sans-serif;
-  color: #718096;
+  color: var(--theme-dark-color);
+  opacity: 0.5;
 }
 
 .upscale__item:hover {
-  color: #2d3748 !important;
+  opacity: 1 !important;
 }
 
 .main__border-label {

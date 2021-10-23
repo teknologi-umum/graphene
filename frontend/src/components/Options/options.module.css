@@ -20,6 +20,7 @@
 
 .options__input-wrapper {
   flex: 1;
+  height: 100%;
 }
 
 .options__input {
