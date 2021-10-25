@@ -71,12 +71,12 @@ export default function Editor(): JSXElement {
       body: JSON.stringify(body),
     });
     if (imageResponse.ok) {
-      const imageBlob = await imageResponse.blob()
+      const imageBlob = await imageResponse.blob();
       setImage(await blobToBase64(imageBlob));
       setError('');
     } else {
       const errorMsg = await imageResponse.json();
-      setError(errorMsg.msg.toString())
+      setError(errorMsg.msg.toString());
     }
     setFetching(false);
   };
@@ -187,23 +187,16 @@ export default function Editor(): JSXElement {
         <div class={styles.main__preview}>
           <Switch>
             <Match when={!error() && image()}>
-              <img class={styles['main__preview-img']}
-                   src={image()}/>
+              <img class={styles['main__preview-img']} src={image()} />
             </Match>
             <Match when={!error() && !image()}>
-              <div
-                class={styles['main__preview-placeholder']}>
-                <h3
-                  class={styles['main__preview-title']}>Your
-                  image will appear here</h3>
+              <div class={styles['main__preview-placeholder']}>
+                <h3 class={styles['main__preview-title']}>Your image will appear here</h3>
               </div>
             </Match>
             <Match when={error()}>
-              <div
-                class={styles['main__error-placeholder']}>
-                <h3
-                  class={styles['main__error-title']}>Paste
-                  you Code to generate image</h3>
+              <div class={styles['main__error-placeholder']}>
+                <h3 class={styles['main__error-title']}>Paste you Code to generate image</h3>
               </div>
             </Match>
           </Switch>
