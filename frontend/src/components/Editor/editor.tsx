@@ -196,7 +196,7 @@ export default function Editor(): JSXElement {
             </Match>
             <Match when={error()}>
               <div class={styles['main__error-placeholder']}>
-                <h3 class={styles['main__error-title']}>Paste you Code to generate image</h3>
+                <h3 class={styles['main__error-title']}>{error()}</h3>
               </div>
             </Match>
           </Switch>
