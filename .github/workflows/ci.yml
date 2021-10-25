@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16.11 # 16.12 has breaking change for esm loader
+          node-version: 16.x
 
       - name: Installling dependencies
         run: npm install --workspaces
