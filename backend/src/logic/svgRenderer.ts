@@ -52,6 +52,7 @@ function getTokenSVGAttributes(token: IThemedToken) {
 
   if (token.fontStyle === FontStyle.Bold) OPTIONS['font-weight'] = 'bold';
   if (token.fontStyle === FontStyle.Italic) OPTIONS['font-style'] = 'italic';
+  if (token.fontStyle === FontStyle.None) OPTIONS['font-style'] = 'normal';
 
   return Object.keys(OPTIONS)
     .reduce((acc: string[], curr: string) => {
