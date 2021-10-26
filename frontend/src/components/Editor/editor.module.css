@@ -175,6 +175,23 @@
   align-items: center;
 }
 
+.main__error-placeholder {
+  background-color: var(--error-light-color);
+  border-radius: 0.5rem;
+  border: 0.25rem var(--error-dark-color) dotted;
+  color: var(--error-dark-color);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main__error-title {
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+}
+
 .main__preview-title {
   text-align: center;
   font-family: 'Rubik', sans-serif;

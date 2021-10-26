@@ -5,6 +5,8 @@
   --theme-white: #ffffff;
   --theme-light-blue: #bee3f8;
   --theme-link: #4a6ee0;
+  --error-light-color: rgba(245, 101, 101, 0.1);
+  --error-dark-color: rgba(245, 101, 101, 0.9);
 }
 
 * {
