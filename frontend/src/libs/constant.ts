@@ -21,7 +21,6 @@ export const VALID_LANGUAGES = [
   'coffee',
   'cpp',
   'crystal',
-  'csharp',
   'c#',
   'css',
   'd',

@@ -48,9 +48,10 @@ export default function Editor(): JSXElement {
 
   const submit = async () => {
     setFetching(true);
+    const lang = selectedLang().toLowerCase();
     const body = {
       code: code(),
-      lang: selectedLang().toLowerCase() === 'auto detect' ? '' : selectedLang(),
+      lang: lang === 'auto detect' ? '' : lang === 'c#' ? 'csharp' : selectedLang(),
       theme: theme().toLowerCase().replace(/\s/g, '-'),
       format: format(),
       upscale: upscale(),
