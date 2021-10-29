@@ -60,6 +60,12 @@ export const validate = ({ code, upscale, format, theme, font, border, lang, lin
       'Bad `theme`! See https://github.com/shikijs/shiki/blob/main/docs/themes.md#all-themes for list of valid themes',
       false,
     ),
-    validateKeys('font', (font ?? '').toLowerCase(), ['sf mono', 'jetbrains mono', 'fira code'], '', false),
+    validateKeys(
+      'font',
+      (font ?? '').toLowerCase(),
+      ['sf mono', 'jetbrains mono', 'fira code', 'hack', 'iosevka', 'cascadia code'],
+      '',
+      false,
+    ),
   ].filter(Boolean) as string[];
 };
