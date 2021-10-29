@@ -51,7 +51,7 @@ export const getFontSetup = (font: ValidFont): FontSetupOutput => {
         fontFamily: 'Hack Nerd Font Mono',
         lineHeightToFontSizeRatio: 1.5,
         fontSize: 14,
-        fontWidth: 8.65,
+        fontWidth: 8.35,
       };
     }
     case 'iosevka': {
@@ -67,7 +67,7 @@ export const getFontSetup = (font: ValidFont): FontSetupOutput => {
         fontFamily: 'CaskaydiaCove Nerd Font Mono',
         lineHeightToFontSizeRatio: 1.5,
         fontSize: 14,
-        fontWidth: 8.65,
+        fontWidth: 8.15,
       };
     }
     default: {

@@ -42,7 +42,7 @@ test('return font setup for hack', () => {
     fontFamily: 'Hack Nerd Font Mono',
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
-    fontWidth: 8.65,
+    fontWidth: 8.35,
   });
 });
 
@@ -62,7 +62,7 @@ test('return font setup for cascadia code', () => {
     fontFamily: 'CaskaydiaCove Nerd Font Mono',
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
-    fontWidth: 8.65,
+    fontWidth: 8.15,
   });
 });
 
