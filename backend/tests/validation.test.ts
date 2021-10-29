@@ -74,7 +74,11 @@ test('should error when invalid font was given', async () => {
     })
     .expect(400)
     .expect('content-type', 'application/json')
-    .expect({ msg: ['Bad `font`! Valid options are `sf mono`, `jetbrains mono`, and `fira code`'] });
+    .expect({
+      msg: [
+        'Bad `font`! Valid options are `sf mono`, `jetbrains mono`, `fira code`, `hack`, `iosevka`, and `cascadia code`',
+      ],
+    });
 });
 
 test('what if we had multiple errors?', async () => {
@@ -95,7 +99,7 @@ test('what if we had multiple errors?', async () => {
         "`upscale` can't be lower than 1 or higher than 5!",
         'Bad `format`! Valid options are `png`, `jpeg`, `webp`, and `svg`',
         'Bad `theme`! See https://github.com/shikijs/shiki/blob/main/docs/themes.md#all-themes for list of valid themes',
-        'Bad `font`! Valid options are `sf mono`, `jetbrains mono`, and `fira code`',
+        'Bad `font`! Valid options are `sf mono`, `jetbrains mono`, `fira code`, `hack`, `iosevka`, and `cascadia code`',
       ],
     });
 });

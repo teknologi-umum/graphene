@@ -9,7 +9,7 @@ const instance = request(server.handler);
 test('return font setup for jetbrains mono', () => {
   const output = getFontSetup('jetbrains mono');
   assert.equal(output, {
-    fontFamily: 'JetBrainsMono Nerd Font',
+    fontFamily: 'JetBrainsMonoNL Nerd Font Mono',
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
     fontWidth: 8.4,
@@ -29,7 +29,37 @@ test('return font setup for sf mono', () => {
 test('return font setup for fira code', () => {
   const output = getFontSetup('fira code');
   assert.equal(output, {
-    fontFamily: 'FiraCode Nerd Font',
+    fontFamily: 'FiraCode Nerd Font Mono',
+    lineHeightToFontSizeRatio: 1.5,
+    fontSize: 14,
+    fontWidth: 8.65,
+  });
+});
+
+test('return font setup for hack', () => {
+  const output = getFontSetup('hack');
+  assert.equal(output, {
+    fontFamily: 'Hack Nerd Font Mono',
+    lineHeightToFontSizeRatio: 1.5,
+    fontSize: 14,
+    fontWidth: 8.65,
+  });
+});
+
+test('return font setup for iosevka', () => {
+  const output = getFontSetup('iosevka');
+  assert.equal(output, {
+    fontFamily: 'Iosevka Nerd Font Mono',
+    lineHeightToFontSizeRatio: 1.5,
+    fontSize: 14,
+    fontWidth: 7,
+  });
+});
+
+test('return font setup for cascadia code', () => {
+  const output = getFontSetup('cascadia code');
+  assert.equal(output, {
+    fontFamily: 'CaskaydiaCove Nerd Font Mono',
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
     fontWidth: 8.65,
@@ -61,6 +91,30 @@ test('should be able to specify font options - fira code', async () => {
   await instance
     .post('/api')
     .send({ code: 'console.log("sup world");', font: 'fira code' })
+    .expect(200)
+    .expect('content-type', 'image/png');
+});
+
+test('should be able to specify font options - hack', async () => {
+  await instance
+    .post('/api')
+    .send({ code: 'console.log("sup world");', font: 'hack' })
+    .expect(200)
+    .expect('content-type', 'image/png');
+});
+
+test('should be able to specify font options - iosevka', async () => {
+  await instance
+    .post('/api')
+    .send({ code: 'console.log("sup world");', font: 'iosevka' })
+    .expect(200)
+    .expect('content-type', 'image/png');
+});
+
+test('should be able to specify font options - cascadia code', async () => {
+  await instance
+    .post('/api')
+    .send({ code: 'console.log("sup world");', font: 'cascadia code' })
     .expect(200)
     .expect('content-type', 'image/png');
 });
