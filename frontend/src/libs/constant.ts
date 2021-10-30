@@ -1,3 +1,6 @@
+// TODO(elianiva): figure out a way to get these constant from shiki instead of
+//                 hardcoding them here
+
 export const BASE_URL = 'https://teknologi-umum-graphene.fly.dev';
 
 export const VALID_LANGUAGES = [
@@ -181,4 +184,11 @@ export const VALID_FORMAT = ['png', 'jpeg', 'webp', 'svg'];
 
 export const VALID_UPSCALE = [1, 2, 3, 4, 5];
 
-export const VALID_FONT = ['sf mono', 'fira code', 'jetbrains mono'];
+export const VALID_FONT = [
+  'jetbrains mono',
+  'fira code',
+  'sf mono',
+  'hack',
+  'iosevka mono',
+  'cascadia code',
+];
