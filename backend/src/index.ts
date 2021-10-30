@@ -6,12 +6,13 @@ import helmet from 'helmet';
 import { cors } from './middleware/cors';
 import { parser } from './middleware/parser';
 import { errorHandler } from './middleware/errorHandler';
+import { notFoundHandler } from './middleware/notFound';
 import { rateLimiter } from './middleware/rateLimiter';
 import { coreHandler } from './handler/core';
 import logtail from './utils/logtail';
 import type { Middleware } from 'polka';
 
-const server = polka({ onError: errorHandler })
+const server = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
   .use(
     helmet() as Middleware,
     sirv(resolve(dirname(fileURLToPath(import.meta.url)), './views'), {
