@@ -16,12 +16,12 @@ export const errorHandler: ErrorHandler = (err, req, res) => {
       'User-Agent': req.headers['user-agent'],
     });
     scope.setContext('request_body', { body: req.body });
+    scope.setContext('request_meta', { url: req.url, method: req.method, http: req.httpVersion });
     return scope;
   });
 
-  res
-    .writeHead(500, { 'Content-Type': 'application/json' })
-    .end(JSON.stringify({ msg: 'Something went wrong on our side.' }));
+  const msg = JSON.stringify({ msg: 'Something went wrong on our side.' });
+  res.writeHead(500, { 'Content-Type': 'application/json', 'Content-Length': msg.length }).end(msg);
 
   logtail.error('Error was thrown', {
     error: err.toString(),
