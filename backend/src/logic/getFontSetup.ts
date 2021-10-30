@@ -1,7 +1,15 @@
 import type { ValidFont } from '../types/function';
 
+type FontFamilies =
+  | 'JetBrainsMonoNL Nerd Font Mono'
+  | 'FiraCode Nerd Font Mono'
+  | 'SFMono Nerd Font'
+  | 'Hack Nerd Font Mono'
+  | 'Iosevka Nerd Font Mono'
+  | 'CaskaydiaCove Nerd Font Mono';
+
 interface FontSetupOutput {
-  fontFamily: 'JetBrainsMono Nerd Font' | 'FiraCode Nerd Font' | 'SFMono Nerd Font';
+  fontFamily: FontFamilies;
   lineHeightToFontSizeRatio: number;
   fontSize: number;
   fontWidth: number;
@@ -16,7 +24,7 @@ export const getFontSetup = (font: ValidFont): FontSetupOutput => {
   switch (font.toLowerCase()) {
     case 'jetbrains mono': {
       return {
-        fontFamily: 'JetBrainsMono Nerd Font',
+        fontFamily: 'JetBrainsMonoNL Nerd Font Mono',
         lineHeightToFontSizeRatio: 1.5,
         fontSize: 14,
         fontWidth: 8.4,
@@ -32,10 +40,34 @@ export const getFontSetup = (font: ValidFont): FontSetupOutput => {
     }
     case 'fira code': {
       return {
-        fontFamily: 'FiraCode Nerd Font',
+        fontFamily: 'FiraCode Nerd Font Mono',
         lineHeightToFontSizeRatio: 1.5,
         fontSize: 14,
         fontWidth: 8.65,
+      };
+    }
+    case 'hack': {
+      return {
+        fontFamily: 'Hack Nerd Font Mono',
+        lineHeightToFontSizeRatio: 1.5,
+        fontSize: 14,
+        fontWidth: 8.35,
+      };
+    }
+    case 'iosevka': {
+      return {
+        fontFamily: 'Iosevka Nerd Font Mono',
+        lineHeightToFontSizeRatio: 1.5,
+        fontSize: 14,
+        fontWidth: 7,
+      };
+    }
+    case 'cascadia code': {
+      return {
+        fontFamily: 'CaskaydiaCove Nerd Font Mono',
+        lineHeightToFontSizeRatio: 1.5,
+        fontSize: 14,
+        fontWidth: 8.15,
       };
     }
     default: {

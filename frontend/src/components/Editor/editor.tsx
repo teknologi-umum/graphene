@@ -1,13 +1,13 @@
 import { For, Match, Show, Switch } from 'solid-js';
 import type { JSXElement } from 'solid-js';
 import { createSignal } from 'solid-js';
-import ColourPicker from '../ColourPicker/colourPicker';
-import SettingsPopup from '../SettingsPopup/settingsPopup';
-import styles from './editor.module.css';
+import ColourPicker from '#/components/ColourPicker/colourPicker';
+import SettingsPopup from '#/components/SettingsPopup/settingsPopup';
 import Options from '#/components/Options/options';
 import PlayIcon from '#/icons/PlayIcon';
 import { VALID_FONT, VALID_FORMAT, VALID_LANGUAGES, VALID_THEMES, VALID_UPSCALE } from '#/libs/constant';
 import { useWinSize } from '#/libs/hooks';
+import styles from './editor.module.css';
 
 async function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {

@@ -1,6 +1,7 @@
 import type { JSXElement } from 'solid-js';
 import { For } from 'solid-js';
-import OptionItem from '../OptionItem/optionItem';
+import { VALID_FONT, VALID_FORMAT } from '#/libs/constant';
+import OptionItem from '#/components/OptionItem/optionItem';
 import styles from './documentation.module.css';
 
 export default function Documentation(): JSXElement {
@@ -81,6 +82,7 @@ export default function Documentation(): JSXElement {
   );
 }
 
+const listFormatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
 const optionItems = [
   {
     title: 'code',
@@ -101,7 +103,7 @@ const optionItems = [
     desc: "The output format. If you choose svg, you won't get border since the border is created by sharpjs instead of embedding it in the svg.",
     required: false,
     defaultValue: 'png',
-    validValues: '<code>jpeg</code>, <code>png</code>, <code>webp</code>, and <code>svg</code>',
+    validValues: listFormatter.format(VALID_FORMAT.map((format) => `<code>${format}</code>`)),
   },
   {
     title: 'upscale',
@@ -122,7 +124,7 @@ const optionItems = [
     desc: 'Colorscheme used to highlight the code.',
     required: false,
     defaultValue: 'JetBrains Mono',
-    validValues: '<code>SF Mono</code>, <code>JetBrains Mono</code>, and <code>Fira Code</code>,',
+    validValues: listFormatter.format(VALID_FONT.map((font) => `<code>${font}</code>`)),
   },
   {
     title: 'lineNumber',
