@@ -16,19 +16,11 @@
 
 Please visit https://graphene.teknologiumum.com for Graphene Web UI and its documentation.
 
-## I'm here for Hacktoberfest, what can I do?
-
-If you're new to open source, we really recommend reading a few articles about contributing to open source projects:
-
-- [Open Source Guide's How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
-- [Hacktoberfest Contributor's Guide: How To Find and Contribute to Open-Source Projects](https://www.digitalocean.com/community/tutorials/hacktoberfest-contributor-s-guide-how-to-find-and-contribute-to-open-source-projects)
-- [Tips for high-quality Pull Request](https://twitter.com/sudo_navendu/status/1437456596473303042)
-
-You can start by reading the [CONTRIBUTING.md](./CONTRIBUTING.md). Then you can search for [issues that you can work on](https://github.com/teknologi-umum/graphene/issues?q=is%3Aopen+is%3Aissue+label%3Ahacktoberfest).
-
-Have fun!
-
 ## FAQ
+
+### How to contribute?
+
+You can read [CONTRIBUTING.md](./CONTRIBUTING.md) before making your PR.
 
 ### Why Shiki?
 
