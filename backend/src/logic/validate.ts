@@ -1,4 +1,5 @@
-import { Option, VALID_OPTIONS } from '../constant/options';
+import type { Option } from '../constant/options';
+import { VALID_OPTIONS } from '../constant/options';
 import type { ValidOptions } from '../types/function';
 import { resolve } from '../utils/resolve';
 import { validateBoolean, validateKeys, validateNumber, validateString } from '../utils/validator';
