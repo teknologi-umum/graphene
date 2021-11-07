@@ -1,19 +1,32 @@
 import { BUNDLED_LANGUAGES, BUNDLED_THEMES } from 'shiki';
 
-export type Option = {
+export interface Option {
   type: 'string' | 'number' | 'boolean' | 'keys';
   isRequired: boolean;
   min?: number;
   max?: number;
   options?: string[];
   errorMessage?: string;
-};
+}
 
-type Options = Record<string, Options | Option>;
+interface ValidOptions {
+  lineNumber: Option;
+  code: Option;
+  upscale: Option;
+  border: {
+    thickness: Option;
+    colour: Option;
+  };
+  format: Option;
+  lang: Option;
+  theme: Option;
+  font: Option;
+}
 
-export const VALID_OPTIONS: Options = {
+export const VALID_OPTIONS: ValidOptions = {
   lineNumber: {
     type: 'boolean',
+    isRequired: false,
   },
   code: {
     type: 'string',
