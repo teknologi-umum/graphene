@@ -13,6 +13,7 @@ interface ValidOptions {
   lineNumber: Option;
   code: Option;
   upscale: Option;
+  radius: Option;
   border: {
     thickness: Option;
     colour: Option;
@@ -37,6 +38,12 @@ export const VALID_OPTIONS: ValidOptions = {
     isRequired: false,
     min: 1,
     max: 5,
+  },
+  radius: {
+    type: 'number',
+    isRequired: false,
+    min: 0,
+    max: Infinity,
   },
   border: {
     thickness: {

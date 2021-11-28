@@ -20,6 +20,7 @@ export async function generateImage({
   theme = 'github-dark',
   font = 'sf mono',
   lineNumber = true,
+  radius = 6,
 }: ValidOptions): Promise<{ image: Buffer; length: number; format: string }> {
   const highlighter = await shiki.getHighlighter({ theme });
   const { fontFamily, lineHeightToFontSizeRatio, fontSize, fontWidth } = getFontSetup(font);
@@ -31,6 +32,7 @@ export async function generateImage({
     lineNumber,
     bg: highlighter.getBackgroundColor(),
     fg: highlighter.getForegroundColor(),
+    radius: border ? radius : 0,
   });
 
   const language = guessLanguage(code, lang);

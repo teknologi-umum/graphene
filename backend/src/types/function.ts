@@ -15,4 +15,5 @@ export interface ValidOptions {
   theme: Theme;
   font: ValidFont;
   lineNumber: boolean;
+  radius: number;
 }

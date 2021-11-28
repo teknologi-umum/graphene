@@ -65,7 +65,7 @@ function getTokenSVGAttributes(token: IThemedToken) {
 export function svgRenderer(options: RendererOptions): {
   renderToSVG: (lines: IThemedToken[][]) => SVGOutput;
 } {
-  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth, lineNumber }: RendererOptions =
+  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth, lineNumber, radius }: RendererOptions =
     Object.assign(DEFAULT_CONFIG, options);
 
   if (!fontWidth) throw new Error("options must have 'fontWidth'");
@@ -96,9 +96,9 @@ export function svgRenderer(options: RendererOptions): {
 
       let svg = '';
       svg += `<svg viewBox="0 0 ${bgWidth} ${bgHeight}" width="${bgWidth}" height="${bgHeight}" xmlns="http://www.w3.org/2000/svg">\n`;
-      svg += `<rect id="bg" fill="${bg}" width="${bgWidth}" height="${bgHeight}" rx="6"></rect>`;
+      svg += `<rect id="bg" fill="${bg}" width="${bgWidth}" height="${bgHeight}" rx="${radius}"></rect>`;
       svg += '<g id="titlebar">';
-      svg += `<rect width="${bgWidth}" height="${titlebarHeight}" fill="${bg}" rx="8"/>`;
+      svg += `<rect width="${bgWidth}" height="${titlebarHeight}" fill="${bg}" rx="${radius}"/>`;
       svg += '<rect x="13" y="9" width="14" height="14" rx="8" fill="#FF605C"/>';
       svg += '<rect x="35" y="9" width="14" height="14" rx="8" fill="#FFBD44"/>';
       svg += '<rect x="57" y="9" width="14" height="14" rx="8" fill="#00CA4E"/>';
