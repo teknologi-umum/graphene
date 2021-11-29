@@ -138,7 +138,7 @@ const optionItems = [
     desc: 'The size of the border-radius.',
     required: false,
     defaultValue: '0 when no borders are given, 6 otherwise',
-    validValues: '1 - Infinity',
+    validValues: '0 - Infinity',
   },
   {
     title: 'border.thickness',
