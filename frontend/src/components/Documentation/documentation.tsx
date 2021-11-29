@@ -134,7 +134,7 @@ const optionItems = [
     validValues: '<code>true</code> or <code>false</code>',
   },
   {
-    title: 'radius',
+    title: 'border.radius',
     desc: 'The size of the border-radius.',
     required: false,
     defaultValue: '0 when no borders are given, 6 otherwise',

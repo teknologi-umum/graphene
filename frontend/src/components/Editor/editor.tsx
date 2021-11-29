@@ -45,6 +45,7 @@ export default function Editor(): JSXElement {
   const [font, setFont] = createSignal(VALID_FONT[0]);
   const [lineNumber, setLineNumber] = createSignal(false);
   const [borderThickness, setBorderThickness] = createSignal(0);
+  const [borderRadius, setBorderRadius] = createSignal(0);
 
   const submit = async () => {
     setFetching(true);
@@ -59,6 +60,7 @@ export default function Editor(): JSXElement {
       border: {
         colour: colour(),
         thickness: borderThickness(),
+        radius: borderRadius(),
       },
       lineNumber: lineNumber(),
     };
@@ -163,6 +165,16 @@ export default function Editor(): JSXElement {
               min="0"
               value={borderThickness()}
               onChange={(e) => setBorderThickness(e.currentTarget.valueAsNumber)}
+            />
+          </div>
+          <div class={styles.main__border}>
+            <span class={styles['main__border-label']}>Border Radius:</span>
+            <input
+              class={styles['main__border-input']}
+              type="number"
+              min="0"
+              value={borderRadius()}
+              onChange={(e) => setBorderRadius(e.currentTarget.valueAsNumber)}
             />
           </div>
         </SettingsPopup>
