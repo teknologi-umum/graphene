@@ -16,6 +16,7 @@ interface ValidOptions {
   border: {
     thickness: Option;
     colour: Option;
+    radius: Option;
   };
   format: Option;
   lang: Option;
@@ -40,6 +41,12 @@ export const VALID_OPTIONS: ValidOptions = {
   },
   border: {
     thickness: {
+      type: 'number',
+      isRequired: false,
+      min: 0,
+      max: Infinity,
+    },
+    radius: {
       type: 'number',
       isRequired: false,
       min: 0,

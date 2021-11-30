@@ -134,6 +134,13 @@ const optionItems = [
     validValues: '<code>true</code> or <code>false</code>',
   },
   {
+    title: 'border.radius',
+    desc: 'The size of the border-radius.',
+    required: false,
+    defaultValue: '0 when no borders are given, 6 otherwise',
+    validValues: '0 - Infinity',
+  },
+  {
     title: 'border.thickness',
     desc: 'The thickness of the border. Zero means no border.',
     required: false,

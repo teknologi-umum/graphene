@@ -6,6 +6,7 @@ export interface RendererOptions {
   bg?: string;
   fg?: string;
   lineNumber: boolean;
+  radius?: number;
 }
 
 export interface SVGOutput {

@@ -11,8 +11,10 @@ export interface ValidOptions {
   border: {
     thickness: number;
     colour: string;
+    radius: number;
   };
   theme: Theme;
   font: ValidFont;
   lineNumber: boolean;
+  radius: number;
 }

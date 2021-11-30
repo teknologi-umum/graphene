@@ -31,6 +31,7 @@ export async function generateImage({
     lineNumber,
     bg: highlighter.getBackgroundColor(),
     fg: highlighter.getForegroundColor(),
+    radius: border ? border.radius || 6 : 0,
   });
 
   const language = guessLanguage(code, lang);
