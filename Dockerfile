@@ -1,5 +1,4 @@
-FROM node:16.10-buster
-
+FROM node:16.13.1-bullseye
 
 WORKDIR /usr/src/temp
 
