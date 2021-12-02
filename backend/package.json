@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@logtail/node": "0.1.10",
-    "@sentry/node": "6.13.3",
+    "@sentry/node": "6.15.0",
     "@tinyhttp/proxy-addr": "2.0.2",
     "dotenv": "10.0.0",
     "flourite": "1.2.2",
