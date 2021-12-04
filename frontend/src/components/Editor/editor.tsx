@@ -48,40 +48,51 @@ export default function Editor(): JSXElement {
   const [borderRadius, setBorderRadius] = createSignal(0);
 
   const submit = async () => {
-    setFetching(true);
-    const lang = selectedLang().toLowerCase();
-    const body = {
-      code: code(),
-      lang: lang === 'auto detect' ? '' : lang === 'c#' ? 'csharp' : selectedLang(),
-      theme: theme().toLowerCase().replace(/\s/g, '-'),
-      format: format(),
-      upscale: upscale(),
-      font: font(),
-      border: {
-        colour: colour(),
-        thickness: borderThickness(),
-        radius: borderRadius(),
-      },
-      lineNumber: lineNumber(),
-    };
+    try {
+      setFetching(true);
+      const lang = selectedLang().toLowerCase();
+      const body = {
+        code: code(),
+        lang: lang === 'auto detect' ? '' : lang === 'c#' ? 'csharp' : selectedLang(),
+        theme: theme().toLowerCase().replace(/\s/g, '-'),
+        format: format(),
+        upscale: upscale(),
+        font: font(),
+        border: {
+          colour: colour(),
+          thickness: borderThickness(),
+          radius: borderRadius(),
+        },
+        lineNumber: lineNumber(),
+      };
 
-    const imageResponse = await fetch('/api', {
-      method: 'POST',
-      headers: {
-        Accept: `image/${format()}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-    if (imageResponse.ok) {
+      const imageResponse = await fetch('/api', {
+        method: 'POST',
+        headers: {
+          Accept: `image/${format()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!imageResponse.ok) {
+        const err = await imageResponse.json();
+        throw err.msg.toString();
+      }
+
       const imageBlob = await imageResponse.blob();
       setImage(await blobToBase64(imageBlob));
-      setError('');
-    } else {
-      const errorMsg = await imageResponse.json();
-      setError(errorMsg.msg.toString());
+    } catch (err) {
+      if (err instanceof Error) {
+        // eslint-disable-next-line no-console
+        console.error(err);
+        setError('Something went wrong on our side.');
+      } else if (typeof err === 'string') {
+        setError(err);
+      }
+    } finally {
+      setFetching(false);
     }
-    setFetching(false);
   };
 
   return (
