@@ -85,7 +85,7 @@ export default function Editor(): JSXElement {
     } catch (err) {
       if (err instanceof Error) {
         // eslint-disable-next-line no-console
-        console.log(err);
+        console.error(err);
         setError('Something went wrong on our side.');
       } else if (typeof err === 'string') {
         setError(err);
