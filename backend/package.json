@@ -29,7 +29,7 @@
     "rate-limiter-flexible": "2.3.2",
     "sharp": "0.29.3",
     "shiki": "0.9.12",
-    "sirv": "1.0.18",
+    "sirv": "1.0.19",
     "toml": "3.0.0",
     "yaml": "1.10.2"
   },
