@@ -26,7 +26,7 @@
     "gura": "1.4.3",
     "helmet": "4.6.0",
     "polka": "1.0.0-next.22",
-    "rate-limiter-flexible": "2.3.2",
+    "rate-limiter-flexible": "2.3.6",
     "sharp": "0.29.3",
     "shiki": "0.9.12",
     "sirv": "1.0.18",
