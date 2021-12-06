@@ -80,6 +80,8 @@ export default function Editor(): JSXElement {
         throw err.msg.toString();
       }
 
+      setError('');
+
       const imageBlob = await imageResponse.blob();
       setImage(await blobToBase64(imageBlob));
     } catch (err) {
