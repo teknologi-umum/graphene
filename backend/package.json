@@ -23,7 +23,7 @@
     "@tinyhttp/proxy-addr": "2.0.2",
     "dotenv": "10.0.0",
     "flourite": "1.2.2",
-    "gura": "1.4.2",
+    "gura": "1.4.3",
     "helmet": "4.6.0",
     "polka": "1.0.0-next.22",
     "rate-limiter-flexible": "2.3.2",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/node": "16.11.6",
-    "@types/sharp": "0.29.2",
+    "@types/sharp": "0.29.4",
     "@types/supertest": "2.0.11",
     "@typescript-eslint/eslint-plugin": "4.32.0",
     "@typescript-eslint/parser": "4.32.0",
@@ -50,7 +50,7 @@
     "supertest": "6.1.6",
     "tslib": "2.3.1",
     "typescript": "4.5.2",
-    "uvu": "0.5.1"
+    "uvu": "0.5.2"
   },
   "engineStrict": true,
   "engines": {
