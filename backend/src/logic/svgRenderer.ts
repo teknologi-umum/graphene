@@ -19,7 +19,7 @@ const DEFAULT_CONFIG: Partial<RendererOptions> = {
 };
 
 const generateLineNumber = (idx: number, { fg, fontWidth }: Partial<RendererOptions> & { lineHeight: number }) => {
-  return `<tspan fill="${fg}" fill-opacity="0.25" x="-${(fontWidth as number) * 4}">${String(idx + 1).padStart(
+  return `<tspan fill="${fg}" fill-opacity="0.25" x="-${(fontWidth as number) * 4}">${String(idx).padStart(
     3,
     '\u2800',
   )}</tspan>`;
@@ -116,20 +116,18 @@ export function svgRenderer(options: RendererOptions): {
       svg += `<g id="tokens" transform="translate(${lineNumberWidth}, ${titlebarHeight})">`;
 
       lines.forEach((line, index) => {
+        const idx = index + 1;
+
         if (line.length === 0) {
           if (lineNumber) {
-            svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${
-              lineHeight * (index + 1 + offsetY)
-            }">\n`;
-            svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+            svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (idx + offsetY)}">\n`;
+            svg += generateLineNumber(idx, { fontFamily, fontWidth, lineHeight, fg });
             svg += '</text>';
           }
           svg += `\n`;
         } else {
-          svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${
-            lineHeight * (index + 1 + offsetY)
-          }">\n`;
-          if (lineNumber) svg += generateLineNumber(index, { fontFamily, fontWidth, lineHeight, fg });
+          svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (idx + offsetY)}">\n`;
+          if (lineNumber) svg += generateLineNumber(idx, { fontFamily, fontWidth, lineHeight, fg });
 
           let indent = 0;
           line.forEach((token) => {
