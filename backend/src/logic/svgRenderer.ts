@@ -88,17 +88,17 @@ export function svgRenderer(options: RendererOptions): {
       const titlebarHeight = 32;
 
       // longest line + left/right 4 char width
-      // const bgWidth = (longestLineTextLength + 4) * fontWidth + lineNumberWidth;
+      const bgWidth = (longestLineTextLength + 4) * fontWidth + lineNumberWidth;
 
       // all rows + 2 rows top/bot
       // const bgHeight = (lines.length + verticalPadding * 2) * lineheight;
-      // const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight;
+      const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight;
 
       // to enable soft wrapping, set maxLineWidth to a positive integer (say 40)
       // and uncomment the 2 lines below it to adjust the svg size
-      const maxLineWidth = 60; // characters, coming from request
-      const bgWidth = (maxLineWidth + 4) * fontWidth + lineNumberWidth;
-      const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight + 100; // 100 is arbitrary number
+      const maxLineWidth = null; // characters, coming from request
+      // const bgWidth = (maxLineWidth + 4) * fontWidth + lineNumberWidth;
+      // const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight + 100; // 100 is arbitrary number
 
       let offsetY = 0; // account for wrapped lines
 
@@ -134,16 +134,11 @@ export function svgRenderer(options: RendererOptions): {
           let indent = 0;
           line.forEach((token) => {
             const tokenAttributes = getTokenSVGAttributes(token);
-            /**
-             * SVG rendering in Sketch/Affinity Photos: `<tspan>` with leading whitespace will render without whitespace
-             * Need to manually offset `x`
-             */
-
-            let tokenBreakIndex = Infinity;
 
             // chunk excess tokens to be rendered below
             const wrappedTokens: string[] = [];
-            let lastWrappedTokenIndex = 0;
+            let tokenBreakIndex = Infinity;
+            let lastWrappedTokenIndex = 0; // so next token know where to continue
 
             if (maxLineWidth !== null && indent + token.content.length > maxLineWidth) {
               tokenBreakIndex = maxLineWidth - indent;
@@ -162,6 +157,10 @@ export function svgRenderer(options: RendererOptions): {
               offsetY += wrappedTokens.length - 1;
             }
 
+            /**
+             * SVG rendering in Sketch/Affinity Photos: `<tspan>` with leading whitespace will render without whitespace
+             * Need to manually offset `x`
+             */
             if (token.content.startsWith(' ') && token.content.search(/\S/) !== -1) {
               const firstNonWhitespaceIndex = token.content.search(/\S/);
 
