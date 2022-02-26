@@ -88,17 +88,17 @@ export function svgRenderer(options: RendererOptions): {
       const titlebarHeight = 32;
 
       // longest line + left/right 4 char width
-      const bgWidth = (longestLineTextLength + 4) * fontWidth + lineNumberWidth;
+      // const bgWidth = (longestLineTextLength + 4) * fontWidth + lineNumberWidth;
 
       // all rows + 2 rows top/bot
       // const bgHeight = (lines.length + verticalPadding * 2) * lineheight;
-      const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight;
+      // const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight;
 
       // to enable soft wrapping, set maxLineWidth to a positive integer (say 40)
       // and uncomment the 2 lines below it to adjust the svg size
-      const maxLineWidth = null; // characters, coming from request
-      // const bgWidth = (maxLineWidth + 4) * fontWidth + lineNumberWidth
-      // const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight + 100; // 100 is arbitrary number
+      const maxLineWidth = 60; // characters, coming from request
+      const bgWidth = (maxLineWidth + 4) * fontWidth + lineNumberWidth;
+      const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight + 100; // 100 is arbitrary number
 
       let offsetY = 0; // account for wrapped lines
 
