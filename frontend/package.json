@@ -2,7 +2,8 @@
   "name": "graphene-frontend",
   "private": true,
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple frontend for Graphene API",
+  "author": "elianiva <dicha.arkana03@gmail.com>",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -14,18 +15,18 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "4.32.0",
-    "@typescript-eslint/parser": "4.32.0",
-    "eslint": "7.32.0",
-    "eslint-plugin-solid": "0.1.2",
+    "@typescript-eslint/eslint-plugin": "5.13.0",
+    "@typescript-eslint/parser": "5.13.0",
+    "eslint": "8.10.0",
+    "eslint-plugin-solid": "0.4.4",
     "prettier": "2.5.1",
-    "vite": "2.6.14",
-    "vite-plugin-solid": "2.1.3"
+    "vite": "2.8.6",
+    "vite-plugin-solid": "2.2.5"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^4.5.0",
-    "@fontsource/rubik": "4.5.0",
-    "solid-js": "1.2.5"
+    "@fontsource/rubik": "4.5.3",
+    "solid-js": "1.3.9"
   },
   "repository": {
     "type": "git",
