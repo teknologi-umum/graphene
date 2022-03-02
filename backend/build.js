@@ -23,7 +23,7 @@ esbuild
       'yaml',
     ],
     outdir: '../dist',
-    target: ['es2021', 'node16.10'],
+    target: ['es2021', 'node16.14'],
     tsconfig: 'tsconfig.json',
   })
   .catch((e) => {

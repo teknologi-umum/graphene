@@ -50,7 +50,8 @@
     "supertest": "6.2.2",
     "tslib": "2.3.1",
     "typescript": "4.6.2",
-    "uvu": "0.5.3"
+    "uvu": "0.5.3",
+    "yup": "^0.32.11"
   },
   "engineStrict": true,
   "engines": {

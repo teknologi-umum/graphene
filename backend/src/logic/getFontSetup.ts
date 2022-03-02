@@ -1,4 +1,4 @@
-import type { ValidFont } from '../types/function';
+import { ValidFonts } from '@/schema/options';
 
 type FontFamilies =
   | 'JetBrainsMonoNL Nerd Font Mono'
@@ -16,11 +16,11 @@ interface FontSetupOutput {
 }
 
 /**
- * Return font setup options
- * @param {'jetbrains mono' | 'sf mono' | 'fira code'} font
- * @returns {FontSetupOutput}
+ * getFontSetup will return the corresponding metadata for a given font
+ * @param font - The font name
+ * @returns Font metadata required for the renderer
  */
-export const getFontSetup = (font: ValidFont): FontSetupOutput => {
+export function getFontSetup(font: ValidFonts): FontSetupOutput {
   switch (font.toLowerCase()) {
     case 'jetbrains mono': {
       return {
@@ -74,4 +74,4 @@ export const getFontSetup = (font: ValidFont): FontSetupOutput => {
       throw new TypeError('invalid font was given');
     }
   }
-};
+}

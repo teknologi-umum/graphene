@@ -1,4 +1,4 @@
-FROM node:16.13.1-bullseye
+FROM node:16.14.1-bullseye
 
 WORKDIR /usr/src/temp
 

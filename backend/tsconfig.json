@@ -21,7 +21,11 @@
     "removeComments": true,
     "strict": true,
     "listEmittedFiles": true,
-    "newLine": "lf"
+    "newLine": "lf",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "views"],
   "exclude": ["tests", "dist"]

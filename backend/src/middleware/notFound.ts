@@ -1,7 +1,7 @@
 import type { Middleware } from 'polka';
 
 /**
- * Default not found handler
+ * notFoundHandler is the handler when the route is not found
  */
 export const notFoundHandler: Middleware = (_, res) => {
   const msg = JSON.stringify({ msg: 'Not found.' });

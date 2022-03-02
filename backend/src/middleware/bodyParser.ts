@@ -1,19 +1,22 @@
 import type { Middleware } from 'polka';
-import querystring from 'querystring';
 import yaml from 'yaml';
 import toml from 'toml';
 import gura from 'gura';
 
 /**
- * Practical JSON parser middleware
+ * bodyParser is a middleware that parses the request body into various formats.
  */
-export const parser: Middleware = async (req, res, next) => {
+export const bodyParser: Middleware = async (req, res, next) => {
   try {
     let body = '';
-    for await (const chunk of req) body += chunk;
+
+    for await (const chunk of req) {
+      body += chunk;
+    }
+
     switch (req.headers['content-type']) {
       case 'application/x-www-form-urlencoded':
-        req.body = querystring.parse(body);
+        req.body = new URLSearchParams(body);
         break;
       case 'application/toml':
       case 'text/x-toml':

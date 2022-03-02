@@ -4,8 +4,8 @@ export interface RendererOptions {
   fontSize: number;
   lineHeightToFontSizeRatio: number;
   bg?: string;
-  fg?: string;
-  lineNumber: boolean;
+  lineNumberFg?: string;
+  withLineNumber: boolean;
   radius?: number;
 }
 

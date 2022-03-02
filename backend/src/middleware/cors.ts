@@ -1,7 +1,7 @@
 import type { Middleware } from 'polka';
 
 /**
- * Yes, I make my own CORS middleware.
+ * cors is a middleware that adds CORS headers to the response.
  */
 export const cors: Middleware = (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,5 +15,6 @@ export const cors: Middleware = (req, res, next) => {
     res.end();
     return;
   }
+
   next();
 };
