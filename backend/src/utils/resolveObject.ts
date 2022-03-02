@@ -8,7 +8,7 @@
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const resolveObject = (obj: any, key: string): any => {
-  for (const k of key.split('.')) {
+  for (const k of key.split(".")) {
     obj = obj?.[k];
   }
 

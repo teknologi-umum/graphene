@@ -1,13 +1,16 @@
-import flourite from 'flourite';
-import sharp from 'sharp';
-import * as shiki from 'shiki';
-import { SvgRenderer } from '@/logic/svgRenderer';
-import { getFontSetup } from '@/logic/getFontSetup';
-import { OptionSchema } from '@/schema/options';
+import flourite from "flourite";
+import sharp from "sharp";
+import * as shiki from "shiki";
+import { SvgRenderer } from "@/logic/svgRenderer";
+import { getFontSetup } from "@/logic/getFontSetup";
+import { OptionSchema } from "@/schema/options";
 
 function guessLanguage(code: string, lang: string): string {
-  const guess = lang !== '' ? lang : flourite(code, { shiki: true, heuristic: true }).language;
-  const language = guess === 'unknown' ? 'md' : guess;
+  const guess =
+    lang !== ""
+      ? lang
+      : flourite(code, { shiki: true, heuristic: true }).language;
+  const language = guess === "unknown" ? "md" : guess;
   return language;
 }
 
@@ -19,10 +22,12 @@ export async function generateImage({
   upscale,
   theme,
   font,
-  lineNumber,
+  lineNumber
 }: OptionSchema): Promise<{ image: Buffer; length: number; format: string }> {
   const highlighter = await shiki.getHighlighter({ theme });
-  const { fontFamily, lineHeightToFontSizeRatio, fontSize, fontWidth } = getFontSetup(font);
+
+  const { fontFamily, lineHeightToFontSizeRatio, fontSize, fontWidth } =
+    getFontSetup(font);
   const svgRenderer = new SvgRenderer({
     fontFamily,
     lineHeightToFontSizeRatio,
@@ -31,7 +36,7 @@ export async function generateImage({
     withLineNumber: lineNumber,
     lineNumberFg: highlighter.getForegroundColor(),
     bg: highlighter.getBackgroundColor(),
-    radius: border.radius,
+    radius: border.radius
   });
 
   const language = guessLanguage(code, lang);
@@ -39,16 +44,18 @@ export async function generateImage({
 
   const { svg } = svgRenderer.renderToSVG(tokens);
 
-  if (format === 'svg') {
+  if (format === "svg") {
     const svgBuffer = Buffer.from(svg);
     return {
       image: svgBuffer,
       format: format,
-      length: svgBuffer.byteLength,
+      length: svgBuffer.byteLength
     };
   }
 
-  const codeFrame = sharp(Buffer.from(svg), { density: Math.floor(72 * upscale) });
+  const codeFrame = sharp(Buffer.from(svg), {
+    density: Math.floor(72 * upscale)
+  });
   const codeFrameMeta = await codeFrame.metadata();
 
   const borderThickness = border.thickness;
@@ -60,8 +67,9 @@ export async function generateImage({
       width: codeFrameMeta.width as number,
       height: codeFrameMeta.height as number,
       channels: 4,
-      background: borderThickness !== 0 ? borderColour : { r: 0, g: 0, b: 0, alpha: 0 },
-    },
+      background:
+        borderThickness !== 0 ? borderColour : { r: 0, g: 0, b: 0, alpha: 0 }
+    }
   })
     .composite([{ input: await codeFrame.toBuffer() }])
     .extend({
@@ -69,7 +77,7 @@ export async function generateImage({
       right: borderThickness * upscale,
       bottom: borderThickness * upscale,
       top: borderThickness * upscale,
-      background: borderColour,
+      background: borderColour
     })
     [format]()
     .toBuffer();
@@ -77,6 +85,6 @@ export async function generateImage({
   return {
     image: codeImage,
     format: format,
-    length: codeImage.byteLength,
+    length: codeImage.byteLength
   };
 }

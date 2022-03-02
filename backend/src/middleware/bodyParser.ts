@@ -1,43 +1,47 @@
-import type { Middleware } from 'polka';
-import yaml from 'yaml';
-import toml from 'toml';
-import gura from 'gura';
+import type { Middleware } from "polka";
+import yaml from "yaml";
+import toml from "toml";
+import gura from "gura";
 
 /**
- * bodyParser is a middleware that parses the request body into various formats.
+ * bodyParser is a middleware that parses the request body into various format.
  */
 export const bodyParser: Middleware = async (req, res, next) => {
   try {
-    let body = '';
+    let body = "";
 
     for await (const chunk of req) {
       body += chunk;
     }
 
-    switch (req.headers['content-type']) {
-      case 'application/x-www-form-urlencoded':
+    switch (req.headers["content-type"]) {
+      case "application/x-www-form-urlencoded":
         req.body = new URLSearchParams(body);
         break;
-      case 'application/toml':
-      case 'text/x-toml':
+      case "application/toml":
+      case "text/x-toml":
         req.body = toml.parse(body);
         break;
-      case 'application/x-yaml':
-      case 'text/yaml':
+      case "application/x-yaml":
+      case "text/yaml":
         req.body = yaml.parse(body);
         break;
-      case 'application/gura':
-      case 'text/gura':
+      case "application/gura":
+      case "text/gura":
         req.body = gura.parse(body);
         break;
-      case 'application/json':
+      case "application/json":
       default:
         req.body = JSON.parse(body);
     }
     next();
   } catch (error) {
     res
-      .writeHead(400, { 'Content-Type': 'application/json' })
-      .end(JSON.stringify({ msg: 'Invalid body content with the Content-Type header specification' }));
+      .writeHead(400, { "Content-Type": "application/json" })
+      .end(
+        JSON.stringify({
+          msg: "Invalid body content with the Content-Type header specification"
+        })
+      );
   }
 };
