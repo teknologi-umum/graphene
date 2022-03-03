@@ -1,6 +1,5 @@
 import type { ErrorHandler } from "polka";
-import sentry from "@/utils/sentry";
-import logtail from "@/utils/logtail";
+import { logtail, sentry } from "@/utils/index.js";
 
 /**
  * errorHandler is the default error handler for every request.

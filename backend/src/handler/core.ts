@@ -2,9 +2,10 @@ import type { Middleware } from "polka";
 import { generateImage } from "@/logic/generateImage";
 import { logtail } from "@/utils";
 import { optionSchema, OptionSchema } from "@/schema/options";
+import { ValidationError } from "yup";
 
 export const coreHandler: Middleware = async (req, res) => {
-  if (!req.body || !Object.keys(req.body).length) {
+  if (req.body === "" || !Object.keys(req.body).length) {
     res
       .writeHead(400, { "Content-Type": "application/json" })
       .end(JSON.stringify({ msg: "Body can't be empty!" }));
@@ -12,7 +13,9 @@ export const coreHandler: Middleware = async (req, res) => {
   }
 
   try {
-    const options = (await optionSchema.validate(req.body)) as OptionSchema;
+    const options = (await optionSchema.validate(req.body, {
+      abortEarly: false
+    })) as OptionSchema;
     const { image, format, length } = await generateImage(options);
 
     res
@@ -22,12 +25,15 @@ export const coreHandler: Middleware = async (req, res) => {
       })
       .end(image);
   } catch (err) {
-    res
-      .writeHead(400, { "Content-Type": "application/json" })
-      .end(JSON.stringify({ msg: err }));
+    if (err instanceof ValidationError && err.name === "ValidationError") {
+      res
+        .writeHead(400, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ msg: err.errors }));
+    }
     return;
   }
 
+  /* c8 ignore start */
   await logtail.info("Incoming POST request", {
     body: req.body || "",
     headers: {
@@ -40,4 +46,5 @@ export const coreHandler: Middleware = async (req, res) => {
     port: req.socket.remotePort || "",
     ipv: req.socket.remoteFamily || ""
   });
+  /* c8 ignore end */
 };

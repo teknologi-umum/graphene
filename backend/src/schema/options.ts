@@ -23,28 +23,39 @@ export type ValidFormats = typeof validFormat[number];
 export type ValidFonts = typeof validFonts[number];
 
 export const optionSchema = yup.object({
-  code: yup.string().required(),
-  lang: yup.string().lowercase().oneOf(validLanguages).ensure(),
+  code: yup.string().required("code can't be empty!"),
+  lang: yup.string().lowercase().oneOf(validLanguages).nullable(),
   theme: yup.string().lowercase().oneOf(validThemes).default("github-dark"),
   format: yup
     .string()
     .lowercase()
     .oneOf([...validFormat])
-    .default("png"),
+    .default("png")
+    .typeError("format must be a string!"),
   font: yup
     .string()
     .lowercase()
     .oneOf([...validFonts])
-    .default("sf mono"),
-  upscale: yup.number().min(1).max(5).default(1),
+    .default("sf mono")
+    .typeError("font must be a string!"),
+  upscale: yup
+    .number()
+    .min(1)
+    .max(5)
+    .default(1)
+    .typeError("upscale must be a number!"),
   lineNumber: yup.boolean().default(true),
   border: yup.object({
     colour: yup
       .string()
       .matches(/#[0-9a-f]{6}/i, "colour must be in a valid hex format")
       .default("#2E3440"),
-    thickness: yup.number().positive().default(0),
-    radius: yup.number().positive().default(0)
+    thickness: yup
+      .number()
+      .min(0)
+      .default(0)
+      .typeError("thickness must be a number!"),
+    radius: yup.number().min(0).default(0).typeError("radius must be a number!")
   })
 });
 

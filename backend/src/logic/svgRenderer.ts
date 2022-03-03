@@ -6,24 +6,7 @@
 // Types by: @aldy505
 
 import { FontStyle, IThemedToken } from "shiki";
-import type {
-  HTMLEscapes,
-  RendererOptions,
-  SVGAttributes,
-  SVGOutput
-} from "@/types/renderer";
-
-const HTML_ESCAPES: HTMLEscapes = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;"
-};
-
-const OPTIONS: Partial<SVGAttributes> = {
-  fill: "#fff"
-};
+import type { HTMLEscapes, RendererOptions, SVGOutput } from "@/types/renderer";
 
 export class SvgRenderer {
   private readonly _fontFamily;
@@ -34,6 +17,13 @@ export class SvgRenderer {
   private readonly _radius;
   private readonly _lineNumberFg;
   private readonly _bg;
+  private readonly HTML_ESCAPES: HTMLEscapes = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  };
 
   constructor({
     fontFamily,
@@ -60,7 +50,7 @@ export class SvgRenderer {
   }
 
   private _escapeHTML(html: string) {
-    return html.replace(/[&<>"']/g, (c) => HTML_ESCAPES[c]);
+    return html.replace(/[&<>"']/g, (c) => this.HTML_ESCAPES[c]);
   }
 
   private _generateLineNumber(lineNumber: number) {
@@ -74,24 +64,39 @@ export class SvgRenderer {
   }
 
   private _getTokenSVGAttributes(token: IThemedToken) {
+    const options: Record<string, string | number> = {
+      fill: this._lineNumberFg
+    };
+
     // handle different colour format
-    if (token.color) {
-      if (token.color.slice(1).length <= 6) OPTIONS.fill = token.color;
-      else if (token.color.slice(1).length === 8) {
+    if (token.color !== undefined) {
+      const len = token.color.slice(1).length;
+      if (len <= 6) {
+        // handles #rrggbb
+        options.fill = token.color;
+      } else if (len === 8) {
+        // handles #rrggbbaa
         const opacity = parseInt(token.color.slice(1 + 6), 16) / 255;
         const roughRoundedOpacity = Math.floor(opacity * 100) / 100;
-        OPTIONS.fill = token.color.slice(0, 1 + 6);
-        OPTIONS.opacity = roughRoundedOpacity;
+        options.fill = token.color.slice(0, 1 + 6);
+        options.opacity = roughRoundedOpacity;
       }
     }
 
-    if (token.fontStyle === FontStyle.Bold) OPTIONS["font-weight"] = "bold";
-    if (token.fontStyle === FontStyle.Italic) OPTIONS["font-style"] = "italic";
-    if (token.fontStyle === FontStyle.None) OPTIONS["font-style"] = "normal";
+    if (token.fontStyle === FontStyle.Bold) options["font-weight"] = "bold";
+    if (token.fontStyle === FontStyle.Italic) options["font-style"] = "italic";
+    if (token.fontStyle === FontStyle.None) options["font-style"] = "normal";
 
-    return Object.keys(OPTIONS)
+    return Object.keys(options)
       .reduce((acc: string[], curr: string) => {
-        if (OPTIONS[curr]) return acc.concat(`${curr}="${OPTIONS[curr]}"`);
+        if (
+          options[curr] !== null ||
+          options[curr] !== undefined ||
+          options[curr] !== ""
+        ) {
+          return acc.concat(`${curr}="${options[curr]}"`);
+        }
+
         return acc.concat("");
       }, [])
       .join(" ");
@@ -100,7 +105,7 @@ export class SvgRenderer {
   public renderToSVG(lines: IThemedToken[][]): SVGOutput {
     let longestLineTextLength = 0;
 
-    lines.forEach((lineTokens) => {
+    for (const lineTokens of lines) {
       const lineTextLength = lineTokens.reduce(
         (acc, curr) => (acc += curr.content.length),
         0
@@ -109,7 +114,7 @@ export class SvgRenderer {
       if (lineTextLength > longestLineTextLength) {
         longestLineTextLength = lineTextLength;
       }
-    });
+    }
 
     const lineNumberWidth =
       (this._withLineNumber ? String(lines.length).length + 3 : 2) *
@@ -161,7 +166,8 @@ export class SvgRenderer {
         }
 
         let indent = 0;
-        line.forEach((token) => {
+
+        for (const token of line) {
           const tokenAttributes = this._getTokenSVGAttributes(token);
 
           // chunk excess tokens to be rendered below
@@ -221,16 +227,17 @@ export class SvgRenderer {
           }
 
           if (wrappedTokens.length > 0) {
-            wrappedTokens.forEach((token) => {
+            for (const token of wrappedTokens) {
               svg += `<tspan dy="${
                 this._lineHeight
               }" x="0" ${tokenAttributes}>${this._escapeHTML(token)}</tspan>`;
-            });
+            }
             indent = lastWrappedTokenIndex;
           } else {
             indent += token.content.length;
           }
-        });
+        }
+
         svg += `\n</text>\n`;
       }
     });

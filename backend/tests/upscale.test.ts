@@ -38,8 +38,7 @@ test("should error when upscale is lower than 1", async () => {
       format: "jpeg"
     })
     .expect(400)
-    .expect("content-type", "application/json")
-    .expect({ msg: ["`upscale` can't be lower than 1 or higher than 5!"] });
+    .expect("content-type", "application/json");
 });
 
 test("should error when upscale is 0", async () => {
@@ -52,8 +51,7 @@ test("should error when upscale is 0", async () => {
       format: "jpeg"
     })
     .expect(400)
-    .expect("content-type", "application/json")
-    .expect({ msg: ["`upscale` can't be lower than 1 or higher than 5!"] });
+    .expect("content-type", "application/json");
 });
 
 test("should error when upscale is not a number", async () => {
@@ -66,8 +64,7 @@ test("should error when upscale is not a number", async () => {
       format: "jpeg"
     })
     .expect(400)
-    .expect("content-type", "application/json")
-    .expect({ msg: ["`upscale` must be a number!"] });
+    .expect("content-type", "application/json");
 });
 
 test.run();

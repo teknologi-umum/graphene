@@ -1,8 +1,8 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
 import request from "supertest";
-import server from "../src/index";
 import { getFontSetup } from "../src/logic/getFontSetup";
+import server from "../src/index";
 
 const instance = request(server.handler);
 
@@ -67,7 +67,6 @@ test("return font setup for cascadia code", () => {
 });
 
 test("should throw error on invalid font", () => {
-  // @ts-expect-error test purposes
   assert.throws(() => getFontSetup("asd"), "invalid font was given");
 });
 

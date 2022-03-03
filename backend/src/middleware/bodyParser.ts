@@ -15,9 +15,11 @@ export const bodyParser: Middleware = async (req, res, next) => {
     }
 
     switch (req.headers["content-type"]) {
-      case "application/x-www-form-urlencoded":
-        req.body = new URLSearchParams(body);
+      case "application/x-www-form-urlencoded": {
+        const url = new URLSearchParams(body);
+        req.body = Object.fromEntries(url.entries());
         break;
+      }
       case "application/toml":
       case "text/x-toml":
         req.body = toml.parse(body);
@@ -36,12 +38,10 @@ export const bodyParser: Middleware = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    res
-      .writeHead(400, { "Content-Type": "application/json" })
-      .end(
-        JSON.stringify({
-          msg: "Invalid body content with the Content-Type header specification"
-        })
-      );
+    res.writeHead(400, { "Content-Type": "application/json" }).end(
+      JSON.stringify({
+        msg: "Invalid body content with the Content-Type header specification"
+      })
+    );
   }
 };

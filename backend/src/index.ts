@@ -1,16 +1,18 @@
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import polka from "polka";
+import type { Middleware } from "polka";
 import sirv from "sirv";
 import helmet from "helmet";
-import { cors } from "./middleware/cors";
-import { bodyParser } from "./middleware/bodyParser";
-import { errorHandler } from "./middleware/errorHandler";
-import { notFoundHandler } from "./middleware/notFound";
-import { rateLimiter } from "./middleware/rateLimiter";
-import { coreHandler } from "./handler/core";
-import logtail from "./utils/logtail";
-import type { Middleware } from "polka";
+import {
+  cors,
+  bodyParser,
+  errorHandler,
+  notFoundHandler,
+  rateLimiter
+} from "@/middleware/index.js";
+import { logtail } from "@/utils/index.js";
+import { coreHandler } from "@/handler/core.js";
 
 const server = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
   .use(
@@ -25,14 +27,17 @@ const server = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
   .options("/api", cors)
   .post("/api", cors, rateLimiter, bodyParser, coreHandler);
 
+/* c8 ignore start */
 if (process.env.NODE_ENV !== "test") {
   server.listen(process.env.PORT || 3000, () => {
     // eslint-disable-next-line no-console
     console.log(`Running on http://localhost:${process.env.PORT || 3000}`);
-    logtail.info("Launching");
+    logtail.info("Launching", {});
   });
 }
+/* c8 ignore stop */
 
+/* c8 ignore start */
 // Graceful shutdown
 process.on("SIGINT", () =>
   server.server.close((err) => {
@@ -46,5 +51,6 @@ process.on("SIGTERM", () =>
     console.log("\nSIGTERM: " + err);
   })
 );
+/* c8 ignore stop */
 
 export default server;

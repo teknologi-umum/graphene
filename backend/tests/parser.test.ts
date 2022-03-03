@@ -1,13 +1,13 @@
 import { test } from "uvu";
 import request from "supertest";
 import polka from "polka";
-import { parser } from "../src/middleware/parser";
+import { bodyParser } from "../src/middleware/index.js";
 
-const server = polka().post("/", parser, (req, res) =>
+const server = polka().post("/", bodyParser, (req, res) => {
   res
     .writeHead(200, { "Content-Type": "application/json" })
-    .end(JSON.stringify(req.body))
-);
+    .end(JSON.stringify(req.body));
+});
 
 const instance = request(server.handler);
 
@@ -15,9 +15,9 @@ test("should be able to parse urlencoded", async () => {
   await instance
     .post("/")
     .set("Content-Type", "application/x-www-form-urlencoded")
-    .send("hello=world&list=1&list=2&list=3&failed=false")
+    .send("hello=world&failed=false")
     .expect(200)
-    .expect('{"hello":"world","list":["1","2","3"],"failed":"false"}');
+    .expect('{"hello":"world","failed":"false"}');
 });
 
 test("should be able to parse toml", async () => {
@@ -84,6 +84,14 @@ test("invalid content type headers should fall back to json", async () => {
     .send('{"hello":"world","list":[1,2,3],"failed":false}')
     .expect(200)
     .expect('{"hello":"world","list":[1,2,3],"failed":false}');
+});
+
+test("invalid content should throw an error", async () => {
+  await instance
+    .post("/")
+    .set("Content-Type", "brave")
+    .send('{"hello":"world')
+    .expect(400);
 });
 
 test.run();

@@ -7,7 +7,7 @@ import { OptionSchema } from "@/schema/options";
 
 function guessLanguage(code: string, lang: string): string {
   const guess =
-    lang !== ""
+    typeof lang === "string" && lang.length > 0
       ? lang
       : flourite(code, { shiki: true, heuristic: true }).language;
   const language = guess === "unknown" ? "md" : guess;
