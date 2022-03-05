@@ -1,6 +1,6 @@
 import type { Middleware } from "polka";
 import { generateImage } from "@/logic/generateImage";
-import { logtail } from "@/utils";
+import { logger } from "@/utils";
 import { optionSchema, OptionSchema } from "@/schema/options";
 import { ValidationError } from "yup";
 
@@ -34,7 +34,7 @@ export const coreHandler: Middleware = async (req, res) => {
   }
 
   /* c8 ignore start */
-  await logtail.info("Incoming POST request", {
+  await logger.info("Incoming POST request", {
     body: req.body || "",
     headers: {
       accept: req.headers.accept || "",
