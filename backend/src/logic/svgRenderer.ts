@@ -9,14 +9,14 @@ import { FontStyle, IThemedToken } from "shiki";
 import type { HTMLEscapes, RendererOptions, SVGOutput } from "@/types/renderer";
 
 export class SvgRenderer {
-  private readonly _fontFamily;
-  private readonly _fontSize;
-  private readonly _fontWidth;
-  private readonly _lineHeight;
-  private readonly _withLineNumber;
-  private readonly _radius;
-  private readonly _lineNumberFg;
-  private readonly _bg;
+  private readonly _fontFamily: string;
+  private readonly _fontSize: number;
+  private readonly _fontWidth: number;
+  private readonly _lineHeight: number;
+  private readonly _withLineNumber: boolean;
+  private readonly _radius: number;
+  private readonly _lineNumberFg: string;
+  private readonly _bg: string;
   private readonly HTML_ESCAPES: HTMLEscapes = {
     "&": "&amp;",
     "<": "&lt;",
@@ -39,11 +39,23 @@ export class SvgRenderer {
       throw TypeError("Bad font argument!");
     }
 
+    if (
+      lineNumberFg === "" ||
+      lineNumberFg === undefined ||
+      lineNumberFg === null
+    ) {
+      throw TypeError("Invalid line number foreground colour!");
+    }
+
+    if (bg === "" || bg === undefined || bg === null) {
+      throw TypeError("Invalid background colour!");
+    }
+
     this._fontFamily = fontFamily;
     this._fontSize = fontSize;
     this._fontWidth = fontWidth;
     this._withLineNumber = withLineNumber;
-    this._radius = radius;
+    this._radius = radius || 0;
     this._lineNumberFg = lineNumberFg;
     this._bg = bg;
     this._lineHeight = fontSize * lineHeightToFontSizeRatio;
@@ -58,7 +70,7 @@ export class SvgRenderer {
       throw TypeError("fontWidth is undefined.");
 
     const x = this._fontWidth * 4;
-    const content = String(lineNumber).padStart(3, "\u2800"); // \u2800 is an empty braille character
+    const content = lineNumber.toString().padStart(3, "\u2800"); // \u2800 is an empty braille character
 
     return `<tspan fill="${this._lineNumberFg}" fill-opacity="0.25" x="-${x}">${content}</tspan>`;
   }
@@ -117,7 +129,7 @@ export class SvgRenderer {
     }
 
     const lineNumberWidth =
-      (this._withLineNumber ? String(lines.length).length + 3 : 2) *
+      (this._withLineNumber ? lines.length.toString().length + 3 : 2) *
       this._fontWidth;
     const titlebarHeight = 32;
 
