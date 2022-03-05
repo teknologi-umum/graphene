@@ -11,7 +11,7 @@ import {
   notFoundHandler,
   rateLimiter
 } from "@/middleware/index.js";
-import { logtail } from "@/utils/index.js";
+import { logger } from "@/utils/index.js";
 import { coreHandler } from "@/handler/core.js";
 
 const server = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== "test") {
   server.listen(process.env.PORT || 3000, () => {
     // eslint-disable-next-line no-console
     console.log(`Running on http://localhost:${process.env.PORT || 3000}`);
-    logtail.info("Launching", {});
+    logger.info("Launching", {});
   });
 }
 /* c8 ignore stop */

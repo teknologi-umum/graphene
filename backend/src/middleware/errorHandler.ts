@@ -1,5 +1,5 @@
 import type { ErrorHandler } from "polka";
-import { logtail, sentry } from "@/utils/index.js";
+import { logger, sentry } from "@/utils/index.js";
 
 /**
  * errorHandler is the default error handler for every request.
@@ -34,7 +34,7 @@ export const errorHandler: ErrorHandler = (err, req, res) => {
     })
     .end(msg);
 
-  logtail.error("Error was thrown", {
+  logger.error("Error was thrown", {
     error: err.toString(),
     headers: {
       "Content-Type": req.headers["content-type"] || "",
