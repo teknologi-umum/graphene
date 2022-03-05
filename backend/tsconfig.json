@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "target": "ES2019",
+    "target": "ES2020",
     "module": "ESNext",
     "declaration": false,
     "types": ["node"],
@@ -21,7 +21,11 @@
     "removeComments": true,
     "strict": true,
     "listEmittedFiles": true,
-    "newLine": "lf"
+    "newLine": "lf",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "views"],
   "exclude": ["tests", "dist"]

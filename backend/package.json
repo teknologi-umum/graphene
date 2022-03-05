@@ -41,7 +41,7 @@
     "@typescript-eslint/parser": "5.13.0",
     "c8": "7.11.0",
     "esbuild": "0.14.23",
-    "esbuild-node-loader": "0.6.5",
+    "esbuild-node-loader": "0.6.0",
     "eslint": "8.10.0",
     "eslint-config-prettier": "8.4.0",
     "eslint-plugin-prettier": "4.0.0",
@@ -50,7 +50,8 @@
     "supertest": "6.2.2",
     "tslib": "2.3.1",
     "typescript": "4.6.2",
-    "uvu": "0.5.3"
+    "uvu": "0.5.3",
+    "yup": "^0.32.11"
   },
   "engineStrict": true,
   "engines": {

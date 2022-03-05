@@ -2,199 +2,262 @@
 // https://github.com/shikijs/shiki/blob/main/packages/renderer-svg/src/index.ts
 //
 // Original author: @octref
-// Modified by: @StefansArya
-// Modified by: @elianiva
+// Modified by: @StefansArya, @elianiva, @krowter
 // Types by: @aldy505
 
-import { FontStyle, IThemedToken } from 'shiki';
-import type { HTMLEscapes, RendererOptions, SVGAttributes, SVGOutput } from '../types/renderer';
+import { FontStyle, IThemedToken } from "shiki";
+import type { HTMLEscapes, RendererOptions, SVGOutput } from "@/types/renderer";
 
-const DEFAULT_CONFIG: Partial<RendererOptions> = {
-  fontFamily: 'JetBrainsMono Nerd Font',
-  fontSize: 14,
-  fontWidth: 8,
-  bg: '#2E3440',
-  fg: '#FFFFFF',
-  lineNumber: true,
-};
+export class SvgRenderer {
+  private readonly _fontFamily: string;
+  private readonly _fontSize: number;
+  private readonly _fontWidth: number;
+  private readonly _lineHeight: number;
+  private readonly _withLineNumber: boolean;
+  private readonly _radius: number;
+  private readonly _lineNumberFg: string;
+  private readonly _bg: string;
+  private readonly HTML_ESCAPES: HTMLEscapes = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  };
 
-const generateLineNumber = (idx: number, { fg, fontWidth }: Partial<RendererOptions> & { lineHeight: number }) => {
-  return `<tspan fill="${fg}" fill-opacity="0.25" x="-${(fontWidth as number) * 4}">${String(idx).padStart(
-    3,
-    '\u2800',
-  )}</tspan>`;
-};
-
-const HTML_ESCAPES: HTMLEscapes = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-};
-const escapeHTML = (html: string) => html.replace(/[&<>"']/g, (chr: string) => HTML_ESCAPES[chr]);
-
-const OPTIONS: Partial<SVGAttributes> = {
-  fill: '#fff',
-};
-
-function getTokenSVGAttributes(token: IThemedToken) {
-  // handle different colour format
-  if (token.color) {
-    if (token.color.slice(1).length <= 6) OPTIONS.fill = token.color;
-    else if (token.color.slice(1).length === 8) {
-      const opacity = parseInt(token.color.slice(1 + 6), 16) / 255;
-      const roughRoundedOpacity = Math.floor(opacity * 100) / 100;
-      OPTIONS.fill = token.color.slice(0, 1 + 6);
-      OPTIONS.opacity = roughRoundedOpacity;
+  constructor({
+    fontFamily,
+    fontSize,
+    fontWidth,
+    lineHeightToFontSizeRatio,
+    withLineNumber,
+    bg,
+    lineNumberFg,
+    radius
+  }: RendererOptions) {
+    if (fontFamily === "" || fontSize === 0 || fontWidth === 0) {
+      throw TypeError("Bad font argument!");
     }
+
+    if (
+      lineNumberFg === "" ||
+      lineNumberFg === undefined ||
+      lineNumberFg === null
+    ) {
+      throw TypeError("Invalid line number foreground colour!");
+    }
+
+    if (bg === "" || bg === undefined || bg === null) {
+      throw TypeError("Invalid background colour!");
+    }
+
+    this._fontFamily = fontFamily;
+    this._fontSize = fontSize;
+    this._fontWidth = fontWidth;
+    this._withLineNumber = withLineNumber;
+    this._radius = radius || 0;
+    this._lineNumberFg = lineNumberFg;
+    this._bg = bg;
+    this._lineHeight = fontSize * lineHeightToFontSizeRatio;
   }
 
-  if (token.fontStyle === FontStyle.Bold) OPTIONS['font-weight'] = 'bold';
-  if (token.fontStyle === FontStyle.Italic) OPTIONS['font-style'] = 'italic';
-  if (token.fontStyle === FontStyle.None) OPTIONS['font-style'] = 'normal';
+  private _escapeHTML(html: string) {
+    return html.replace(/[&<>"']/g, (c) => this.HTML_ESCAPES[c]);
+  }
 
-  return Object.keys(OPTIONS)
-    .reduce((acc: string[], curr: string) => {
-      if (OPTIONS[curr]) return acc.concat(`${curr}="${OPTIONS[curr]}"`);
-      return acc.concat('');
-    }, [])
-    .join(' ');
-}
+  private _generateLineNumber(lineNumber: number) {
+    if (this._fontWidth === undefined)
+      throw TypeError("fontWidth is undefined.");
 
-export function svgRenderer(options: RendererOptions): {
-  renderToSVG: (lines: IThemedToken[][]) => SVGOutput;
-} {
-  const { fontFamily, fontSize, lineHeightToFontSizeRatio, bg, fg, fontWidth, lineNumber, radius }: RendererOptions =
-    Object.assign(DEFAULT_CONFIG, options);
+    const x = this._fontWidth * 4;
+    const content = lineNumber.toString().padStart(3, "\u2800"); // \u2800 is an empty braille character
 
-  if (!fontWidth) throw new Error("options must have 'fontWidth'");
+    return `<tspan fill="${this._lineNumberFg}" fill-opacity="0.25" x="-${x}">${content}</tspan>`;
+  }
 
-  const lineHeight = fontSize * lineHeightToFontSizeRatio;
+  private _getTokenSVGAttributes(token: IThemedToken) {
+    const options: Record<string, string | number> = {
+      fill: this._lineNumberFg
+    };
 
-  return {
-    renderToSVG(lines: IThemedToken[][]): SVGOutput {
-      let longestLineTextLength = 0;
+    // handle different colour format
+    if (token.color !== undefined) {
+      const len = token.color.slice(1).length;
+      if (len <= 6) {
+        // handles #rrggbb
+        options.fill = token.color;
+      } else if (len === 8) {
+        // handles #rrggbbaa
+        const opacity = parseInt(token.color.slice(1 + 6), 16) / 255;
+        const roughRoundedOpacity = Math.floor(opacity * 100) / 100;
+        options.fill = token.color.slice(0, 1 + 6);
+        options.opacity = roughRoundedOpacity;
+      }
+    }
 
-      lines.forEach((lineTokens) => {
-        const lineTextLength = lineTokens.reduce((acc, curr) => (acc += curr.content.length), 0);
+    if (token.fontStyle === FontStyle.Bold) options["font-weight"] = "bold";
+    if (token.fontStyle === FontStyle.Italic) options["font-style"] = "italic";
+    if (token.fontStyle === FontStyle.None) options["font-style"] = "normal";
 
-        if (lineTextLength > longestLineTextLength) {
-          longestLineTextLength = lineTextLength;
+    return Object.keys(options)
+      .reduce((acc: string[], curr: string) => {
+        if (
+          options[curr] !== null ||
+          options[curr] !== undefined ||
+          options[curr] !== ""
+        ) {
+          return acc.concat(`${curr}="${options[curr]}"`);
         }
-      });
 
-      const lineNumberWidth = (lineNumber ? String(lines.length).length + 3 : 2) * fontWidth;
-      const titlebarHeight = 32;
+        return acc.concat("");
+      }, [])
+      .join(" ");
+  }
 
-      // longest line + left/right 4 char width
-      const bgWidth = (longestLineTextLength + 4) * fontWidth + lineNumberWidth;
+  public renderToSVG(lines: IThemedToken[][]): SVGOutput {
+    let longestLineTextLength = 0;
 
-      // all rows + 2 rows top/bot
-      // const bgHeight = (lines.length + verticalPadding * 2) * lineheight;
-      const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight;
+    for (const lineTokens of lines) {
+      const lineTextLength = lineTokens.reduce(
+        (acc, curr) => (acc += curr.content.length),
+        0
+      );
 
-      // to enable soft wrapping, set maxLineWidth to a positive integer (say 40)
-      // and uncomment the 2 lines below it to adjust the svg size
-      const maxLineWidth = null; // characters, coming from request
-      // const bgWidth = (maxLineWidth + 4) * fontWidth + lineNumberWidth;
-      // const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight + 100; // 100 is arbitrary number
+      if (lineTextLength > longestLineTextLength) {
+        longestLineTextLength = lineTextLength;
+      }
+    }
 
-      let offsetY = 0; // account for wrapped lines
+    const lineNumberWidth =
+      (this._withLineNumber ? lines.length.toString().length + 3 : 2) *
+      this._fontWidth;
+    const titlebarHeight = 32;
 
-      let svg = '';
-      svg += `<svg viewBox="0 0 ${bgWidth} ${bgHeight}" width="${bgWidth}" height="${bgHeight}" xmlns="http://www.w3.org/2000/svg">\n`;
-      svg += `<rect id="bg" fill="${bg}" width="${bgWidth}" height="${bgHeight}" rx="${radius}"></rect>`;
-      svg += '<g id="titlebar">';
-      svg += `<rect width="${bgWidth}" height="${titlebarHeight}" fill="${bg}" rx="${radius}"/>`;
-      svg += '<rect x="13" y="9" width="14" height="14" rx="8" fill="#FF605C"/>';
-      svg += '<rect x="35" y="9" width="14" height="14" rx="8" fill="#FFBD44"/>';
-      svg += '<rect x="57" y="9" width="14" height="14" rx="8" fill="#00CA4E"/>';
-      svg += '</g>';
+    // longest line + left/right 4 char width
+    const bgWidth =
+      (longestLineTextLength + 4) * this._fontWidth + lineNumberWidth;
+    const bgHeight = (lines.length + 1) * this._lineHeight + titlebarHeight;
 
-      // we need to move the code to the right when we have line number
-      svg += `<g id="tokens" transform="translate(${lineNumberWidth}, ${titlebarHeight})">`;
+    // TODO(elianiva): implement arbitrary maxLineWidth from request
+    // to enable soft wrapping, set maxLineWidth to a positive integer (say 40)
+    // and uncomment the 2 lines below it to adjust the svg size
+    const maxLineWidth = null; // characters, coming from request
+    // const bgWidth = (maxLineWidth + 4) * fontWidth + lineNumberWidth;
+    // const bgHeight = (lines.length + 1) * lineHeight + titlebarHeight + 100; // 100 is arbitrary number
 
-      lines.forEach((line, index) => {
-        const idx = index + 1;
+    let offsetY = 0; // account for wrapped lines
 
-        if (line.length === 0) {
-          if (lineNumber) {
-            svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (idx + offsetY)}">\n`;
-            svg += generateLineNumber(idx, { fontFamily, fontWidth, lineHeight, fg });
-            svg += '</text>';
+    let svg = "";
+    svg += `<svg viewBox="0 0 ${bgWidth} ${bgHeight}" width="${bgWidth}" height="${bgHeight}" xmlns="http://www.w3.org/2000/svg">\n`;
+    svg += `<rect id="bg" fill="${this._bg}" width="${bgWidth}" height="${bgHeight}" rx="${this._radius}"></rect>`;
+    svg += '<g id="titlebar">';
+    svg += `<rect width="${bgWidth}" height="${titlebarHeight}" fill="${this._bg}" rx="${this._radius}"/>`;
+    svg += '<rect x="13" y="9" width="14" height="14" rx="8" fill="#FF605C"/>';
+    svg += '<rect x="35" y="9" width="14" height="14" rx="8" fill="#FFBD44"/>';
+    svg += '<rect x="57" y="9" width="14" height="14" rx="8" fill="#00CA4E"/>';
+    svg += "</g>";
+    svg += `<g id="tokens" transform="translate(${lineNumberWidth}, ${titlebarHeight})">`;
+
+    lines.forEach((line, index) => {
+      const idx = index + 1;
+
+      if (line.length === 0) {
+        if (this._withLineNumber) {
+          const yPosition = this._lineHeight * (idx + offsetY);
+          svg += `<text font-family="${this._fontFamily}" font-size="${this._fontSize}" y="${yPosition}">\n`;
+          svg += this._generateLineNumber(idx);
+          svg += "</text>";
+        }
+        svg += `\n`;
+      } else {
+        const yPosition = this._lineHeight * (idx + offsetY);
+        svg += `<text font-family="${this._fontFamily}" font-size="${this._fontSize}" y="${yPosition}">\n`;
+
+        if (this._withLineNumber) {
+          svg += this._generateLineNumber(idx);
+        }
+
+        let indent = 0;
+
+        for (const token of line) {
+          const tokenAttributes = this._getTokenSVGAttributes(token);
+
+          // chunk excess tokens to be rendered below
+          const wrappedTokens: string[] = [];
+          let tokenBreakIndex = Infinity;
+          let lastWrappedTokenIndex = 0; // so next token know where to continue
+
+          if (
+            maxLineWidth !== null &&
+            indent + token.content.length > maxLineWidth
+          ) {
+            tokenBreakIndex = maxLineWidth - indent;
+            let { content } = token;
+            let wrappedTokenBreakIndex = tokenBreakIndex;
+
+            while (content.length > 0) {
+              lastWrappedTokenIndex = content.length;
+
+              content = content.slice(wrappedTokenBreakIndex);
+              wrappedTokens.push(content.slice(0, maxLineWidth));
+
+              wrappedTokenBreakIndex = maxLineWidth;
+            }
+
+            offsetY += wrappedTokens.length - 1;
           }
-          svg += `\n`;
-        } else {
-          svg += `<text font-family="${fontFamily}" font-size="${fontSize}" y="${lineHeight * (idx + offsetY)}">\n`;
-          if (lineNumber) svg += generateLineNumber(idx, { fontFamily, fontWidth, lineHeight, fg });
 
-          let indent = 0;
-          line.forEach((token) => {
-            const tokenAttributes = getTokenSVGAttributes(token);
+          /**
+           * SVG rendering in Sketch/Affinity Photos: `<tspan>` with leading whitespace will render without whitespace
+           * Need to manually offset `x`
+           */
+          if (
+            token.content.startsWith(" ") &&
+            token.content.search(/\S/) !== -1
+          ) {
+            const firstNonWhitespaceIndex = token.content.search(/\S/);
 
-            // chunk excess tokens to be rendered below
-            const wrappedTokens: string[] = [];
-            let tokenBreakIndex = Infinity;
-            let lastWrappedTokenIndex = 0; // so next token know where to continue
+            // Whitespace + content, such as ` foo`
+            // Render as `<tspan> </tspan><tspan>foo</tspan>`, where the second `tspan` is offset by whitespace * width
+            svg += `<tspan x="${
+              indent * this._fontWidth
+            }" ${tokenAttributes}>${this._escapeHTML(
+              token.content.slice(0, firstNonWhitespaceIndex)
+            )}</tspan>`;
 
-            if (maxLineWidth !== null && indent + token.content.length > maxLineWidth) {
-              tokenBreakIndex = maxLineWidth - indent;
-              let { content } = token;
-              let wrappedTokenBreakIndex = tokenBreakIndex;
+            svg += `<tspan x="${
+              (indent + firstNonWhitespaceIndex) * this._fontWidth
+            }" ${tokenAttributes}>${this._escapeHTML(
+              token.content.slice(firstNonWhitespaceIndex, tokenBreakIndex)
+            )}</tspan>`;
+          } else {
+            svg += `<tspan x="${
+              indent * this._fontWidth
+            }" ${tokenAttributes}>${this._escapeHTML(
+              token.content.slice(0, tokenBreakIndex)
+            )}</tspan>`;
+          }
 
-              while (content.length > 0) {
-                lastWrappedTokenIndex = content.length;
-
-                content = content.slice(wrappedTokenBreakIndex);
-                wrappedTokens.push(content.slice(0, maxLineWidth));
-
-                wrappedTokenBreakIndex = maxLineWidth;
-              }
-
-              offsetY += wrappedTokens.length - 1;
+          if (wrappedTokens.length > 0) {
+            for (const token of wrappedTokens) {
+              svg += `<tspan dy="${
+                this._lineHeight
+              }" x="0" ${tokenAttributes}>${this._escapeHTML(token)}</tspan>`;
             }
-
-            /**
-             * SVG rendering in Sketch/Affinity Photos: `<tspan>` with leading whitespace will render without whitespace
-             * Need to manually offset `x`
-             */
-            if (token.content.startsWith(' ') && token.content.search(/\S/) !== -1) {
-              const firstNonWhitespaceIndex = token.content.search(/\S/);
-
-              // Whitespace + content, such as ` foo`
-              // Render as `<tspan> </tspan><tspan>foo</tspan>`, where the second `tspan` is offset by whitespace * width
-              svg += `<tspan x="${indent * fontWidth}" ${tokenAttributes}>${escapeHTML(
-                token.content.slice(0, firstNonWhitespaceIndex),
-              )}</tspan>`;
-
-              svg += `<tspan x="${(indent + firstNonWhitespaceIndex) * fontWidth}" ${tokenAttributes}>${escapeHTML(
-                token.content.slice(firstNonWhitespaceIndex, tokenBreakIndex),
-              )}</tspan>`;
-            } else {
-              svg += `<tspan x="${indent * fontWidth}" ${tokenAttributes}>${escapeHTML(
-                token.content.slice(0, tokenBreakIndex),
-              )}</tspan>`;
-            }
-
-            if (wrappedTokens.length > 0) {
-              wrappedTokens.forEach(
-                (token) => (svg += `<tspan dy="${lineHeight}" x="0" ${tokenAttributes}>${escapeHTML(token)}</tspan>`),
-              );
-              indent = lastWrappedTokenIndex;
-            } else {
-              indent += token.content.length;
-            }
-          });
-          svg += `\n</text>\n`;
+            indent = lastWrappedTokenIndex;
+          } else {
+            indent += token.content.length;
+          }
         }
-      });
 
-      svg = svg.replace(/\n*$/, ''); // Get rid of final new lines
-      svg += '</g>';
-      svg += '\n</svg>\n';
+        svg += `\n</text>\n`;
+      }
+    });
 
-      return { width: bgWidth, height: bgHeight, svg };
-    },
-  };
+    svg = svg.replace(/\n*$/, ""); // Get rid of final new lines
+    svg += "</g>";
+    svg += "\n</svg>\n";
+
+    return { width: bgWidth, height: bgHeight, svg };
+  }
 }
