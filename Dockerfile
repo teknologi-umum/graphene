@@ -11,9 +11,13 @@ RUN mv -v sf-mono /usr/local/share/fonts/ \
     && mv -v hack /usr/local/share/fonts/ \
     && mv -v iosevka /usr/local/share/fonts/
 
+RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
+
 WORKDIR /home/node/app
 
 COPY . .
+
+USER node
 
 RUN npm install --workspaces
 
