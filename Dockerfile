@@ -1,14 +1,20 @@
 FROM node:16.14.0-bullseye
 
+USER node
+
+RUN mkdir -p /home/node
+
 WORKDIR /home/node/tmp
 
 COPY fonts/ /usr/local/share/fonts/
 
 WORKDIR /home/node/app
 
-COPY . .
+COPY --chown=node:node package.json .
 
 RUN npm install --workspaces
+
+COPY --chown=node:node . .
 
 ENV NODE_ENV=production
 
