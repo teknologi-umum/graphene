@@ -1,25 +1,16 @@
 FROM node:16.14.0-bullseye
 
-WORKDIR /app/tmp
+WORKDIR /home/node/tmp
 
-COPY fonts/ .
+COPY fonts/ /usr/local/share/fonts/
 
-RUN mv -v sf-mono /usr/local/share/fonts/ \
-    && mv -v fira-code /usr/local/share/fonts/ \
-    && mv -v jetbrains-mono /usr/local/share/fonts/ \
-    && mv -v cascadia-code /usr/local/share/fonts/ \
-    && mv -v hack /usr/local/share/fonts/ \
-    && mv -v iosevka /usr/local/share/fonts/
-
-WORKDIR /app
+WORKDIR /home/node/app
 
 COPY . .
 
 RUN npm install --workspaces
 
 ENV NODE_ENV=production
-
-RUN mkdir -p /app/dist/views
 
 RUN npm run build --workspaces \
     && rm -rf node_modules \
