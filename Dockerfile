@@ -1,6 +1,6 @@
 FROM node:16.14.0-bullseye
 
-WORKDIR /home/node/tmp
+WORKDIR /app/tmp
 
 COPY fonts/ .
 
@@ -11,13 +11,9 @@ RUN mv -v sf-mono /usr/local/share/fonts/ \
     && mv -v hack /usr/local/share/fonts/ \
     && mv -v iosevka /usr/local/share/fonts/
 
-RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
-
-WORKDIR /home/node/app
+WORKDIR /app
 
 COPY . .
-
-USER node
 
 RUN npm install --workspaces
 
