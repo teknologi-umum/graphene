@@ -1,6 +1,6 @@
 FROM node:16.14.0-bullseye
 
-WORKDIR /app/src/temp
+WORKDIR /home/node/tmp
 
 COPY fonts/ .
 
@@ -11,7 +11,7 @@ RUN mv -v sf-mono /usr/local/share/fonts/ \
     && mv -v hack /usr/local/share/fonts/ \
     && mv -v iosevka /usr/local/share/fonts/
 
-WORKDIR /app/src/app
+WORKDIR /home/node/app
 
 COPY . .
 
