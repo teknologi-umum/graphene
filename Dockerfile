@@ -19,6 +19,8 @@ RUN npm install --workspaces
 
 ENV NODE_ENV=production
 
+RUN mkdir -p /app/dist/views
+
 RUN npm run build --workspaces \
     && rm -rf node_modules \
     && npm install --production --workspaces
