@@ -1,4 +1,4 @@
-FROM node:16.14.0-bullseye
+FROM node:16.13.1-bullseye
 
 WORKDIR /home/node/tmp
 
