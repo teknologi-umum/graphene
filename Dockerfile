@@ -1,10 +1,17 @@
 FROM node:16.13.1-bullseye
 
-WORKDIR /home/node/tmp
+WORKDIR /usr/src/temp
 
-COPY fonts/ /usr/local/share/fonts/
+COPY fonts/ .
 
-WORKDIR /home/node/app
+RUN mv -v sf-mono /usr/local/share/fonts/ \
+    && mv -v fira-code /usr/local/share/fonts/ \
+    && mv -v jetbrains-mono /usr/local/share/fonts/ \
+    && mv -v cascadia-code /usr/local/share/fonts/ \
+    && mv -v hack /usr/local/share/fonts/ \
+    && mv -v iosevka /usr/local/share/fonts/
+
+WORKDIR /usr/src/app
 
 COPY . .
 
