@@ -1,17 +1,10 @@
-FROM node:16.13.1-bullseye
-
-WORKDIR /usr/src/temp
+FROM node:16.14.2-bullseye
 
 COPY fonts/ .
 
-RUN mv -v sf-mono /usr/local/share/fonts/ \
-    && mv -v fira-code /usr/local/share/fonts/ \
-    && mv -v jetbrains-mono /usr/local/share/fonts/ \
-    && mv -v cascadia-code /usr/local/share/fonts/ \
-    && mv -v hack /usr/local/share/fonts/ \
-    && mv -v iosevka /usr/local/share/fonts/
+COPY fonts/ /usr/local/share/fonts/
 
-WORKDIR /usr/src/app
+WORKDIR /root
 
 COPY . .
 
