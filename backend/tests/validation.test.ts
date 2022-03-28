@@ -36,6 +36,14 @@ test("should work when lineNumber is a boolean", async () => {
     .expect("content-type", "image/png");
 });
 
+test("should work when lang is null which means auto-detect", async () => {
+  await instance
+    .post("/api")
+    .send({ code: 'console.log("foo");', lang: null })
+    .expect(200)
+    .expect("content-type", "image/png");
+});
+
 test("should error with bad format", async () => {
   await instance
     .post("/api")
