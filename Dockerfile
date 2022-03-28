@@ -1,12 +1,12 @@
 FROM node:16.14.2-bullseye
 
-COPY fonts/ .
+USER node
 
 COPY fonts/ /usr/local/share/fonts/
 
-WORKDIR /root
+WORKDIR /home/node
 
-COPY . .
+COPY --chown=node:node . .
 
 RUN npm install --workspaces
 
