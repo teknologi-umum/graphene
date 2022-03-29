@@ -24,7 +24,12 @@ export type ValidFonts = typeof validFonts[number];
 
 export const optionSchema = yup.object({
   code: yup.string().required("code can't be empty!"),
-  lang: yup.string().lowercase().oneOf(validLanguages).nullable(),
+  lang: yup
+    .string()
+    .lowercase()
+    .oneOf([null, ...validLanguages])
+    .nullable()
+    .default(null),
   theme: yup.string().lowercase().oneOf(validThemes).default("github-dark"),
   format: yup
     .string()

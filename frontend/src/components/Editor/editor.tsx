@@ -53,7 +53,7 @@ export default function Editor(): JSXElement {
       const lang = selectedLang().toLowerCase();
       const body = {
         code: code(),
-        lang: lang === 'auto detect' ? '' : lang === 'c#' ? 'csharp' : selectedLang(),
+        lang: lang === 'auto detect' ? null : lang === 'c#' ? 'csharp' : selectedLang(),
         theme: theme().toLowerCase().replace(/\s/g, '-'),
         format: format(),
         upscale: upscale(),
