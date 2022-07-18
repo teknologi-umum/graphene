@@ -10,9 +10,10 @@ declare namespace Intl {
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      PORT: number;
-      NODE_ENV: "development" | "production" | "test";
-      SENTRY_DSN: string;
+      readonly PORT: number;
+      readonly NODE_ENV: "development" | "production" | "test";
+      readonly SENTRY_DSN: string;
+      readonly LOGTAIL_TOKEN: string;
     }
   }
 }

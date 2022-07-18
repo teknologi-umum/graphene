@@ -8,18 +8,17 @@
   "author": "elianiva <dicha.arkana03@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config --unhandled-rejections=strict dist/index.js",
-    "dev:start": "node --experimental-loader esbuild-node-loader -r dotenv/config src/index.ts",
-    "dev": "nodemon -e ts --watch src --exec \"npm run dev:start\"",
+    "start": "esno -r dotenv/config src/index.ts",
+    "dev": "esno watch -r dotenv/config src/index.ts",
     "prettier": "prettier --write --ignore-path ../.gitignore .",
     "lint:check": "eslint --ignore-path ../.gitignore .",
     "lint": "eslint --fix --ignore-path ../.gitignore .",
-    "test": "NODE_ENV=test c8 --include=src --reporter=text --reporter=lcovonly node --experimental-loader esbuild-node-loader ../node_modules/uvu/bin.js tests",
+    "test": "NODE_ENV=test c8 --include=src --reporter=text --reporter=lcovonly esno ../node_modules/uvu/bin.js tests",
     "build": "tsc --noEmit && node build.js"
   },
   "dependencies": {
     "@logtail/node": "0.1.12",
-    "@sentry/node": "7.7.0",
+    "@sentry/node": "^7.7.0",
     "@sentry/tracing": "^7.7.0",
     "@tinyhttp/proxy-addr": "2.0.4",
     "dotenv": "16.0.1",
@@ -36,6 +35,7 @@
     "zod": "^3.17.9"
   },
   "devDependencies": {
+    "@esbuild-kit/esm-loader": "^2.4.1",
     "@types/node": "18.0.6",
     "@types/sharp": "0.30.4",
     "@types/supertest": "2.0.12",
@@ -43,16 +43,19 @@
     "@typescript-eslint/parser": "5.30.6",
     "c8": "7.11.3",
     "esbuild": "0.14.49",
-    "esbuild-node-loader": "0.8.0",
     "eslint": "8.20.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.2.1",
+    "esno": "^0.16.3",
     "nodemon": "2.0.19",
     "prettier": "2.7.1",
     "supertest": "6.2.4",
     "tslib": "2.4.0",
     "typescript": "4.7.4",
-    "uvu": "0.5.6"
+    "uvu": "0.5.6",
+    "vite": "3.0.1",
+    "vite-node": "^0.18.1",
+    "vitest": "^0.18.1"
   },
   "engineStrict": true,
   "engines": {

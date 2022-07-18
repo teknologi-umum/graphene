@@ -1,6 +1,6 @@
 import { Logtail } from "@logtail/node";
 import type { Context, ILogtailLog } from "@logtail/types";
-import { IS_PRODUCTION } from "~/constants";
+import { IS_PRODUCTION, LOGTAIL_TOKEN } from "~/constants";
 
 /**
  * Logger class wraps Logtail logger. It will use Logtail on production and Console on development.
@@ -36,4 +36,4 @@ export class Logger {
   }
 }
 
-export const logger = new Logger(process.env.LOGTAIL_TOKEN);
+export const logger = new Logger(LOGTAIL_TOKEN);

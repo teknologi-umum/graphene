@@ -36,12 +36,14 @@ export const coreHandler: Middleware = async (req, res) => {
       })
       .end(image);
   } catch (err) {
-    if (err instanceof Error) {
-      res.writeHead(500, { "Content-Type": "application/json" }).end(JSON.stringify({ message: err.message }));
-    }
-
     if (err instanceof ZodError) {
-      res.writeHead(400, { "Content-Type": "application/json" }).end(JSON.stringify({ message: err.message }));
+      res
+        .writeHead(400, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Validation error", issues: err.issues }));
+    } else if (err instanceof Error) {
+      res.writeHead(500, { "Content-Type": "application/json" }).end(JSON.stringify({ message: err.message }));
+    } else {
+      res.writeHead(500, { "Content-Type": "application/json" }).end(JSON.stringify({ message: "Unknown error" }));
     }
   }
 };

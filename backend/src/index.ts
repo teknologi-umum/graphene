@@ -7,7 +7,7 @@ import helmet from "helmet";
 import { cors, bodyParser, errorHandler, notFoundHandler, rateLimiter } from "~/middleware/index.js";
 import { logger } from "~/utils/index.js";
 import { coreHandler } from "~/handler/core.js";
-import { IS_TEST, PORT } from "~/constants";
+import { IS_PRODUCTION, IS_TEST, PORT } from "~/constants";
 
 const MAX_AGE = 24 * 60; // 1 day
 const CWD = dirname(fileURLToPath(import.meta.url));
@@ -17,7 +17,7 @@ const app = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
   .use(
     helmet() as Middleware,
     sirv(STATIC_PATH, {
-      dev: process.env.NODE_ENV !== "production",
+      dev: !IS_PRODUCTION,
       etag: true,
       maxAge: MAX_AGE
     })
