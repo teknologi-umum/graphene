@@ -9,11 +9,10 @@ export default defineConfig({
     outDir: process.env.NODE_ENV === 'production' ? '../dist/views' : '../backend/src/views',
     emptyOutDir: true,
     target: 'esnext',
-    polyfillDynamicImport: false,
   },
   resolve: {
     alias: {
-      '#': path.resolve('src'),
+      '~': path.resolve('src'),
     },
   },
 });

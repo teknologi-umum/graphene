@@ -1,14 +1,14 @@
-import type { JSXElement, Setter } from 'solid-js';
-import styles from './colourPicker.module.css';
+import type { JSXElement } from 'solid-js';
+import styles from './ColourPicker.module.scss';
 
-interface ColorPickerProps {
+type ColorPickerProps = {
   selected: string;
-  setSelected: Setter<string>;
+  setSelected: (value: string) => void;
   width: string;
   height: string;
-}
+};
 
-export default function ColourPicker(props: ColorPickerProps): JSXElement {
+export function ColourPicker(props: ColorPickerProps): JSXElement {
   return (
     <input
       class={styles.picker}
