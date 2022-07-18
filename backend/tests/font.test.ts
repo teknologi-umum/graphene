@@ -1,13 +1,13 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
 import request from "supertest";
-import { getFontSetup } from "../src/logic/getFontSetup";
+import { FONT_MAPPING } from "../src/constants";
 import server from "../src/index";
 
 const instance = request(server.handler);
 
 test("return font setup for jetbrains mono", () => {
-  const output = getFontSetup("jetbrains mono");
+  const output = FONT_MAPPING["jetbrains mono"];
   assert.equal(output, {
     fontFamily: "JetBrainsMonoNL Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
@@ -17,7 +17,7 @@ test("return font setup for jetbrains mono", () => {
 });
 
 test("return font setup for sf mono", () => {
-  const output = getFontSetup("sf mono");
+  const output = FONT_MAPPING["sf mono"];
   assert.equal(output, {
     fontFamily: "SFMono Nerd Font",
     lineHeightToFontSizeRatio: 1.5,
@@ -27,7 +27,7 @@ test("return font setup for sf mono", () => {
 });
 
 test("return font setup for fira code", () => {
-  const output = getFontSetup("fira code");
+  const output = FONT_MAPPING["fira mono"];
   assert.equal(output, {
     fontFamily: "FiraCode Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
@@ -37,7 +37,7 @@ test("return font setup for fira code", () => {
 });
 
 test("return font setup for hack", () => {
-  const output = getFontSetup("hack");
+  const output = FONT_MAPPING["hack"];
   assert.equal(output, {
     fontFamily: "Hack Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
@@ -47,7 +47,7 @@ test("return font setup for hack", () => {
 });
 
 test("return font setup for iosevka", () => {
-  const output = getFontSetup("iosevka");
+  const output = FONT_MAPPING["iosevka"];
   assert.equal(output, {
     fontFamily: "Iosevka Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
@@ -57,17 +57,13 @@ test("return font setup for iosevka", () => {
 });
 
 test("return font setup for cascadia code", () => {
-  const output = getFontSetup("cascadia code");
+  const output = FONT_MAPPING["cascadia code"];
   assert.equal(output, {
     fontFamily: "CaskaydiaCove Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
     fontWidth: 8.15
   });
-});
-
-test("should throw error on invalid font", () => {
-  assert.throws(() => getFontSetup("asd"), "invalid font was given");
 });
 
 test("should be able to specify font options - jetbrains mono", async () => {
@@ -111,6 +107,15 @@ test("should be able to specify font options - iosevka", async () => {
 });
 
 test("should be able to specify font options - cascadia code", async () => {
+  await instance
+    .post("/api")
+    .send({ code: 'console.log("sup world");', font: "cascadia code" })
+    .expect(200)
+    .expect("content-type", "image/png");
+});
+
+
+test("should throw when the font doesn't exist - cascadia code", async () => {
   await instance
     .post("/api")
     .send({ code: 'console.log("sup world");', font: "cascadia code" })

@@ -5,19 +5,11 @@ import server from "../src/index";
 const instance = request(server.handler);
 
 test("should error when body is empty", async () => {
-  await instance
-    .post("/api")
-    .send({})
-    .expect(400)
-    .expect("content-type", "application/json");
+  await instance.post("/api").send({}).expect(400).expect("content-type", "application/json");
 });
 
 test("should error without a code", async () => {
-  await instance
-    .post("/api")
-    .send({ lang: "javascript" })
-    .expect(400)
-    .expect("content-type", "application/json");
+  await instance.post("/api").send({ lang: "javascript" }).expect(400).expect("content-type", "application/json");
 });
 
 test("should error when lineNumber is not a boolean", async () => {

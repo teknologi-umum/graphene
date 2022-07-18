@@ -1,3 +1,3 @@
-export * from "./getIP";
+export * from "./get-ip";
 export * from "./logtail";
-export * from "./sentry.js";
+export * from "./sentry";

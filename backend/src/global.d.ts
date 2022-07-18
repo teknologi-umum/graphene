@@ -6,3 +6,15 @@ declare namespace Intl {
     public format(items: string[]): string;
   }
 }
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      PORT: number;
+      NODE_ENV: "development" | "production" | "test";
+      SENTRY_DSN: string;
+    }
+  }
+}
+
+export {};

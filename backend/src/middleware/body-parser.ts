@@ -40,7 +40,7 @@ export const bodyParser: Middleware = async (req, res, next) => {
   } catch (error) {
     res.writeHead(400, { "Content-Type": "application/json" }).end(
       JSON.stringify({
-        msg: "Invalid body content with the Content-Type header specification"
+        message: "Invalid body content with the Content-Type header specification"
       })
     );
   }

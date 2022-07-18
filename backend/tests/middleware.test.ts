@@ -17,10 +17,7 @@ test("should error when json is invalid", async () => {
 });
 
 test("should return not found", async () => {
-  await instance
-    .get("/foobar")
-    .expect(404)
-    .expect("content-type", "application/json");
+  await instance.get("/foobar").expect(404).expect("content-type", "application/json");
 });
 
 test.run();

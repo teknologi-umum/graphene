@@ -1,37 +1,34 @@
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
-import polka from "polka";
-import type { Middleware } from "polka";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import console from "node:console";
+import polka, { type Middleware } from "polka";
 import sirv from "sirv";
 import helmet from "helmet";
-import {
-  cors,
-  bodyParser,
-  errorHandler,
-  notFoundHandler,
-  rateLimiter
-} from "@/middleware/index.js";
-import { logger } from "@/utils/index.js";
-import { coreHandler } from "@/handler/core.js";
+import { cors, bodyParser, errorHandler, notFoundHandler, rateLimiter } from "~/middleware/index.js";
+import { logger } from "~/utils/index.js";
+import { coreHandler } from "~/handler/core.js";
+import { IS_TEST, PORT } from "~/constants";
 
-const server = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
+const MAX_AGE = 24 * 60; // 1 day
+const CWD = dirname(fileURLToPath(import.meta.url));
+const STATIC_PATH = resolve(CWD, "./views");
+
+const app = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
   .use(
     helmet() as Middleware,
-    sirv(resolve(dirname(fileURLToPath(import.meta.url)), "./views"), {
+    sirv(STATIC_PATH, {
       dev: process.env.NODE_ENV !== "production",
       etag: true,
-      maxAge: 60 * 60 * 24
+      maxAge: MAX_AGE
     })
   )
-  .get("/")
   .options("/api", cors)
   .post("/api", cors, rateLimiter, bodyParser, coreHandler);
 
 /* c8 ignore start */
-if (process.env.NODE_ENV !== "test") {
-  server.listen(process.env.PORT || 3000, () => {
-    // eslint-disable-next-line no-console
-    console.log(`Running on http://localhost:${process.env.PORT || 3000}`);
+if (!IS_TEST) {
+  app.listen(PORT, () => {
+    console.log(`Running on http://localhost:${PORT}`);
     logger.info("Launching", {});
   });
 }
@@ -40,17 +37,17 @@ if (process.env.NODE_ENV !== "test") {
 /* c8 ignore start */
 // Graceful shutdown
 process.on("SIGINT", () =>
-  server.server.close((err) => {
+  app.server.close((err) => {
     /* eslint-disable-next-line */
     console.log("\nSIGINT: " + err);
   })
 );
 process.on("SIGTERM", () =>
-  server.server.close((err) => {
+  app.server.close((err) => {
     /* eslint-disable-next-line */
     console.log("\nSIGTERM: " + err);
   })
 );
 /* c8 ignore stop */
 
-export default server;
+export default app;

@@ -4,9 +4,7 @@ import polka from "polka";
 import { bodyParser } from "../src/middleware/index.js";
 
 const server = polka().post("/", bodyParser, (req, res) => {
-  res
-    .writeHead(200, { "Content-Type": "application/json" })
-    .end(JSON.stringify(req.body));
+  res.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify(req.body));
 });
 
 const instance = request(server.handler);
@@ -87,11 +85,7 @@ test("invalid content type headers should fall back to json", async () => {
 });
 
 test("invalid content should throw an error", async () => {
-  await instance
-    .post("/")
-    .set("Content-Type", "brave")
-    .send('{"hello":"world')
-    .expect(400);
+  await instance.post("/").set("Content-Type", "brave").send('{"hello":"world').expect(400);
 });
 
 test.run();
