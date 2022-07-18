@@ -1,11 +1,13 @@
 import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
+import { IS_PRODUCTION, NODE_ENV, SENTRY_DSN } from "~/constants";
 
 Sentry.init({
-  // dsn: process.env.SENTRY_DSN,
-  // enabled: process.env.NODE_ENV === "production",
-  // environment: process.env.NODE_ENV,
-  // tracesSampleRate: 1.0
+  // @ts-expect-error -- not sure why it's complaining about missing type definition
+  dsn: SENTRY_DSN,
+  enabled: IS_PRODUCTION,
+  environment: NODE_ENV,
+  tracesSampleRate: 1.0
 });
 
 export const sentry = Sentry;

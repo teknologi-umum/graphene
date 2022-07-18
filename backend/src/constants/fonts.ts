@@ -1,13 +1,4 @@
-import { lowerCasedString } from "~/schema/common";
-
-// export const FONT_MAPPING = {
-//   hack: "Hack Nerd Font Mono",
-//   iosevka: "Iosevka Nerd Font Mono",
-//   "cascadia code": "CaskaydiaCove Nerd Font Mono",
-//   "fira code": "FiraCode Nerd Font Mono",
-//   "jetbrains mono": "JetBrainsMonoNL Nerd Font Mono",
-//   "sf mono": "SFMono Nerd Font"
-// } as const;
+import { z } from "zod";
 
 export const FONT_MAPPING = {
   hack: {
@@ -53,4 +44,12 @@ export const FONTS = Object.keys(FONT_MAPPING);
 export type Font = keyof typeof FONT_MAPPING;
 export type FontConfig = typeof FONT_MAPPING[Font];
 
-export const fontSchema = lowerCasedString.refine((font) => FONTS.includes(font as Font)).default("sf mono");
+export const fontSchema = z
+  .string({
+    required_error: "font can't be empty",
+    invalid_type_error: "font should be a string"
+  })
+  .trim()
+  .transform((font) => font.toLowerCase())
+  .refine((font) => FONTS.includes(font as Font))
+  .default("sf mono");

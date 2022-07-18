@@ -1,12 +1,13 @@
 import console from "node:console";
 import type { ErrorHandler } from "polka";
+import { IS_PRODUCTION } from "~/constants";
 import { logger, sentry } from "~/utils/index.js";
 
 /**
  * errorHandler is the default error handler for every request.
  */
 export const errorHandler: ErrorHandler = (err, req, res) => {
-  if (process.env.NODE_ENV !== "production") {
+  if (!IS_PRODUCTION) {
     console.error(err);
   }
 

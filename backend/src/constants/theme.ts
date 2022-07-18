@@ -1,11 +1,16 @@
 import { BUNDLED_THEMES, type Theme } from "shiki";
-import { lowerCasedString } from "~/schema/common";
+import { z } from "zod";
 
 export const THEMES = BUNDLED_THEMES;
 
 export type { Theme };
 
-export const themeSchema = lowerCasedString
-  .transform((language) => language.toLowerCase())
+export const themeSchema = z
+  .string({
+    required_error: "theme can't be empty",
+    invalid_type_error: "theme should be a string"
+  })
+  .trim()
+  .transform((theme) => theme.toLowerCase())
   .refine((theme) => THEMES.includes(theme as Theme))
   .default("github-dark");
