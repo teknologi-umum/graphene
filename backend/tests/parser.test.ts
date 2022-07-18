@@ -1,4 +1,4 @@
-import { test } from "uvu";
+import { it } from "vitest";
 import request from "supertest";
 import polka from "polka";
 import { bodyParser } from "../src/middleware/index.js";
@@ -9,7 +9,7 @@ const server = polka().post("/", bodyParser, (req, res) => {
 
 const instance = request(server.handler);
 
-test("should be able to parse urlencoded", async () => {
+it("should be able to parse urlencoded", async () => {
   await instance
     .post("/")
     .set("Content-Type", "application/x-www-form-urlencoded")
@@ -18,7 +18,7 @@ test("should be able to parse urlencoded", async () => {
     .expect('{"hello":"world","failed":"false"}');
 });
 
-test("should be able to parse toml", async () => {
+it("should be able to parse toml", async () => {
   await instance
     .post("/")
     .set("Content-Type", "application/toml")
@@ -34,7 +34,7 @@ test("should be able to parse toml", async () => {
     .expect('{"hello":"world","list":[1,2,3],"failed":false}');
 });
 
-test("should be able to parse yaml", async () => {
+it("should be able to parse yaml", async () => {
   await instance
     .post("/")
     .set("Content-Type", "application/x-yaml")
@@ -50,7 +50,7 @@ test("should be able to parse yaml", async () => {
     .expect('{"hello":"world","list":[1,2,3],"failed":false}');
 });
 
-test("should be able to parse gura", async () => {
+it("should be able to parse gura", async () => {
   await instance
     .post("/")
     .set("Content-Type", "application/gura")
@@ -66,7 +66,7 @@ test("should be able to parse gura", async () => {
     .expect('{"hello":"world","list":[1,2,3],"failed":false}');
 });
 
-test("should be able to parse json", async () => {
+it("should be able to parse json", async () => {
   await instance
     .post("/")
     .set("Content-Type", "application/json")
@@ -75,7 +75,7 @@ test("should be able to parse json", async () => {
     .expect('{"hello":"world","list":[1,2,3],"failed":false}');
 });
 
-test("invalid content type headers should fall back to json", async () => {
+it("invalid content type headers should fall back to json", async () => {
   await instance
     .post("/")
     .set("Content-Type", "brave")
@@ -84,8 +84,6 @@ test("invalid content type headers should fall back to json", async () => {
     .expect('{"hello":"world","list":[1,2,3],"failed":false}');
 });
 
-test("invalid content should throw an error", async () => {
+it("invalid content should throw an error", async () => {
   await instance.post("/").set("Content-Type", "brave").send('{"hello":"world').expect(400);
 });
-
-test.run();

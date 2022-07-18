@@ -1,14 +1,13 @@
-import { test } from "uvu";
-import * as assert from "uvu/assert";
+import { it, assert } from "vitest";
 import request from "supertest";
 import { FONT_MAPPING } from "../src/constants";
 import server from "../src/index";
 
 const instance = request(server.handler);
 
-test("return font setup for jetbrains mono", () => {
+it("return font setup for jetbrains mono", () => {
   const output = FONT_MAPPING["jetbrains mono"];
-  assert.equal(output, {
+  assert.deepEqual(output, {
     fontFamily: "JetBrainsMonoNL Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
@@ -16,9 +15,9 @@ test("return font setup for jetbrains mono", () => {
   });
 });
 
-test("return font setup for sf mono", () => {
+it("return font setup for sf mono", () => {
   const output = FONT_MAPPING["sf mono"];
-  assert.equal(output, {
+  assert.deepEqual(output, {
     fontFamily: "SFMono Nerd Font",
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
@@ -26,9 +25,9 @@ test("return font setup for sf mono", () => {
   });
 });
 
-test("return font setup for fira code", () => {
-  const output = FONT_MAPPING["fira mono"];
-  assert.equal(output, {
+it("return font setup for fira code", () => {
+  const output = FONT_MAPPING["fira code"];
+  assert.deepEqual(output, {
     fontFamily: "FiraCode Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
@@ -36,9 +35,9 @@ test("return font setup for fira code", () => {
   });
 });
 
-test("return font setup for hack", () => {
+it("return font setup for hack", () => {
   const output = FONT_MAPPING["hack"];
-  assert.equal(output, {
+  assert.deepEqual(output, {
     fontFamily: "Hack Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
@@ -46,9 +45,9 @@ test("return font setup for hack", () => {
   });
 });
 
-test("return font setup for iosevka", () => {
+it("return font setup for iosevka", () => {
   const output = FONT_MAPPING["iosevka"];
-  assert.equal(output, {
+  assert.deepEqual(output, {
     fontFamily: "Iosevka Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
@@ -56,9 +55,9 @@ test("return font setup for iosevka", () => {
   });
 });
 
-test("return font setup for cascadia code", () => {
+it("return font setup for cascadia code", () => {
   const output = FONT_MAPPING["cascadia code"];
-  assert.equal(output, {
+  assert.deepEqual(output, {
     fontFamily: "CaskaydiaCove Nerd Font Mono",
     lineHeightToFontSizeRatio: 1.5,
     fontSize: 14,
@@ -66,7 +65,7 @@ test("return font setup for cascadia code", () => {
   });
 });
 
-test("should be able to specify font options - jetbrains mono", async () => {
+it("should be able to specify font options - jetbrains mono", async () => {
   await instance
     .post("/api")
     .send({ code: 'console.log("sup world");', font: "jetbrains mono" })
@@ -74,7 +73,7 @@ test("should be able to specify font options - jetbrains mono", async () => {
     .expect("content-type", "image/png");
 });
 
-test("should be able to specify font options - sf mono", async () => {
+it("should be able to specify font options - sf mono", async () => {
   await instance
     .post("/api")
     .send({ code: 'console.log("sup world");', font: "sf mono" })
@@ -82,7 +81,7 @@ test("should be able to specify font options - sf mono", async () => {
     .expect("content-type", "image/png");
 });
 
-test("should be able to specify font options - fira code", async () => {
+it("should be able to specify font options - fira code", async () => {
   await instance
     .post("/api")
     .send({ code: 'console.log("sup world");', font: "fira code" })
@@ -90,7 +89,7 @@ test("should be able to specify font options - fira code", async () => {
     .expect("content-type", "image/png");
 });
 
-test("should be able to specify font options - hack", async () => {
+it("should be able to specify font options - hack", async () => {
   await instance
     .post("/api")
     .send({ code: 'console.log("sup world");', font: "hack" })
@@ -98,7 +97,7 @@ test("should be able to specify font options - hack", async () => {
     .expect("content-type", "image/png");
 });
 
-test("should be able to specify font options - iosevka", async () => {
+it("should be able to specify font options - iosevka", async () => {
   await instance
     .post("/api")
     .send({ code: 'console.log("sup world");', font: "iosevka" })
@@ -106,7 +105,7 @@ test("should be able to specify font options - iosevka", async () => {
     .expect("content-type", "image/png");
 });
 
-test("should be able to specify font options - cascadia code", async () => {
+it("should be able to specify font options - cascadia code", async () => {
   await instance
     .post("/api")
     .send({ code: 'console.log("sup world");', font: "cascadia code" })
@@ -114,13 +113,10 @@ test("should be able to specify font options - cascadia code", async () => {
     .expect("content-type", "image/png");
 });
 
-
-test("should throw when the font doesn't exist - cascadia code", async () => {
+it("should throw when the font doesn't exist - cascadia code", async () => {
   await instance
     .post("/api")
     .send({ code: 'console.log("sup world");', font: "cascadia code" })
     .expect(200)
     .expect("content-type", "image/png");
 });
-
-test.run();

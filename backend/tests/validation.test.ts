@@ -1,67 +1,67 @@
-import { test } from "uvu";
+import { it } from "vitest";
 import request from "supertest";
 import server from "../src/index";
 
 const instance = request(server.handler);
 
-test("should error when body is empty", async () => {
+it("should error when body is empty", async () => {
   await instance.post("/api").send({}).expect(400).expect("content-type", "application/json");
 });
 
-test("should error without a code", async () => {
-  await instance.post("/api").send({ lang: "javascript" }).expect(400).expect("content-type", "application/json");
+it("should error without a code", async () => {
+  await instance.post("/api").send({ language: "javascript" }).expect(400).expect("content-type", "application/json");
 });
 
-test("should error when lineNumber is not a boolean", async () => {
+it("should error when lineNumber is not a boolean", async () => {
   await instance
     .post("/api")
-    .send({ code: 'console.log("foo");', lineNumber: "asd" })
+    .send({ code: 'console.log("foo");', showLineNumber: "asd" })
     .expect(400)
     .expect("content-type", "application/json");
 });
 
-test("should work when lineNumber is a boolean", async () => {
+it("should work when lineNumber is a boolean", async () => {
   await instance
     .post("/api")
-    .send({ code: 'console.log("foo");', lineNumber: false })
+    .send({ code: 'console.log("foo");', showLineNumber: false })
     .expect(200)
     .expect("content-type", "image/png");
 });
 
-test("should work when lang is null which means auto-detect", async () => {
+it("should work when lang is null which means auto-detect", async () => {
   await instance
     .post("/api")
-    .send({ code: 'console.log("foo");', lang: null })
+    .send({ code: 'console.log("foo");', language: null })
     .expect(200)
     .expect("content-type", "image/png");
 });
 
-test("should error with bad format", async () => {
+it("should error with bad format", async () => {
   await instance
     .post("/api")
     .send({
-      lang: "javascript",
+      language: "javascript",
       code: "console.log('foo')",
-      format: "asdf"
+      imageFormat: "asdf"
     })
     .expect(400)
     .expect("content-type", "application/json");
 });
 
-test("should error when theme does not exists", async () => {
+it("should error when theme does not exists", async () => {
   await instance
     .post("/api")
     .send({
       code: 'console.log("sup world")',
-      lang: "javascript",
-      format: "jpeg",
+      language: "javascript",
+      imageFormat: "jpeg",
       theme: "foobar"
     })
     .expect(400)
     .expect("content-type", "application/json");
 });
 
-test("should error when invalid font was given", async () => {
+it("should error when invalid font was given", async () => {
   await instance
     .post("/api")
     .send({
@@ -72,12 +72,12 @@ test("should error when invalid font was given", async () => {
     .expect("content-type", "application/json");
 });
 
-test("what if we had multiple errors?", async () => {
+it("what if we had multiple errors?", async () => {
   await instance
     .post("/api")
     .send({
       font: "asd",
-      format: "qwe",
+      imageFormat: "qwe",
       theme: "something else",
       upscale: -5,
       code: ""
@@ -85,5 +85,3 @@ test("what if we had multiple errors?", async () => {
     .expect(400)
     .expect("content-type", "application/json");
 });
-
-test.run();

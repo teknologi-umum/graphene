@@ -19,9 +19,9 @@ export const optionSchema = z.object({
     .min(1, { message: "upscale value can't be lower than 1" })
     .max(5, { message: "upscale value can't be greater than 5" })
     .default(1),
-  usingLineNumber: z
+  showLineNumber: z
     .boolean({
-      invalid_type_error: "usingLineNumber should be a boolean"
+      invalid_type_error: "showLineNumber should be a boolean"
     })
     .default(true),
   border: z

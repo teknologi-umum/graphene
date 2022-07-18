@@ -12,6 +12,8 @@ export const languageSchema = z
   })
   .trim()
   .transform((language) => language.toLowerCase())
-  .refine((language) => LANGUAGES.includes(language as Language))
+  .refine((language) => LANGUAGES.includes(language as Language), {
+    message: "Invalid language. Please refer to the documentation for the list of the supported language"
+  })
   .nullable()
   .default(null);

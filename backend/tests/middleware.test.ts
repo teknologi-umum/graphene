@@ -1,14 +1,14 @@
-import { test } from "uvu";
+import { it } from "vitest";
 import request from "supertest";
-import server from "../src/index";
+import app from "../src/index";
 
-const instance = request(server.handler);
+const instance = request(app.handler);
 
-test("should pass cors options", async () => {
+it("should pass cors options", async () => {
   await instance.options("/api").expect(204);
 });
 
-test("should error when json is invalid", async () => {
+it("should error when json is invalid", async () => {
   await instance
     .post("/api")
     .send(`{"code": "some random text, "format": "jpeg"}`)
@@ -16,8 +16,6 @@ test("should error when json is invalid", async () => {
     .expect("content-type", "application/json");
 });
 
-test("should return not found", async () => {
+it("should return not found", async () => {
   await instance.get("/foobar").expect(404).expect("content-type", "application/json");
 });
-
-test.run();

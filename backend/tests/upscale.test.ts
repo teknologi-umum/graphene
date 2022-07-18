@@ -1,70 +1,68 @@
-import { test } from "uvu";
+import { it } from "vitest";
 import request from "supertest";
 import server from "../src/index";
 
 const instance = request(server.handler);
 
-test("should generate a png image", async () => {
+it("should generate a png image", async () => {
   await instance
     .post("/api")
     .send({
       code: 'console.log("sup world")',
-      lang: "javascript"
+      language: "javascript"
     })
     .expect(200)
     .expect("content-type", "image/png");
 });
 
-test("should generate an upscaled jpeg image", async () => {
+it("should generate an upscaled jpeg image", async () => {
   await instance
     .post("/api")
     .send({
       code: 'console.log("sup world")',
-      lang: "javascript",
+      language: "javascript",
       upscale: 1.5,
-      format: "jpeg"
+      imageFormat: "jpeg"
     })
     .expect(200)
     .expect("content-type", "image/jpeg");
 });
 
-test("should error when upscale is lower than 1", async () => {
+it("should error when upscale is lower than 1", async () => {
   await instance
     .post("/api")
     .send({
       code: 'console.log("sup world")',
-      lang: "javascript",
+      language: "javascript",
       upscale: -22,
-      format: "jpeg"
+      imageFormat: "jpeg"
     })
     .expect(400)
     .expect("content-type", "application/json");
 });
 
-test("should error when upscale is 0", async () => {
+it("should error when upscale is 0", async () => {
   await instance
     .post("/api")
     .send({
       code: 'console.log("sup world")',
-      lang: "javascript",
+      language: "javascript",
       upscale: 0,
-      format: "jpeg"
+      imageFormat: "jpeg"
     })
     .expect(400)
     .expect("content-type", "application/json");
 });
 
-test("should error when upscale is not a number", async () => {
+it("should error when upscale is not a number", async () => {
   await instance
     .post("/api")
     .send({
       code: 'console.log("sup world")',
-      lang: "javascript",
+      language: "javascript",
       upscale: "asdf",
-      format: "jpeg"
+      imageFormat: "jpeg"
     })
     .expect(400)
     .expect("content-type", "application/json");
 });
-
-test.run();

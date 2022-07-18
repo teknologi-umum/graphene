@@ -1,39 +1,37 @@
-import { test } from "uvu";
+import { it } from "vitest";
 import request from "supertest";
 import server from "../src/index";
 
 const instance = request(server.handler);
 
-test("should output png", async () => {
+it("should output png", async () => {
   await instance
     .post("/api")
-    .send({ code: "console.log('foo');", format: "png" })
+    .send({ code: "console.log('foo');", imageFormat: "png" })
     .expect(200)
     .expect("content-type", "image/png");
 });
 
-test("should output jpeg", async () => {
+it("should output jpeg", async () => {
   await instance
     .post("/api")
-    .send({ code: "console.log('foo');", format: "jpeg" })
+    .send({ code: "console.log('foo');", imageFormat: "jpeg" })
     .expect(200)
     .expect("content-type", "image/jpeg");
 });
 
-test("should output webp", async () => {
+it("should output webp", async () => {
   await instance
     .post("/api")
-    .send({ code: "console.log('foo');", format: "webp" })
+    .send({ code: "console.log('foo');", imageFormat: "webp" })
     .expect(200)
     .expect("content-type", "image/webp");
 });
 
-test("should output svg", async () => {
+it("should output svg", async () => {
   await instance
     .post("/api")
-    .send({ code: "console.log('foo');", format: "svg" })
+    .send({ code: "console.log('foo');", imageFormat: "svg" })
     .expect(200)
     .expect("content-type", "image/svg+xml");
 });
-
-test.run();
