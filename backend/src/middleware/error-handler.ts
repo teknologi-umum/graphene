@@ -1,12 +1,12 @@
+import console from "node:console";
 import type { ErrorHandler } from "polka";
-import { logger, sentry } from "@/utils/index.js";
+import { logger, sentry } from "~/utils/index.js";
 
 /**
  * errorHandler is the default error handler for every request.
  */
 export const errorHandler: ErrorHandler = (err, req, res) => {
   if (process.env.NODE_ENV !== "production") {
-    /* eslint-disable-next-line no-console */
     console.error(err);
   }
 
@@ -26,13 +26,15 @@ export const errorHandler: ErrorHandler = (err, req, res) => {
     return scope;
   });
 
-  const msg = JSON.stringify({ msg: "Something went wrong on our side." });
+  const message = JSON.stringify({
+    message: "Something went wrong on our side."
+  });
   res
     .writeHead(500, {
       "Content-Type": "application/json",
-      "Content-Length": msg.length
+      "Content-Length": message.length
     })
-    .end(msg);
+    .end(message);
 
   logger.error("Error was thrown", {
     error: err.toString(),
