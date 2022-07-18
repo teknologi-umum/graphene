@@ -39,7 +39,7 @@ export const coreHandler: Middleware = async (req, res) => {
     if (err instanceof ZodError) {
       res
         .writeHead(400, { "Content-Type": "application/json" })
-        .end(JSON.stringify({ message: "Validation error", issues: err.issues }));
+        .end(JSON.stringify({ message: "Validation error", issues: err.issues.map((issue) => issue.message) }));
     } else if (err instanceof Error) {
       res.writeHead(500, { "Content-Type": "application/json" }).end(JSON.stringify({ message: err.message }));
     } else {

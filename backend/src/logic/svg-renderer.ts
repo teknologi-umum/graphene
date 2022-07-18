@@ -20,7 +20,7 @@ interface RendererOptions {
   lineHeightToFontSizeRatio: number;
   background: string;
   lineNumberForeground: string;
-  usingLineNumber: boolean;
+  showLineNumber: boolean;
   radius: number;
 }
 
@@ -29,7 +29,7 @@ export class SvgRenderer {
   private readonly _fontSize: number;
   private readonly _fontWidth: number;
   private readonly _lineHeight: number;
-  private readonly _usingLineNumber: boolean;
+  private readonly _showLineNumber: boolean;
   private readonly _radius: number;
   private readonly _lineNumberForeground: string;
   private readonly _background: string;
@@ -50,7 +50,7 @@ export class SvgRenderer {
     this._fontFamily = options.fontFamily;
     this._fontSize = options.fontSize;
     this._fontWidth = options.fontWidth;
-    this._usingLineNumber = options.usingLineNumber;
+    this._showLineNumber = options.showLineNumber;
     this._radius = options.radius;
     this._lineNumberForeground = options.lineNumberForeground;
     this._background = options.background;
@@ -124,7 +124,7 @@ export class SvgRenderer {
     }
 
     const totalLines = lines.length.toString().length + 3;
-    const lineNumberWidth = (this._usingLineNumber ? totalLines : 2) * this._fontWidth;
+    const lineNumberWidth = (this._showLineNumber ? totalLines : 2) * this._fontWidth;
     const titlebarHeight = 32;
 
     // longest line + left/right 4 char width
@@ -156,7 +156,7 @@ export class SvgRenderer {
       const isLineEmpty = line.length === 0;
 
       if (isLineEmpty) {
-        if (this._usingLineNumber) {
+        if (this._showLineNumber) {
           const yPosition = this._lineHeight * (index + offsetY);
           svg += `<text font-family="${this._fontFamily}" font-size="${this._fontSize}" y="${yPosition}">\n`;
           svg += this._generateLineNumber(index);
@@ -167,7 +167,7 @@ export class SvgRenderer {
         const yPosition = this._lineHeight * (index + offsetY);
         svg += `<text font-family="${this._fontFamily}" font-size="${this._fontSize}" y="${yPosition}">\n`;
 
-        if (this._usingLineNumber) {
+        if (this._showLineNumber) {
           svg += this._generateLineNumber(index);
         }
 

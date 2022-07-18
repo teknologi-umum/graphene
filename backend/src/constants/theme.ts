@@ -12,5 +12,7 @@ export const themeSchema = z
   })
   .trim()
   .transform((theme) => theme.toLowerCase())
-  .refine((theme) => THEMES.includes(theme as Theme))
+  .refine((theme) => THEMES.includes(theme as Theme), {
+    message: "Invalid theme. Please refer to the documentation for the list of the supported theme"
+  })
   .default("github-dark");

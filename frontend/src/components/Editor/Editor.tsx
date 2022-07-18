@@ -16,7 +16,7 @@ type MenuState = {
   format: string;
   upscale: number;
   font: string;
-  usingLineNumber: boolean;
+  showLineNumber: boolean;
   border: {
     colour: string;
     thickness: number;
@@ -42,7 +42,7 @@ export function Editor(): JSXElement {
     font: VALID_FONT[0],
     format: VALID_FORMAT[0],
     language: 'Auto Detect',
-    usingLineNumber: false,
+    showLineNumber: false,
     theme: 'Github Dark',
     upscale: VALID_UPSCALE[1],
   });
@@ -112,8 +112,8 @@ export function Editor(): JSXElement {
             <input
               class="linenr-checkbox"
               type="checkbox"
-              checked={selectedOptions.usingLineNumber}
-              onChange={() => setSelectedOptions({ usingLineNumber: !selectedOptions.usingLineNumber })}
+              checked={selectedOptions.showLineNumber}
+              onChange={() => setSelectedOptions({ showLineNumber: !selectedOptions.showLineNumber })}
             />
           </div>
           <div class="upscale">
@@ -169,7 +169,7 @@ export function Editor(): JSXElement {
                 ...selectedOptions,
                 code: code(),
                 lang: selectedOptions.language,
-                lineNumber: selectedOptions.usingLineNumber,
+                lineNumber: selectedOptions.showLineNumber,
               })
             }
             style={{ filter: isFetching() ? 'saturate(0)' : 'none' }}

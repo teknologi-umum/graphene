@@ -19,14 +19,14 @@ export async function generateImage({
   upscale,
   theme,
   font,
-  usingLineNumber
+  showLineNumber
 }: OptionSchema): Promise<{ image: Buffer; length: number; format: string }> {
   const highlighter = await shiki.getHighlighter({ theme });
   const fontConfig = FONT_MAPPING[font];
 
   const svgRenderer = new SvgRenderer({
     ...fontConfig,
-    usingLineNumber,
+    showLineNumber,
     lineNumberForeground: highlighter.getForegroundColor(),
     background: highlighter.getBackgroundColor(),
     radius: border.radius

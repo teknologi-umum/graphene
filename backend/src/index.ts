@@ -38,13 +38,13 @@ if (!IS_TEST) {
 // Graceful shutdown
 process.on("SIGINT", () =>
   app.server.close((err) => {
-    /* eslint-disable-next-line */
+    if (err === undefined) return;
     console.log("\nSIGINT: " + err);
   })
 );
 process.on("SIGTERM", () =>
   app.server.close((err) => {
-    /* eslint-disable-next-line */
+    if (err === undefined) return;
     console.log("\nSIGTERM: " + err);
   })
 );

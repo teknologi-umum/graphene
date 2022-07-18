@@ -1,10 +1,10 @@
-import { test } from "uvu";
+import { it } from "vitest";
 import request from "supertest";
 import server from "../src/index";
 
 const instance = request(server.handler);
 
-test("should guess the language", async () => {
+it("should guess the language", async () => {
   await instance
     .post("/api")
     .send({
@@ -14,7 +14,7 @@ test("should guess the language", async () => {
     .expect("content-type", "image/png");
 });
 
-test("should use the fallback language the language", async () => {
+it("should use the fallback language the language", async () => {
   await instance
     .post("/api")
     .send({
@@ -23,5 +23,3 @@ test("should use the fallback language the language", async () => {
     .expect(200)
     .expect("content-type", "image/png");
 });
-
-test.run();
