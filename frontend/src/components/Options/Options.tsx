@@ -1,23 +1,22 @@
-import type { JSXElement, Setter } from 'solid-js';
 import { createSignal, For, Match, Switch } from 'solid-js';
-import styles from './options.module.css';
-import ArrowIcon from '#/icons/ArrowIcon';
-import FontIcon from '#/icons/FontIcon';
-import FormatIcon from '#/icons/FormatIcon';
-import LanguageIcon from '#/icons/LanguageIcon';
-import LineNumberIcon from '#/icons/LineNumberIcon';
-import PaletteIcon from '#/icons/PaletteIcon';
-import UpscaleIcon from '#/icons/UpscaleIcon';
+import ArrowIcon from '~/icons/ArrowIcon';
+import FontIcon from '~/icons/FontIcon';
+import FormatIcon from '~/icons/FormatIcon';
+import LanguageIcon from '~/icons/LanguageIcon';
+import LineNumberIcon from '~/icons/LineNumberIcon';
+import PaletteIcon from '~/icons/PaletteIcon';
+import UpscaleIcon from '~/icons/UpscaleIcon';
+import './Options.scss';
 
-interface OptionsProps {
+export type OptionsProps = {
   items: string[];
   icon: 'language' | 'palette' | 'format' | 'font' | 'upscale' | 'linenr';
   selected: string;
-  setSelected: Setter<string>;
+  onSelect: (value: string) => void;
   width: string;
-}
+};
 
-export default function Options(props: OptionsProps): JSXElement {
+export function Options(props: OptionsProps) {
   const [isCandidateVisible, setCandidateVisible] = createSignal(false);
   const [filteredItems, setFilteredItems] = createSignal(props.items);
 
@@ -30,8 +29,8 @@ export default function Options(props: OptionsProps): JSXElement {
   }
 
   return (
-    <div class={styles.options} style={{ 'max-width': props.width }}>
-      <div class={styles.options__icon}>
+    <div class="Options" style={{ 'max-width': props.width }}>
+      <div class="icon">
         <Switch>
           <Match when={props.icon === 'language'}>
             <LanguageIcon />
@@ -53,9 +52,9 @@ export default function Options(props: OptionsProps): JSXElement {
           </Match>
         </Switch>
       </div>
-      <div class={styles['options__input-wrapper']}>
+      <div class="input-wrapper">
         <input
-          class={styles.options__input}
+          class="input"
           type="text"
           ref={inputRef}
           onInput={filterCandidate}
@@ -73,15 +72,15 @@ export default function Options(props: OptionsProps): JSXElement {
         />
         <ArrowIcon class="arrow" />
         {isCandidateVisible() && (
-          <ul class={styles.options__candidates}>
+          <ul class="candidates">
             <For each={filteredItems()}>
               {(item) => (
                 <li
-                  class={styles.candidate}
+                  class="candidates-item"
                   onMouseDown={(e) => e.preventDefault()}
                   onMouseUp={(e) => {
                     e.preventDefault();
-                    props.setSelected(item);
+                    props.onSelect(item);
                     inputRef?.blur();
                   }}
                 >
