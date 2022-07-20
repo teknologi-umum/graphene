@@ -20,9 +20,9 @@ export class Logger {
 
     if (IS_PRODUCTION && !isTokenEmpty) {
       this._logtailInstance = new Logtail(token);
+    } else {
+      this._logtailInstance = console;
     }
-
-    this._logtailInstance = console;
   }
 
   warn(message: string, context: Context = {}): Promise<ILogtailLog & Context> | void {

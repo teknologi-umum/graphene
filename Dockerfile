@@ -19,7 +19,7 @@ ADD . ./
 RUN pnpm install -r --offline
 
 # build the frontend code
-RUN cd ./packages/frontend && pnpm build
+RUN pnpm --filter "{packages/frontend}" build
 
 WORKDIR ./packages/backend
 

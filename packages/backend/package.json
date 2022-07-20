@@ -10,10 +10,10 @@
   "scripts": {
     "start": "esno -r dotenv/config src/index.ts",
     "dev": "esno watch -r dotenv/config src/index.ts",
-    "fmt:write": "prettier --write --ignore-path ../.gitignore .",
-    "fmt:check": "prettier --ignore-path ../.gitignore .",
-    "lint": "eslint --ignore-path ../.gitignore .",
-    "lint:fix": "eslint --fix --ignore-path ../.gitignore .",
+    "fmt:write": "prettier --write --ignore-path ../../.gitignore .",
+    "fmt:check": "prettier --check --ignore-path ../../.gitignore .",
+    "lint": "eslint --ignore-path ../../.gitignore .",
+    "lint:fix": "eslint --fix --ignore-path ../../.gitignore .",
     "test": "vitest run",
     "test:watch": "vitest run",
     "test:coverage": "vitest run --coverage"

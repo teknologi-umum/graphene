@@ -14,7 +14,7 @@ export function OptionItem(props: OptionItemProps) {
       <span class="title" id={props.title}>
         <a href={'#' + props.title}>{props.title}</a>
       </span>
-      <p class="desc" innerHTML={props.desc}></p>
+      <p class="desc" innerHTML={/* eslint-disable-line -- it's static, it should be safe */ props.desc} />
       <span class="detail">
         <b>Required</b>: {props.required ? 'Yes' : 'No'}
       </span>
@@ -22,7 +22,8 @@ export function OptionItem(props: OptionItemProps) {
         <b>Default Value</b>: {props.defaultValue}
       </span>
       <span class="detail">
-        <b>Valid Values</b>: <span innerHTML={props.validValues}></span>
+        <b>Valid Values</b>:{' '}
+        <span innerHTML={/* eslint-disable-line -- it's static, it should be safe */ props.validValues} />
       </span>
     </div>
   );

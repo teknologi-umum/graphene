@@ -24,7 +24,7 @@
 
   .settings_icon {
     transition: transform ease-out 0.25s;
-    
+
     &.rotated {
       transform: rotateZ(90deg);
     }

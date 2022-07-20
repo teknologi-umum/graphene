@@ -1,6 +1,6 @@
 import { it, assert } from "vitest";
 import request from "supertest";
-import { FONT_MAPPING } from "../src/constants";
+import { FONT_MAPPING } from "shared";
 import server from "../src/index";
 
 const instance = request(server.handler);

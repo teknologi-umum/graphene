@@ -1,4 +1,4 @@
-import { FONTS, IMAGE_FORMATS } from "shared";
+import { FONTS, IMAGE_FORMATS } from 'shared';
 
 const listFormatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
 export const options = [
