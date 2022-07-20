@@ -21,10 +21,6 @@ jobs:
           version: 7
           run_install: false
       
-      - name: Setup git
-        run: |
-          apk add --no-cache git
-
       - name: Get pnpm store directory
         id: pnpm-cache
         run: |
@@ -59,14 +55,6 @@ jobs:
 
       - name: Send coverage report to Codecov
         uses: codecov/codecov-action@v2
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: javascript, typescript
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
 
       - name: Build frontend
         run: pnpm --filter "{packages/frontend}" build
