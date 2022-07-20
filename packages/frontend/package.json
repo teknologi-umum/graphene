@@ -5,13 +5,13 @@
   "description": "A simple frontend for Graphene API",
   "author": "elianiva <dicha.arkana03@gmail.com>",
   "scripts": {
-    "start": "vite",
+    "start": "vite preview",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview",
-    "lint:check": "eslint --ignore-path ../.gitignore .",
-    "lint": "eslint --fix --ignore-path ../.gitignore .",
-    "prettier": "prettier --write --ignore-path ../.gitignore ."
+    "lint": "eslint --ignore-path ../.gitignore .",
+    "lint:fix": "eslint --ignore-path ../.gitignore .",
+    "fmt:write": "prettier --write --ignore-path ../.gitignore .",
+    "fmt:check": "prettier --ignore-path ../.gitignore ."
   },
   "license": "MIT",
   "devDependencies": {

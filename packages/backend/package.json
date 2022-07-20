@@ -10,12 +10,13 @@
   "scripts": {
     "start": "esno -r dotenv/config src/index.ts",
     "dev": "esno watch -r dotenv/config src/index.ts",
-    "prettier": "prettier --write --ignore-path ../.gitignore .",
-    "lint:check": "eslint --ignore-path ../.gitignore .",
-    "lint": "eslint --fix --ignore-path ../.gitignore .",
+    "fmt:write": "prettier --write --ignore-path ../.gitignore .",
+    "fmt:check": "prettier --ignore-path ../.gitignore .",
+    "lint": "eslint --ignore-path ../.gitignore .",
+    "lint:fix": "eslint --fix --ignore-path ../.gitignore .",
     "test": "vitest run",
-    "coverage": "vitest run --coverage",
-    "build": "tsc --noEmit && node build.js"
+    "test:watch": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@logtail/node": "0.1.12",

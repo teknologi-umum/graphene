@@ -5,10 +5,10 @@ import { SvgRenderer } from "~/logic/svg-renderer";
 import type { OptionSchema } from "~/schema/options";
 import { FONT_MAPPING } from "shared";
 
-function guessLanguage(code: string, lang: string | null): string {
-  const guess = lang === null ? flourite(code, { shiki: true, heuristic: true }).language : lang;
-  const language = guess === "unknown" ? "md" : guess;
-  return language;
+function guessLanguage(code: string, language: string): string {
+  const guess = language === "auto-detect" ? flourite(code, { shiki: true, heuristic: true }).language : language;
+  const guessedLanguage = guess === "unknown" ? "md" : guess;
+  return guessedLanguage;
 }
 
 export async function generateImage({

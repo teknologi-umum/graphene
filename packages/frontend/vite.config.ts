@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [solidPlugin()],
   publicDir: 'public',
   build: {
-    outDir: process.env.NODE_ENV === 'production' ? '../dist/views' : '../backend/src/views',
+    outDir: '../backend/src/views',
     emptyOutDir: true,
     target: 'esnext',
   },

@@ -7,7 +7,7 @@ type GenerateImageDTO = {
   font: string;
   format: string;
   upscale: number;
-  lineNumber: boolean;
+  showLineNumber: boolean;
   border: {
     colour: string;
     thickness: number;
@@ -37,7 +37,7 @@ export function useGenerateImage() {
       const lowerCasedLang = payload.lang.toLocaleLowerCase();
       const body = {
         code: payload.code,
-        lang: lowerCasedLang === 'auto detect' ? '' : lowerCasedLang === 'c#' ? 'csharp' : lowerCasedLang,
+        language: lowerCasedLang === 'auto detect' ? '' : lowerCasedLang === 'c#' ? 'csharp' : lowerCasedLang,
         theme: payload.theme.toLowerCase().replace(/\s/g, '-'),
         format: payload.format,
         upscale: payload.upscale,
@@ -47,7 +47,7 @@ export function useGenerateImage() {
           thickness: payload.border.thickness,
           radius: payload.border.radius,
         },
-        lineNumber: payload.lineNumber,
+        showLineNumber: payload.showLineNumber,
       };
 
       const imageResponse = await fetch('/api', {
@@ -86,7 +86,5 @@ export function useGenerateImage() {
     isFetching,
     errorMessage,
     image,
-    hasError: errorMessage() !== undefined && errorMessage().length > 0,
-    hasImage: image() !== undefined && image().length > 0,
   };
 }

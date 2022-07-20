@@ -1,4 +1,4 @@
-import { For, Match, Show, Switch } from 'solid-js';
+import { createMemo, For, Match, Show, Switch } from 'solid-js';
 import { createSignal } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import {
@@ -7,12 +7,12 @@ import {
   FONTS,
   IMAGE_FORMATS,
   UPSCALE,
+  DEFAULT_BORDER_COLOR,
   type Theme,
   type ImageFormat,
   type Language,
   type Upscale,
   type Font,
-  DEFAULT_BORDER_COLOR,
 } from 'shared';
 import { ColourPicker } from '~/components/ColourPicker';
 import { SettingsPopup } from '~/components/SettingsPopup';
@@ -36,7 +36,8 @@ type MenuState = {
 };
 
 export function Editor() {
-  const { isFetching, errorMessage, hasError, generateImageAsync, image } = useGenerateImage();
+  const { isFetching, errorMessage, generateImageAsync, image } = useGenerateImage();
+  const hasError = createMemo(() => errorMessage() !== undefined && errorMessage.length > 0);
 
   // editor-related state
   const [code, setCode] = createSignal('');
@@ -178,7 +179,7 @@ export function Editor() {
                 ...selectedOptions,
                 code: code(),
                 lang: selectedOptions.language,
-                lineNumber: selectedOptions.showLineNumber,
+                showLineNumber: selectedOptions.showLineNumber,
               })
             }
             style={{ filter: isFetching() ? 'saturate(0)' : 'none' }}
@@ -188,15 +189,15 @@ export function Editor() {
         </div>
         <div class="preview">
           <Switch>
-            <Match when={!hasError && image()}>
+            <Match when={!hasError() && image()}>
               <img class="preview-img" src={image()} />
             </Match>
-            <Match when={!hasError && !image()}>
+            <Match when={!hasError() && !image()}>
               <div class="preview-placeholder">
                 <h3 class="preview-title">Your image will appear here</h3>
               </div>
             </Match>
-            <Match when={hasError}>
+            <Match when={hasError()}>
               <div class="error-placeholder">
                 <h3 class="error-title">{errorMessage()}</h3>
               </div>

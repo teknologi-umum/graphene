@@ -1,21 +1,29 @@
-FROM node:16.14.2-bullseye
+FROM node:18.6.0-alpine3.16
 
-USER node
+WORKDIR /home/app
+
+RUN apk add curl
+
+RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
 
 COPY fonts/ /usr/local/share/fonts/
 
-WORKDIR /home/node
+# Files required by pnpm install
+COPY pnpm-lock.yaml ./
 
-COPY --chown=node:node . .
+# cache into the global store
+RUN pnpm fetch
 
-RUN npm install --workspaces
+ADD . ./
+
+RUN pnpm install -r --offline
+
+# build the frontend code
+RUN cd ./packages/frontend && pnpm build
+
+WORKDIR ./packages/backend
 
 ENV NODE_ENV=production
 
-RUN npm run build --workspaces \
-    && rm -rf node_modules \
-    && npm install --production --workspaces
-
 EXPOSE 3000
-
-CMD [ "node", "dist/index.js" ]
+CMD [ "pnpm", "start" ]

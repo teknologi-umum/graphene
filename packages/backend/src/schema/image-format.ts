@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { IMAGE_FORMAT, type ImageFormat } from "shared";
+import { IMAGE_FORMATS, type ImageFormat } from "shared";
 
 export const imageFormatSchema = z
   .string({
@@ -8,7 +8,7 @@ export const imageFormatSchema = z
   })
   .trim()
   .transform((format) => format.toLowerCase())
-  .refine((format) => IMAGE_FORMAT.includes(format as ImageFormat), {
+  .refine((format) => IMAGE_FORMATS.includes(format as ImageFormat), {
     message: "Invalid image format. Please refer to the documentation for the list of the supported image format"
   })
   .default("png");
