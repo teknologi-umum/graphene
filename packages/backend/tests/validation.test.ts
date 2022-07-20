@@ -31,7 +31,7 @@ it("should work when lineNumber is a boolean", async () => {
 it("should work when language is auto-detect", async () => {
   await instance
     .post("/api")
-    .send({ code: 'console.log("foo");', language: 'auto-detect' })
+    .send({ code: 'console.log("foo");', language: "auto-detect" })
     .expect(200)
     .expect("content-type", "image/png");
 });
