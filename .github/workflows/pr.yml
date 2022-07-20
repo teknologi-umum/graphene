@@ -23,7 +23,7 @@ jobs:
 
       - name: Setup git
         run: |
-          apk install --no-cache git
+          apk add --no-cache git
 
       - name: Get pnpm store directory
         id: pnpm-cache
