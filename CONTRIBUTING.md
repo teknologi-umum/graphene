@@ -20,7 +20,7 @@ Please make sure that the issue you're creating is in as much detail as possible
 
 You will need a few things to get things working:
 
-1. Node.js current version (as of now, we're using v14.17.6 as defined in the `.nvmrc` file). You can install it through the [official Node.js download page](https://nodejs.org/en/download/), but we recommend using [nvm](https://github.com/nvm-sh/nvm) or [fnm](https://github.com/Schniz/fnm). Here's a simple installation/setup guide, but you should really refer directly to the corresponding repository's README.
+1. Node.js current version (as of now, we're using v18.6.0 as defined in the `.nvmrc` file). You can install it through the [official Node.js download page](https://nodejs.org/en/download/), but we recommend using [nvm](https://github.com/nvm-sh/nvm) or [fnm](https://github.com/Schniz/fnm). Here's a simple installation/setup guide, but you should really refer directly to the corresponding repository's README.
 
 ```sh
 # If you want to install fnm
@@ -30,113 +30,73 @@ $ curl -fsSL https://fnm.vercel.app/install | bash
 $ fnm use
 
 # OR if you want to install nvm
-$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 $ nvm use
 ```
 
-2. [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) if you want to test the app using docker. (Optional)
+2. This repo uses pnpm workspace to share the code between the backend and the frontend. There are multiple ways to install `pnpm`, please refer to the [official installation guide for pnpm](https://pnpm.io/installation)
+
+3. [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) if you want to test the app using docker. (Optional)
 
 ### Getting Started
 
 1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your own Github account and [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device.
-2. Run `npm install` to install the dependencies needed.
+2. Run `pnpm install` to install the dependencies needed across all workspaces.
 3. You can use [postman](https://www.postman.com/), [insomnia](https://insomnia.rest/) or [hoppscotch](https://hoppscotch.io/) to create an API request.
 
 Conventional commit is not required in this repo since this was supposed to be a toy project but ended up to be a kinda serious-ish thing. Do whatever you want with the commit message :)
 
 ### Testing your change
 
+#### Backend
 It's really up to you to have an unit test or not. But if you do, just create one on the `tests` directory, and run the test with:
 
-```
-npm run test
+```sh
+# single run
+pnpm test
+
+# watch
+pnpm test:watch
+
+# collect coverage
+pnpm test:coverage
 ```
 
-```
-.
-├── backend
-│   ├── build.js                 -- esbuild script
-│   ├── fonts
-│   ├── package.json
-│   ├── src
-│   │   ├── dist                        -- build artifacts
-│   │   ├── handler
-│   │   │   └── core.ts
-│   │   ├── index.ts
-│   │   ├── logic
-│   │   │   ├── generateImage.ts
-│   │   │   ├── getFontSetup.ts
-│   │   │   ├── getHighlightedCode.ts   -- get highlighted code using shiki
-│   │   │   ├── svgRenderer.ts
-│   │   │   └── validate.ts
-│   │   ├── middleware
-│   │   │   ├── cors.ts
-│   │   │   ├── errorHandler.ts         -- handle errors
-│   │   │   ├── json.ts                 -- json body parser
-│   │   │   └── rateLimiter.ts
-│   │   ├── types                       -- types declaration
-│   │   └── utils
-│   │       ├── getIP.ts
-│   │       ├── logtail.ts              -- logtail logger
-│   │       └── sentry.ts               -- sentry logger
-│   ├── tests                           -- test files
-│   └── tsconfig.json
-├── CONTRIBUTING.md
-├── docker-compose.yml                  -- docker-compose config
-├── Dockerfile                          -- docker config
-├── fly.toml
-├── frontend
-│   ├── index.html
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── README.md
-│   ├── src
-│   │   ├── App.tsx                     -- entry point
-│   │   ├── assets                      -- assets
-│   │   ├── components                  -- any components
-│   │   ├── global.css                  -- global stylesheets
-│   │   ├── icons                       -- icons component
-│   │   ├── index.tsx
-│   │   └── libs                        -- helpers
-│   ├── tsconfig.json
-│   └── vite.config.ts
-├── LICENSE
-├── package.json
-├── package-lock.json
-├── README.md
-└── scratch
-    ├── logo.png
-    └── output.png
-```
+We're using [Vitest](https://vitest.dev) as the test runner.
 
 ### Before creating a PR
 
 Please run ESLint and Prettier with these commands so you're good on the CI process.
 
 ```sh
-$ npm run lint
-$ npm run prettier
+pnpm lint
+pnpm fmt:write # or fmt:check if you don't want prettier to automatically format your code
 ```
 
 And you're set!
 
 ### NPM scripts
 
-This repo is using npm@v7 workspaces so you can add `-w backend` or `-w frontend` to each of these commands. You can use `--workspaces` to run the command on both workspaces.
-
 #### Available on both workspaces
 
-- `npm install` - Your typical 5 million packages installation.
-- `npm run build` - Node won't automagically run Typescript files.
-- `npm run start` - Start the fun stuff, make sure you've run the build step before running this.
-- `npm run dev` - When you want stuff to be automagically reloaded.
-- `npm run lint` - Check the files from your silly mistakes.
-- `npm run prettier` - You like pretty formatted code, right?
+- `pnpm install` - Your typical 5 million packages installation.
+- `pnpm start` - Start the fun stuff, make sure you've run the build step before running this.
+- `pnpm dev` - When you want stuff to be automagically reloaded.
+- `pnpm lint` - Check the files from your silly mistakes.
+- `pnpm lint:fix` - Fix your mistakes
+- `pnpm fmt:check` - Feeling your code isn't pretty?
+- `pnpm fmt:write` - You like pretty formatted code, right?
+
+#### Extra command for frontend
+
+- `pnpm build` - Build everything into a static files.
 
 #### Extra command for backend
 
-- `npm run test` - Make sure everything works correctly.
+- `pnpm test` - Make sure everything works correctly.
+- `pnpm test:watch` - When you can't be bothered to run `pnpm test` multiple times.
+- `pnpm test:coverage` - Make sure you don't miss anything.
 
 #### Only available from project root
 

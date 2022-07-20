@@ -6,7 +6,7 @@
 
 <kbd>
 
-![logo.png](./scratch/logo.png)
+![logo.png](./.github/assets/logo.png)
 
 </kbd>
 
@@ -38,8 +38,8 @@ Because it gives pretty much the same _accurate_ highlighting as Visual Studio C
 <summary>ok sorry, click here for the real answer</summary>
 
 - You send a POST request with a JSON body containing [valid options](https://graphene.teknologiumum.com/#documentation)
-- It will Highlight the code using Shiki and apply some options
-- Then, render the result to svg using [custom svg renderer](./backend/src/logic/svgRenderer.ts) which is a heavily modified version of the [original svg renderer](https://github.com/shikijs/shiki/tree/main/packages/renderer-svg)
+- It will highlight the code using Shiki
+- Then, it will render the result to svg using [our custom svg renderer](./backend/src/logic/svgRenderer.ts) which is a heavily modified version of [the original svg renderer](https://github.com/shikijs/shiki/tree/main/packages/renderer-svg) that shiki has.
 - Apply border, upscale, and convert to the desired output format using [sharpjs][sharp-link]
 - Send it back to you
 
@@ -47,9 +47,10 @@ Because it gives pretty much the same _accurate_ highlighting as Visual Studio C
 
 ### ..what is up with the commit messages?
 
-I don't even know
+I don't even know. This was meant to be a toy project so I just put whatever that came to mind when writing the commit message, but now it became an actual thing.
 
 ### Why do I prefer this over, say, carbon.now.sh?
 
-Well, I made this because I want it to be used programatically, without having to open a browser and doing it myself.
-Because it uses [shiki][shiki-link], the highlight produced is more accurate, it's identical to the one used in vscode.
+Well, I made this because I want it to be used programatically, without having to open a browser and doing it myself, or having to scrape carbon.now.sh website using something like puppeteer.
+
+Because it uses [Shiki][shiki-link], the highlight produced is more accurate, it's identical to the one used in Visual Studio Code.
