@@ -18,10 +18,6 @@ jobs:
         with:
           node-version: 16.x
       
-      - name: Setup git
-        run: |
-          apk add --no-cache git
-
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.2
         id: pnpm-install
