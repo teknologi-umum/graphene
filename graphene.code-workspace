@@ -1,10 +1,13 @@
 {
   "folders": [
     {
-      "path": "frontend"
+      "path": "packages/frontend"
     },
     {
-      "path": "backend"
+      "path": "packages/backend"
+    },
+    {
+      "path": "packages/shared"
     },
     {
       "path": ".",

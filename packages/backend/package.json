@@ -1,0 +1,63 @@
+{
+  "name": "graphene-backend",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "description": "Generate beautiful code snippet using Shiki",
+  "author": "elianiva <dicha.arkana03@gmail.com>",
+  "main": "index.js",
+  "scripts": {
+    "start": "esno -r dotenv/config src/index.ts",
+    "dev": "esno watch -r dotenv/config src/index.ts",
+    "prettier": "prettier --write --ignore-path ../.gitignore .",
+    "lint:check": "eslint --ignore-path ../.gitignore .",
+    "lint": "eslint --fix --ignore-path ../.gitignore .",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "build": "tsc --noEmit && node build.js"
+  },
+  "dependencies": {
+    "@logtail/node": "0.1.12",
+    "@sentry/node": "^7.7.0",
+    "@sentry/tracing": "^7.7.0",
+    "@tinyhttp/proxy-addr": "2.0.4",
+    "dotenv": "16.0.1",
+    "flourite": "1.2.2",
+    "gura": "1.4.4",
+    "helmet": "5.1.0",
+    "polka": "1.0.0-next.22",
+    "rate-limiter-flexible": "2.3.7",
+    "shared": "link:../shared",
+    "sharp": "0.30.7",
+    "shiki": "0.10.1",
+    "sirv": "2.0.2",
+    "toml": "3.0.0",
+    "yaml": "2.1.1",
+    "zod": "^3.17.9"
+  },
+  "devDependencies": {
+    "@logtail/types": "^0.1.12",
+    "@types/node": "18.0.6",
+    "@types/sharp": "0.30.4",
+    "@types/supertest": "2.0.12",
+    "@typescript-eslint/eslint-plugin": "5.30.6",
+    "@typescript-eslint/parser": "5.30.6",
+    "c8": "^7.11.3",
+    "esbuild": "0.14.49",
+    "eslint": "8.20.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "esno": "^0.16.3",
+    "nodemon": "2.0.19",
+    "prettier": "2.7.1",
+    "supertest": "6.2.4",
+    "tslib": "2.4.0",
+    "typescript": "4.7.4",
+    "vitest": "^0.18.1"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=18.6.0"
+  }
+}

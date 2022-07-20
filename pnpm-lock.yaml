@@ -5,7 +5,7 @@ importers:
   .:
     specifiers: {}
 
-  backend:
+  packages/backend:
     specifiers:
       '@logtail/node': 0.1.12
       '@logtail/types': ^0.1.12
@@ -31,6 +31,7 @@ importers:
       polka: 1.0.0-next.22
       prettier: 2.7.1
       rate-limiter-flexible: 2.3.7
+      shared: link:../shared
       sharp: 0.30.7
       shiki: 0.10.1
       sirv: 2.0.2
@@ -52,6 +53,7 @@ importers:
       helmet: 5.1.0
       polka: 1.0.0-next.22
       rate-limiter-flexible: 2.3.7
+      shared: link:../shared
       sharp: 0.30.7
       shiki: 0.10.1
       sirv: 2.0.2
@@ -78,7 +80,7 @@ importers:
       typescript: 4.7.4
       vitest: 0.18.1_c8@7.11.3
 
-  frontend:
+  packages/frontend:
     specifiers:
       '@fontsource/jetbrains-mono': ^4.5.9
       '@fontsource/rubik': 4.5.10
@@ -88,12 +90,15 @@ importers:
       eslint-plugin-solid: 0.7.1
       prettier: 2.7.1
       sass: ^1.53.0
+      shared: link:../shared
       solid-js: 1.4.7
+      typescript: 4.7.4
       vite: 3.0.0
       vite-plugin-solid: 2.3.0
     dependencies:
       '@fontsource/jetbrains-mono': 4.5.9
       '@fontsource/rubik': 4.5.10
+      shared: link:../shared
       solid-js: 1.4.7
     devDependencies:
       '@typescript-eslint/eslint-plugin': 5.30.6_b7n364ggt6o4xlkgyoaww3ph3q
@@ -102,8 +107,17 @@ importers:
       eslint-plugin-solid: 0.7.1_he2ccbldppg44uulnyq4rwocfa
       prettier: 2.7.1
       sass: 1.53.0
+      typescript: 4.7.4
       vite: 3.0.0_sass@1.53.0
       vite-plugin-solid: 2.3.0_solid-js@1.4.7+vite@3.0.0
+
+  packages/shared:
+    specifiers:
+      shiki: 0.10.1
+      zod: ^3.17.9
+    dependencies:
+      shiki: 0.10.1
+      zod: 3.17.9
 
 packages:
 
