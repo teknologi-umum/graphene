@@ -1,4 +1,4 @@
-import { FONTS, IMAGE_FORMATS } from 'shared';
+import { DEFAULT_BORDER_COLOR, FONTS, IMAGE_FORMATS } from 'shared';
 
 const listFormatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
 export const options = [
@@ -6,19 +6,18 @@ export const options = [
     title: 'code',
     desc: 'The code snippet you want to prettify. Use <code>\\n</code> for newline',
     required: true,
-    defaultValue: 'None',
     validValues: 'String',
   },
   {
-    title: 'lang',
+    title: 'language',
     desc: 'The language used for highlighting. See shikijs/language. If you leave this field empty, flourite will try its best to guess it.',
     required: false,
-    defaultValue: 'Empty String',
+    defaultValue: 'auto-detect',
     validValues: '<a href="https://github.com/shikijs/shiki/blob/main/docs/languages.md">See here</a>',
   },
   {
-    title: 'format',
-    desc: "The output format. If you choose svg, you won't get border since the border is created by sharpjs instead of embedding it in the svg.",
+    title: 'imageFormat',
+    desc: "The output image format. If you choose svg, you won't get border since the border is created by sharpjs instead of embedding it in the svg.",
     required: false,
     defaultValue: 'png',
     validValues: listFormatter.format(IMAGE_FORMATS.map((format) => `<code>${format}</code>`)),
@@ -45,7 +44,7 @@ export const options = [
     validValues: listFormatter.format(FONTS.map((font) => `<code>${font}</code>`)),
   },
   {
-    title: 'lineNumber',
+    title: 'showLineNumber',
     desc: 'Toggle line number. Might be useful for longer code',
     required: false,
     defaultValue: 'false',
@@ -69,7 +68,7 @@ export const options = [
     title: 'border.colour',
     desc: 'The colour of the border in HEX format. Ex: #efefef, #1E2329',
     required: false,
-    defaultValue: '#a0adb6',
+    defaultValue: DEFAULT_BORDER_COLOR,
     validValues: 'Any valid HEX colour',
   },
 ];
