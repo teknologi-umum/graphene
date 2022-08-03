@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js';
+import { createSignal, onCleanup } from 'solid-js';
 
 type GenerateImageDTO = {
   code: string;
@@ -27,9 +27,14 @@ async function blobToBase64(blob: Blob): Promise<string> {
 }
 
 export function useGenerateImage() {
+  const abortController = new AbortController();
   const [isFetching, setFetching] = createSignal(false);
   const [errorMessage, setErrorMessage] = createSignal('');
   const [image, setImage] = createSignal('');
+
+  onCleanup(() => {
+    abortController.abort();
+  });
 
   async function generateImageAsync(payload: GenerateImageDTO) {
     try {
@@ -57,6 +62,7 @@ export function useGenerateImage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
+        signal: abortController.signal,
       });
 
       if (!imageResponse.ok) {
