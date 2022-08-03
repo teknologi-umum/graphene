@@ -76,7 +76,6 @@ export function useGenerateImage() {
       setImage(await blobToBase64(imageBlob));
     } catch (err) {
       if (err instanceof Error) {
-        // eslint-disable-next-line no-console
         console.error(err);
         setErrorMessage('Something went wrong on our side.');
       } else if (typeof err === 'string') {
