@@ -2,13 +2,7 @@
   "name": "graphene",
   "type": "module",
   "scripts": {
-    "lint": "npm run lint -w frontend && npm run lint -w backend",
-    "prettier": "prettier --write --ignore-path .gitignore .",
-    "docker:build": "docker build -m 220m -t teknologi-umum/graphene:0.0.20 .",
-    "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 teknologi-umum/graphene:0.0.20"
-  },
-  "workspaces": [
-    "frontend",
-    "backend"
-  ]
+    "docker:build": "docker build -m 220m -t teknologi-umum/graphene:1.0.0 .",
+    "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 teknologi-umum/graphene:1.0.0"
+  }
 }

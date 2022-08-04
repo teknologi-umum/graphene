@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "path": "packages/frontend"
+    },
+    {
+      "path": "packages/backend"
+    },
+    {
+      "path": "packages/shared"
+    },
+    {
+      "path": ".",
+      "name": "root"
+    }
+  ],
+  "settings": {}
+}
