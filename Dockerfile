@@ -21,7 +21,7 @@ RUN pnpm install -r --offline
 # build the frontend code
 RUN pnpm --filter "{packages/frontend}" build
 
-WORKDIR ./packages/backend
+WORKDIR /home/app/packages/backend
 
 ENV NODE_ENV=production
 
