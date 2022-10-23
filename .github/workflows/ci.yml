@@ -54,14 +54,13 @@ jobs:
           NODE_ENV: test
 
       - name: Cypress pnpm patch
-          working-directory: ./src/packages/frontend
           run: cp pnpm-lock.yaml package-lock.json
 
         - name: E2E Test (Frontend)
           uses: cypress-io/github-action@v4.2.0
           with:
             browser: chrome
-            working-directory: ./src/packages/frontend/cypress/
+            working-directory: src/packages/frontend/cypress
             install-command: echo
             build: pnpm --dir .. build
             start: pnpm --dir .. start
