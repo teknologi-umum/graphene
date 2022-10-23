@@ -11,25 +11,29 @@
     "lint": "eslint --ignore-path ../../.gitignore .",
     "lint:fix": "eslint --ignore-path ../../.gitignore .",
     "fmt:write": "prettier --write --ignore-path ../../.gitignore .",
-    "fmt:check": "prettier --check --ignore-path ../../.gitignore ."
+    "fmt:check": "prettier --check --ignore-path ../../.gitignore .",
+    "test:e2e": "cypress run",
+    "test:e2e.open": "cypress open"
   },
   "license": "MIT",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "5.30.6",
-    "@typescript-eslint/parser": "5.30.6",
-    "eslint": "8.20.0",
-    "eslint-plugin-solid": "0.7.1",
+    "@types/node": "18.11.0",
+    "@typescript-eslint/eslint-plugin": "5.40.0",
+    "@typescript-eslint/parser": "5.40.0",
+    "cypress": "^10.10.0",
+    "eslint": "8.25.0",
+    "eslint-plugin-solid": "0.7.3",
     "prettier": "2.7.1",
-    "sass": "^1.53.0",
-    "typescript": "4.7.4",
-    "vite": "3.0.0",
-    "vite-plugin-solid": "2.3.0"
+    "sass": "^1.55.0",
+    "typescript": "4.8.4",
+    "vite": "3.1.8",
+    "vite-plugin-solid": "2.3.9"
   },
   "dependencies": {
-    "@fontsource/jetbrains-mono": "^4.5.9",
-    "@fontsource/rubik": "4.5.10",
+    "@fontsource/jetbrains-mono": "^4.5.11",
+    "@fontsource/rubik": "4.5.11",
     "shared": "link:../shared",
-    "solid-js": "1.4.7"
+    "solid-js": "1.5.7"
   },
   "repository": {
     "type": "git",

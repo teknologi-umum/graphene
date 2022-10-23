@@ -20,7 +20,7 @@ jobs:
         with:
           version: 7
           run_install: false
-      
+
       - name: Get pnpm store directory
         id: pnpm-cache
         run: |
@@ -43,15 +43,29 @@ jobs:
       - name: Format with prettier
         run: pnpm run -r fmt:check
 
-      - name: Test
+      - name: Unit Test (Backend)
         run: pnpm --filter "{packages/backend}" test
         env:
           NODE_ENV: test
 
-      - name: Collect coverage
+      - name: Collect coverage (Backend)
         run: pnpm --filter "{packages/backend}" test:coverage
         env:
           NODE_ENV: test
+
+      - name: Cypress pnpm patch
+          run: cp pnpm-lock.yaml package-lock.json
+
+        - name: E2E Test (Frontend)
+          uses: cypress-io/github-action@v4.2.0
+          with:
+            browser: chrome
+            working-directory: src/packages/frontend/cypress
+            install-command: echo
+            build: pnpm --dir .. build
+            start: pnpm --dir .. start
+            wait-on: 'http://localhost:4173'
+            component: false
 
       - name: Send coverage report to Codecov
         uses: codecov/codecov-action@v2

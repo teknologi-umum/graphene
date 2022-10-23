@@ -9,7 +9,7 @@
     "importsNotUsedAsValues": "error",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client"],
+    "types": ["vite/client", "cypress", "node"],
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
