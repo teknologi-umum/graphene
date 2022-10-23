@@ -3,7 +3,6 @@
   "type": "module",
   "scripts": {
     "docker:build": "docker build -m 220m -t teknologi-umum/graphene:1.0.0 .",
-    "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 -e NODE_ENV=development teknologi-umum/graphene:1.0.0",
-    "docker:run-dev": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 -e NODE_ENV=development teknologi-umum/graphene:1.0.0"
+    "docker:run": "docker image ls && docker run --cpu-shares 2 --memory 220m -p 3000:3000 teknologi-umum/graphene:1.0.0"
   }
 }
