@@ -53,22 +53,20 @@ jobs:
         env:
           NODE_ENV: test
 
-      - name: Install cypress dependencies
-        uses: cypress-io/github-action@v4.2.0
-        run: |
-          apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-        with:
-          runTests: false
+      - name: Cypress pnpm patch
+        working-directory: ./src/packages/frontend
+        run: cp pnpm-lock.yaml package-lock.json
 
       - name: E2E Test (Frontend)
         uses: cypress-io/github-action@v4.2.0
         with:
-          install: false
-          working-directory: ./src/packages/frontend/cypress/
           browser: chrome
+          working-directory: ./src/packages/frontend/cypress/
+          install-command: echo
           build: pnpm --dir .. build
           start: pnpm --dir .. start
           wait-on: 'http://localhost:4173'
+          component: false
 
       - name: Send coverage report to Codecov
         uses: codecov/codecov-action@v2
