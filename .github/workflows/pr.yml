@@ -57,8 +57,9 @@ jobs:
         uses: cypress-io/github-action@v4.2.0
         with:
           install: false
-          working-directory: ./src/packages/frontend/cypress
+          working-directory: ./src/packages/frontend/cypress/
           browser: chrome
+          install-command: pnpm install
           build: pnpm --dir .. build
           start: pnpm --dir .. start
           wait-on: 'http://localhost:4173'
