@@ -56,11 +56,12 @@ jobs:
       - name: E2E Test (Frontend)
         uses: cypress-io/github-action@v4.2.0
         with:
-          install: true
+          install: false
           working-directory: ./src/packages/frontend/cypress
           browser: chrome
           build: pnpm --dir .. build
           start: pnpm --dir .. start
+          wait-on: 'http://localhost:4173'
 
       - name: Send coverage report to Codecov
         uses: codecov/codecov-action@v2
