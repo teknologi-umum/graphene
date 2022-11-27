@@ -1,9 +1,67 @@
+x-defaults:
+  &defaults
+  ENVIRONMENT: development
+
 services:
-  api:
+  graphene:
     build: .
-    command: npm start
-    volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
-    ports:
-      - 3000:3000
+    environment:
+      <<: [ *defaults ]
+      PORT: 3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.graphene.entrypoints=web,websecure"
+      - "traefik.http.routers.graphene.rule=Host(`graphene.teknologiumum.com`) && (Path(`/`) || PathPrefix(`/api`))"
+      - "traefik.http.routers.graphene.tls.certresolver=tlsresolver"
+      - "traefik.http.routers.graphene.middlewares=graphene-error,graphene-header,graphene-rate,graphene-redirectscheme"
+      - "traefik.http.services.graphene.loadbalancer.server.port=3000"
+      - "traefik.http.services.graphene.loadbalancer.server.scheme=http"
+      - "traefik.http.services.graphene.loadbalancer.healthcheck.interval=30s"
+      - "traefik.http.services.graphene.loadbalancer.healthcheck.path=/"
+      - "traefik.http.middlewares.graphene-error.errors.status=500-599"
+      - "traefik.http.middlewares.graphene-error.errors.service=graphene@docker"
+      - "traefik.http.middlewares.graphene-error.errors.query=/error"
+      - "traefik.http.middlewares.graphene-rate.ratelimit.average=100"
+      - "traefik.http.middlewares.graphene-rate.ratelimit.burst=20"
+      - "traefik.http.middlewares.graphene-rate.ratelimit.period=1s"
+      - "traefik.http.middlewares.graphene-header.headers.accesscontrolallowmethods=GET,OPTIONS"
+      - "traefik.http.middlewares.graphene-header.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.middlewares.graphene-header.headers.accesscontrolmaxage=604800"
+      - "traefik.http.middlewares.graphene-header.headers.addvaryheader=true"
+      - "traefik.http.middlewares.graphene-header.headers.frameDeny=true"
+      - "traefik.http.middlewares.graphene-header.headers.browserxssfilter=true"
+      - "traefik.http.middlewares.graphene-header.headers.stsSeconds=604800"
+      - "traefik.http.middlewares.graphene-header.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.graphene-header.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.graphene-header.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.graphene-header.headers.customResponseHeaders.server=Teknologi Umum"
+      - "traefik.http.middlewares.graphene-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.graphene-redirectscheme.redirectscheme.permanent=true"
+    platform: linux/amd64
+    healthcheck:
+      test: curl -f http://localhost:3000/ || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    deploy:
+      mode: replicated
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 10
+        window: 120s
+      resources:
+        limits:
+          memory: 750MB
+          cpus: '0.75'
+        reservations:
+          memory: 200MB
+          cpus: '0.20'
+    networks:
+      - graphene
+
+networks:
+  graphene:
+    driver: bridge
+    external: true

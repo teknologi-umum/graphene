@@ -8,7 +8,7 @@ jobs:
   ci:
     name: CI
     runs-on: ubuntu-latest
-    container: node:18.6.0-alpine3.16
+    container: node:18.12-bullseye
     timeout-minutes: 15
     steps:
       - name: Checkout code
@@ -61,29 +61,48 @@ jobs:
         env:
           NODE_ENV: production
 
-
   cd:
-    name: CD
-    needs: ci
+    name: Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    container: node:18.12-bullseye
+    timeout-minutes: 120
+    needs: ci
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Install required packages
+        run: apt-get update && apt-get upgrade -y && apt-get install -y tar gzip curl ssh
 
-      - uses: superfly/flyctl-actions@master
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Register SSH key
+        uses: shimataro/ssh-key-action@v2
         with:
-          args: "deploy"
+          key: ${{ secrets.SSH_KEY }}
+          name: id_ed25519
+          known_hosts: ${{ secrets.SSH_IP }}
+          if_key_exists: replace
 
-      - name: Create Sentry release
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production
-          set_commits: skip
-          version: ${{ github.sha }}
+      - name: SSH Keyscan
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_IP }} >> /root/.ssh/known_hosts
+
+      - name: Pull latest code
+        run: >
+          ssh
+          -i /root/.ssh/id_ed25519 
+          -p ${{ secrets.SSH_PORT }}
+          -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} 
+          'ssh pesto "cd ${{ secrets.SSH_WORKDIR }}/graphene && git pull" '
+      - name: Build Docker images
+        run: >
+          ssh 
+          -i /root/.ssh/id_ed25519
+          -p ${{ secrets.SSH_PORT }}
+          -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }}
+          "ssh pesto 'echo ${{ secrets.SSH_PASSWORD }} | sudo -S bash -c '\"'cd ${{ secrets.SSH_WORKDIR }}/graphene &&
+          docker compose up -d --build graphene '\"' ' "
+      - name: Clean up docker artifacts
+        run: >
+          ssh 
+          -i /root/.ssh/id_ed25519
+          -p ${{ secrets.SSH_PORT }}
+          -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }}
+          "ssh pesto 'echo ${{ secrets.SSH_PASSWORD }} | sudo -S bash -c '\"'docker container prune -f &&
+          docker image prune -f &&
+          docker builder prune -f '\"' ' "
