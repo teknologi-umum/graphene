@@ -1,6 +1,6 @@
 x-defaults:
   &defaults
-  ENVIRONMENT: development
+  ENVIRONMENT: production
 
 services:
   graphene:
@@ -11,7 +11,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.graphene.entrypoints=web,websecure"
-      - "traefik.http.routers.graphene.rule=Host(`graphene.teknologiumum.com`) && (Path(`/`) || PathPrefix(`/api`))"
+      - "traefik.http.routers.graphene.rule=Host(`graphene.teknologiumum.com`)"
       - "traefik.http.routers.graphene.tls.certresolver=tlsresolver"
       - "traefik.http.routers.graphene.middlewares=graphene-error,graphene-header,graphene-rate,graphene-redirectscheme"
       - "traefik.http.services.graphene.loadbalancer.server.port=3000"
@@ -24,10 +24,6 @@ services:
       - "traefik.http.middlewares.graphene-rate.ratelimit.average=100"
       - "traefik.http.middlewares.graphene-rate.ratelimit.burst=20"
       - "traefik.http.middlewares.graphene-rate.ratelimit.period=1s"
-      - "traefik.http.middlewares.graphene-header.headers.accesscontrolallowmethods=GET,OPTIONS"
-      - "traefik.http.middlewares.graphene-header.headers.accesscontrolalloworiginlist=*"
-      - "traefik.http.middlewares.graphene-header.headers.accesscontrolmaxage=604800"
-      - "traefik.http.middlewares.graphene-header.headers.addvaryheader=true"
       - "traefik.http.middlewares.graphene-header.headers.frameDeny=true"
       - "traefik.http.middlewares.graphene-header.headers.browserxssfilter=true"
       - "traefik.http.middlewares.graphene-header.headers.stsSeconds=604800"
@@ -45,7 +41,7 @@ services:
       retries: 5
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       restart_policy:
         condition: on-failure
         delay: 30s
