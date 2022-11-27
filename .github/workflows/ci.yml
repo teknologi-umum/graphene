@@ -88,14 +88,14 @@ jobs:
           -i /root/.ssh/id_ed25519 
           -p ${{ secrets.SSH_PORT }}
           -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} 
-          'ssh pesto "cd ${{ secrets.SSH_WORKDIR }}/graphene && git pull" '
+          'ssh graphene "cd ${{ secrets.SSH_WORKDIR }}/graphene && git pull" '
       - name: Build Docker images
         run: >
           ssh 
           -i /root/.ssh/id_ed25519
           -p ${{ secrets.SSH_PORT }}
           -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }}
-          "ssh pesto 'echo ${{ secrets.SSH_PASSWORD }} | sudo -S bash -c '\"'cd ${{ secrets.SSH_WORKDIR }}/graphene &&
+          "ssh graphene 'echo ${{ secrets.SSH_PASSWORD }} | sudo -S bash -c '\"'cd ${{ secrets.SSH_WORKDIR }}/graphene &&
           docker compose up -d --build graphene '\"' ' "
       - name: Clean up docker artifacts
         run: >
@@ -103,6 +103,6 @@ jobs:
           -i /root/.ssh/id_ed25519
           -p ${{ secrets.SSH_PORT }}
           -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }}
-          "ssh pesto 'echo ${{ secrets.SSH_PASSWORD }} | sudo -S bash -c '\"'docker container prune -f &&
+          "ssh graphene 'echo ${{ secrets.SSH_PASSWORD }} | sudo -S bash -c '\"'docker container prune -f &&
           docker image prune -f &&
           docker builder prune -f '\"' ' "
