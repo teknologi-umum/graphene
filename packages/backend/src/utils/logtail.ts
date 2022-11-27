@@ -1,9 +1,9 @@
 import { Logtail } from "@logtail/node";
 import type { Context, ILogtailLog } from "@logtail/types";
-import { IS_PRODUCTION, IS_TEST, LOGTAIL_TOKEN } from "~/constants";
+import { IS_TEST, LOGTAIL_TOKEN } from "~/constants";
 
 /**
- * Logger class wraps Logtail logger. It will use Logtail on production and Console on development.
+ * Logger class wraps Logtail logger. It will use Logtail when the token is provided and Console otherwise
  */
 export class Logger {
   private readonly _loggerInstance: Logtail | Console;
@@ -13,16 +13,7 @@ export class Logger {
    */
   constructor(token: string | undefined) {
     const isTokenEmpty = token === null || token === undefined || token === "";
-
-    if (IS_PRODUCTION && isTokenEmpty) {
-      throw TypeError("Logtail token should not be empty in production!");
-    }
-
-    if (IS_PRODUCTION && !isTokenEmpty) {
-      this._loggerInstance = new Logtail(token);
-    } else {
-      this._loggerInstance = console;
-    }
+    this._loggerInstance = isTokenEmpty ? console : new Logtail(token);
   }
 
   warn(message: string, context: Context = {}): Promise<ILogtailLog & Context> | void {
