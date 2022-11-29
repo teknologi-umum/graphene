@@ -44,12 +44,12 @@ jobs:
         run: pnpm run -r fmt:check
 
       - name: Test
-        run: pnpm --filter "{packages/backend}" test -- --no-threads
+        run: pnpm --filter "{packages/backend}" test
         env:
           NODE_ENV: test
 
       - name: Collect coverage
-        run: pnpm --filter "{packages/backend}" test:coverage -- --no-threads
+        run: pnpm --filter "{packages/backend}" test:coverage
         env:
           NODE_ENV: test
 
