@@ -20,7 +20,7 @@ jobs:
         with:
           version: 7
           run_install: false
-      
+
       - name: Get pnpm store directory
         id: pnpm-cache
         run: |
@@ -44,12 +44,12 @@ jobs:
         run: pnpm run -r fmt:check
 
       - name: Test
-        run: pnpm --filter "{packages/backend}" test
+        run: pnpm --filter "{packages/backend}" test -- --no-threads
         env:
           NODE_ENV: test
 
       - name: Collect coverage
-        run: pnpm --filter "{packages/backend}" test:coverage
+        run: pnpm --filter "{packages/backend}" test:coverage -- --no-threads
         env:
           NODE_ENV: test
 
