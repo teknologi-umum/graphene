@@ -8,6 +8,7 @@ services:
     environment:
       <<: [ *defaults ]
       PORT: 3000
+      SENTRY_DSN: $SENTRY_DSN
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.graphene.entrypoints=web,websecure"
