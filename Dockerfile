@@ -1,8 +1,6 @@
-FROM node:18.6.0-alpine3.16
+FROM node:18.12-bullseye
 
 WORKDIR /home/app
-
-RUN apk add curl
 
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
 
@@ -24,6 +22,8 @@ RUN pnpm --filter "{packages/frontend}" build
 WORKDIR /home/app/packages/backend
 
 ENV NODE_ENV=production
+ENV PORT=3000
 
-EXPOSE 3000
+EXPOSE ${PORT}
+
 CMD [ "pnpm", "start" ]

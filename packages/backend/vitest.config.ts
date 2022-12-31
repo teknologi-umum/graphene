@@ -6,5 +6,8 @@ export default defineConfig({
     alias: {
       "~": path.resolve("src")
     }
+  },
+  test: {
+    globalSetup: "./sharp.test-setup.ts"
   }
 });
