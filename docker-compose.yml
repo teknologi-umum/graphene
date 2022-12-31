@@ -4,7 +4,7 @@ x-defaults:
 
 services:
   graphene:
-    build: .
+    build: ghcr.io/teknologi-umum/graphene:edge
     environment:
       <<: [ *defaults ]
       PORT: 3000
@@ -37,8 +37,8 @@ services:
     platform: linux/amd64
     healthcheck:
       test: curl -f http://localhost:3000/ || exit 1
-      interval: 15s
-      timeout: 10s
+      interval: 30s
+      timeout: 20s
       retries: 5
     deploy:
       mode: replicated
