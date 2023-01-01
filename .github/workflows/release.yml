@@ -33,7 +33,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/graphene
+          images: ghcr.io/teknologi-umum/graphene
           flavor: |
             latest=true
           tags: |
