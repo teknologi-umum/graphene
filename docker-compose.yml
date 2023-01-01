@@ -4,7 +4,7 @@ x-defaults:
 
 services:
   graphene:
-    build: ghcr.io/teknologi-umum/graphene:edge
+    image: ghcr.io/teknologi-umum/graphene:edge
     environment:
       <<: [ *defaults ]
       PORT: 3000
