@@ -10,8 +10,6 @@ jobs:
     name: CD - Build
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    needs:
-      - ci
     permissions:
       contents: read
       packages: write
