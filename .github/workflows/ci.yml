@@ -8,17 +8,17 @@ jobs:
   ci:
     name: CI
     runs-on: ubuntu-latest
-    container: node:18.12-bullseye
+    container: node:18.16-bullseye
     timeout-minutes: 15
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.2
+        uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: 7
+          version: latest
           run_install: false
 
       - name: Get pnpm store directory
@@ -54,7 +54,7 @@ jobs:
           NODE_ENV: test
 
       - name: Send coverage report to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
 
       - name: Build frontend
         run: pnpm --filter "{packages/frontend}" build
