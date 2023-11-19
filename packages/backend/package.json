@@ -30,7 +30,7 @@
     "polka": "1.0.0-next.22",
     "rate-limiter-flexible": "2.4.1",
     "shared": "link:../shared",
-    "sharp": "0.32.1",
+    "sharp": "0.32.6",
     "shiki": "0.14.2",
     "sirv": "2.0.3",
     "toml": "3.0.0",
