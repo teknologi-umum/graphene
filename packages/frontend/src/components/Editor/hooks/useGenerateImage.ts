@@ -55,7 +55,7 @@ export function useGenerateImage() {
         showLineNumber: payload.showLineNumber,
       };
 
-      const imageResponse = await fetch('/api', {
+      const imageResponse = await fetch('http://localhost:3000/api', {
         method: 'POST',
         headers: {
           Accept: `image/${payload.format}`,

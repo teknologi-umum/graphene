@@ -1,6 +1,6 @@
 import flourite from "flourite";
 import sharp from "sharp";
-import * as shiki from "shiki";
+import * as shikiji from "shikiji";
 import { SvgRenderer } from "~/logic/svg-renderer";
 import type { OptionSchema } from "~/schema/options";
 import { FONT_MAPPING } from "shared";
@@ -21,19 +21,23 @@ export async function generateImage({
   font,
   showLineNumber
 }: OptionSchema): Promise<{ image: Buffer; length: number; format: string }> {
-  const highlighter = await shiki.getHighlighter({ theme });
+  const highlighter = await shikiji.getHighlighter({ themes: [theme] });
+  const resolvedTheme = highlighter.getTheme(theme);
   const fontConfig = FONT_MAPPING[font];
 
   const svgRenderer = new SvgRenderer({
     ...fontConfig,
     showLineNumber,
-    lineNumberForeground: highlighter.getForegroundColor(),
-    background: highlighter.getBackgroundColor(),
+    lineNumberForeground: resolvedTheme.fg,
+    background: resolvedTheme.bg,
     radius: border.radius
   });
 
   const guessedLanguage = guessLanguage(code, language);
-  const tokens = highlighter.codeToThemedTokens(code, guessedLanguage);
+  const tokens = await shikiji.codeToThemedTokens(code, {
+    lang: guessedLanguage as shikiji.BundledLanguage,
+    theme: theme as shikiji.BundledTheme
+  });
   const { svg } = svgRenderer.renderToSVG(tokens);
 
   if (imageFormat === "svg") {
