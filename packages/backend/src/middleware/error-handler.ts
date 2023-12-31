@@ -1,7 +1,8 @@
 import console from "node:console";
 import type { ErrorHandler } from "polka";
+import * as Sentry from "@sentry/node";
 import { IS_PRODUCTION } from "~/constants";
-import { logger, sentry } from "~/utils/index.js";
+import { logger } from "~/utils/index.js";
 
 /**
  * errorHandler is the default error handler for every request.
@@ -11,7 +12,7 @@ export const errorHandler: ErrorHandler = (err, req, res) => {
     console.error(err);
   }
 
-  sentry.captureException(err, (scope) => {
+  Sentry.captureException(err, (scope) => {
     scope.setContext("request_header", {
       "Content-Type": req.headers["content-type"],
       Origin: req.headers["origin"],

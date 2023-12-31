@@ -1,12 +1,17 @@
-import * as Sentry from "@sentry/node";
-import "@sentry/tracing";
-import { IS_PRODUCTION, NODE_ENV, SENTRY_DSN } from "~/constants";
+export function sentryTraceFromHeader(headers: Record<string, string | string[] | undefined>): string | undefined {
+  if (!headers["sentry-trace"]) {
+    return undefined;
+  }
 
-Sentry.init({
-  dsn: SENTRY_DSN,
-  enabled: IS_PRODUCTION,
-  environment: NODE_ENV,
-  tracesSampleRate: 1.0
-});
+  const sentryTrace = headers["sentry-trace"];
 
-export const sentry = Sentry;
+  if (typeof sentryTrace === "string") {
+    return sentryTrace;
+  }
+
+  if (Array.isArray(headers["sentry-trace"])) {
+    return sentryTrace?.at(0) ?? undefined;
+  }
+
+  return undefined;
+}
