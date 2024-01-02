@@ -1,8 +1,8 @@
-FROM node:18.16-bullseye
+FROM node:20.10-bookworm
 
 WORKDIR /home/app
 
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+RUN npm install --global pnpm
 
 COPY fonts/ /usr/local/share/fonts/
 
