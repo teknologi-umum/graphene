@@ -2,6 +2,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import console from "node:console";
 import polka, { type Middleware } from "polka";
+import * as Sentry from "@sentry/node";
 import sirv from "sirv";
 import helmet from "helmet";
 import { cors, bodyParser, errorHandler, notFoundHandler, rateLimiter } from "~/middleware/index.js";
@@ -12,6 +13,13 @@ import { IS_PRODUCTION, IS_TEST, PORT } from "~/constants";
 const MAX_AGE = 24 * 60; // 1 day
 const CWD = dirname(fileURLToPath(import.meta.url));
 const STATIC_PATH = resolve(CWD, "./views");
+
+Sentry.init({
+  dsn: "",
+  integrations: [new Sentry.Integrations.Http({ tracing: true }), new Sentry.Integrations.Undici()],
+  sampleRate: 1.0,
+  tracesSampleRate: 0.5
+});
 
 const app = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
   .use(

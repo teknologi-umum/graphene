@@ -1,11 +1,42 @@
 import type { Middleware } from "polka";
 import { ZodError } from "zod";
+import * as Sentry from "@sentry/node";
 import { generateImage } from "~/logic/generate-image";
-import { logger } from "~/utils";
+import { logger, sentryTraceFromHeader } from "~/utils";
 import { optionSchema, OptionSchema } from "~/schema/options";
 
 export const coreHandler: Middleware = async (req, res) => {
   /* c8 ignore start */
+  const abortController = new AbortController();
+  const sentrySpan = Sentry.continueTrace(
+    { sentryTrace: sentryTraceFromHeader(req.headers), baggage: req.headers["baggage"] },
+    (ctx) =>
+      Sentry.startTransaction(
+        {
+          name: `${req.method.toUpperCase()} ${req.path}`,
+          op: "http.server",
+          origin: "manual.http.node.tracingHandler",
+          ...ctx,
+          metadata: {
+            ...ctx.metadata,
+            request: req,
+            source: "url"
+          }
+        },
+        { request: Sentry.extractRequestData(req) }
+      )
+  );
+
+  req.once("close", () => {
+    if (req.destroyed) {
+      abortController.abort("Request closed");
+    }
+    sentrySpan.setHttpStatus(res.statusCode);
+    sentrySpan.finish();
+  });
+
+  Sentry.getCurrentHub().getScope().setSpan(sentrySpan);
+
   await logger.info("Incoming POST request", {
     body: req.body ?? "",
     headers: {
