@@ -22,7 +22,7 @@
     "prettier": "3.0.2",
     "sass": "^1.69.6",
     "typescript": "5.2.2",
-    "vite": "4.4.12",
+    "vite": "4.5.2",
     "vite-plugin-solid": "2.7.0"
   },
   "dependencies": {
