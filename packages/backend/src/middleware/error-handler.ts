@@ -1,7 +1,7 @@
 import console from "node:console";
 import type { ErrorHandler } from "polka";
 import * as Sentry from "@sentry/node";
-import { IS_PRODUCTION } from "~/constants";
+import { IS_PRODUCTION } from "~/constants/index.js";
 import { logger } from "~/utils/index.js";
 
 /**
