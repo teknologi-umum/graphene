@@ -1,6 +1,6 @@
 import type { Middleware } from "polka";
 import { RateLimiterMemory } from "rate-limiter-flexible";
-import { IS_TEST } from "~/constants";
+import { IS_TEST } from "~/constants/index.js";
 import { getIP } from "../utils/get-ip";
 
 const rateLimiterMemory = new RateLimiterMemory({

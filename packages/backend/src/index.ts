@@ -8,22 +8,29 @@ import helmet from "helmet";
 import { cors, bodyParser, errorHandler, notFoundHandler, rateLimiter } from "~/middleware/index.js";
 import { logger } from "~/utils/index.js";
 import { coreHandler } from "~/handler/core.js";
-import { IS_PRODUCTION, IS_TEST, PORT } from "~/constants";
+import { IS_PRODUCTION, IS_TEST, PORT } from "~/constants/index.js";
 
 const MAX_AGE = 24 * 60; // 1 day
 const CWD = dirname(fileURLToPath(import.meta.url));
 const STATIC_PATH = resolve(CWD, "./views");
 
 Sentry.init({
-  dsn: "",
-  integrations: [new Sentry.Integrations.Http({ tracing: true }), new Sentry.Integrations.Undici()],
+  dsn: process.env.SENTRY_DSN ?? "",
   sampleRate: 1.0,
   tracesSampleRate: 0.5
 });
 
 const app = polka({ onError: errorHandler, onNoMatch: notFoundHandler })
   .use(
-    helmet() as Middleware,
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          "script-src": ["'self'", "https:"],
+          "connect-src": ["'self'", "https:"]
+        }
+      },
+      crossOriginResourcePolicy: { policy: "same-site" }
+    }) as Middleware,
     sirv(STATIC_PATH, {
       dev: !IS_PRODUCTION,
       etag: true,

@@ -1,10 +1,10 @@
 import z from "zod";
-import { themeSchema } from "./theme";
-import { languageSchema } from "./language";
-import { imageFormatSchema } from "./image-format";
-import { fontSchema } from "./font";
-import { borderSchema } from "./border";
-import { upscaleSchema } from "./upscale";
+import { themeSchema } from "./theme.js";
+import { languageSchema } from "./language.js";
+import { imageFormatSchema } from "./image-format.js";
+import { fontSchema } from "./font.js";
+import { borderSchema } from "./border.js";
+import { upscaleSchema } from "./upscale.js";
 
 export const optionSchema = z.object({
   code: z

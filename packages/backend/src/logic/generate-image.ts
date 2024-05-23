@@ -2,8 +2,8 @@ import flourite from "flourite";
 import sharp from "sharp";
 import * as shikiji from "shikiji";
 import * as Sentry from "@sentry/node";
-import { SvgRenderer } from "~/logic/svg-renderer";
-import type { OptionSchema } from "~/schema/options";
+import { SvgRenderer } from "~/logic/svg-renderer.js";
+import type { OptionSchema } from "~/schema/options.js";
 import { FONT_MAPPING } from "shared";
 
 function guessLanguage(code: string, language: string): string {
@@ -26,7 +26,8 @@ export function generateImage({
   return Sentry.startSpan({ name: "Generate Image", op: "logic.generate_image.generate_image" }, async () => {
     const highlighter = await shikiji.getHighlighter({ themes: [theme] });
     const resolvedTheme = highlighter.getTheme(theme);
-    const fontConfig = FONT_MAPPING[font];
+    const fontConfig: { fontFamily: string; lineHeightToFontSizeRatio: number; fontSize: number; fontWidth: number } =
+      FONT_MAPPING[font];
 
     const svgRenderer = new SvgRenderer({
       ...fontConfig,

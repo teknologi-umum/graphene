@@ -8,14 +8,14 @@
     /* Modules */
     "module": "ESNext",
     "rootDir": "./src",
-    "moduleResolution": "node",
-    "baseUrl": ".",
+    "moduleResolution": "Bundler",
+    "baseUrl": "./",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./*"]
     },
     "allowJs": false,
 
-    "declaration": false,
+    "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",
     "removeComments": true,
@@ -46,20 +46,12 @@
 
     /* Completeness */
     "skipDefaultLibCheck": false,
-    "skipLibCheck": true,
-
-    "plugins": [
-      // Transform paths in output .js files
-      { "transform": "typescript-transform-paths" },
-
-      // Transform paths in output .d.ts files (Include this line if you output declarations files)
-      { "transform": "typescript-transform-paths", "afterDeclarations": true }
-    ]
+    "skipLibCheck": true
   },
   "tsc-alias": {
     "resolveFullPaths": true,
     "verbose": true
   },
-  "include": ["src", "views"],
+  "include": ["src"],
   "exclude": ["tests", "dist"]
 }

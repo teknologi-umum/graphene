@@ -13,7 +13,7 @@ export function Documentation() {
         <p>
           Simply send a HTTP POST request to&nbsp;
           <span>
-            <code>https://teknologi-umum-graphene.fly.dev/api</code>
+            <code>https://graphene.teknologiumum.com/api</code>
           </span>
           &nbsp; with a payload body as specified below.
         </p>

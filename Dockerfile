@@ -9,15 +9,10 @@ COPY fonts/ /usr/local/share/fonts/
 # Files required by pnpm install
 COPY pnpm-lock.yaml ./
 
-# cache into the global store
-RUN pnpm fetch
-
 ADD . ./
 
-RUN pnpm install -r --offline
-
-# build the frontend code
-RUN pnpm --filter "{packages/frontend}" build
+RUN pnpm install && \
+  pnpm -r run build
 
 WORKDIR /home/app/packages/backend
 
